@@ -1,0 +1,134 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Publer Locations API",
+    "description": "Location search endpoints for Publer API including Instagram, Facebook, and Threads locations.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://app.publer.com/api/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerApiAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerApiAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "API key authentication. Format: \"Bearer-API YOUR_API_KEY\""
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "LOCATIONS"
+    }
+  ],
+  "paths": {
+    "/locations/instagram": {
+      "get": {
+        "tags": ["LOCATIONS"],
+        "summary": "Instagram locations",
+        "parameters": [
+          {
+            "name": "Publer-Workspace-Id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{workspace_id}}",
+            "required": true
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Tirana"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/locations/facebook": {
+      "get": {
+        "tags": ["LOCATIONS"],
+        "summary": "Facebook locations",
+        "parameters": [
+          {
+            "name": "Publer-Workspace-Id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{workspace_id}}",
+            "required": true
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Tirana"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/locations/threads": {
+      "get": {
+        "tags": ["LOCATIONS"],
+        "summary": "Threads locations",
+        "parameters": [
+          {
+            "name": "Publer-Workspace-Id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{workspace_id}}",
+            "required": true
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Tirana"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}

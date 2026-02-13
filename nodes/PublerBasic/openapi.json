@@ -1,0 +1,327 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Publer Basic API",
+    "description": "Basic endpoints for Publer API including users, workspaces, accounts, and job status.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://app.publer.com/api/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerApiAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerApiAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "API key authentication. Format: \"Bearer-API YOUR_API_KEY\""
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the user"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email address of the user"
+          },
+          "name": {
+            "type": "string",
+            "description": "Full name of the user"
+          },
+          "first_name": {
+            "type": "string",
+            "description": "First name of the user"
+          },
+          "picture": {
+            "type": "string",
+            "description": "URL to the profile picture of the user"
+          }
+        }
+      },
+      "Workspace": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the workspace"
+          },
+          "owner": {
+            "type": "object",
+            "description": "Information about the workspace owner",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique identifier for the owner"
+              },
+              "email": {
+                "type": "string",
+                "description": "Email address of the owner"
+              },
+              "name": {
+                "type": "string",
+                "description": "Username of the owner"
+              },
+              "first_name": {
+                "type": "string",
+                "description": "First name of the owner"
+              },
+              "picture": {
+                "type": "string",
+                "description": "URL to the owner's profile picture"
+              }
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "The workspace's display name"
+          },
+          "members": {
+            "type": "array",
+            "description": "List of users with access to the workspace"
+          },
+          "plan": {
+            "type": "string",
+            "description": "Subscription plan of the workspace"
+          },
+          "picture": {
+            "type": "string",
+            "description": "URL to the workspace's logo"
+          }
+        }
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the account"
+          },
+          "provider": {
+            "type": "string",
+            "description": "The social network provider",
+            "enum": [
+              "bluesky",
+              "facebook",
+              "instagram",
+              "linkedin",
+              "twitter",
+              "tiktok",
+              "youtube",
+              "pinterest",
+              "google",
+              "wordpress_basic",
+              "wordpress_oauth",
+              "telegram",
+              "mastodon",
+              "threads"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "The display name of the social media account"
+          },
+          "social_id": {
+            "type": "string",
+            "description": "Unique identifier for the account on the social media platform"
+          },
+          "picture": {
+            "type": "string",
+            "description": "URL to the account's avatar/logo"
+          },
+          "type": {
+            "type": "string",
+            "description": "Account type",
+            "enum": ["page", "profile", "group", "business", "channel", "location", "blog"]
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "USERS"
+    },
+    {
+      "name": "WORKSPACES"
+    },
+    {
+      "name": "ACCOUNTS"
+    },
+    {
+      "name": "JOB STATUS"
+    }
+  ],
+  "paths": {
+    "/users/me": {
+      "get": {
+        "tags": ["USERS"],
+        "summary": "Me",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/workspaces": {
+      "get": {
+        "tags": ["WORKSPACES"],
+        "summary": "Fetch workspaces",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/workspaces/{workspace_id}/signatures": {
+      "get": {
+        "tags": ["WORKSPACES"],
+        "summary": "Fetch signatures",
+        "parameters": [
+          {
+            "name": "accounts[]",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "647a0edddb2797b89044e2c1"
+          },
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/workspaces/{workspace_id}/media_options": {
+      "get": {
+        "tags": ["WORKSPACES"],
+        "summary": "Fetch media options",
+        "parameters": [
+          {
+            "name": "accounts[]",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "661ce240db2797a7148a6b49",
+            "required": true
+          },
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/accounts": {
+      "get": {
+        "tags": ["ACCOUNTS"],
+        "summary": "List Accounts",
+        "parameters": [
+          {
+            "name": "Publer-Workspace-Id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{workspace_id}}",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Account"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/job_status/{job_id}": {
+      "get": {
+        "tags": ["JOB STATUS"],
+        "summary": "Job status",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "Publer-Workspace-Id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{workspace_id}}",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}

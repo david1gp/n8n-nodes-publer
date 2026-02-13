@@ -1,0 +1,483 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Publer Analytics API",
+    "description": "Analytics endpoints for Publer API including charts, post insights, hashtag insights, and best times to post.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://app.publer.com/api/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerApiAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerApiAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "API key authentication. Format: \"Bearer-API YOUR_API_KEY\""
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "ANALYTICS"
+    }
+  ],
+  "paths": {
+    "/analytics/charts": {
+      "get": {
+        "tags": ["ANALYTICS"],
+        "summary": "Get charts",
+        "parameters": [
+          {
+            "name": "Publer-Workspace-Id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{workspace_id}}",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/analytics/{account_id}/chart_data": {
+      "get": {
+        "tags": ["ANALYTICS"],
+        "summary": "Charts data",
+        "parameters": [
+          {
+            "name": "Publer-Workspace-Id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{workspace_id}}",
+            "required": true
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2025-03-21"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2025-08-18"
+          },
+          {
+            "name": "chart_ids[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": ["followers"]
+          },
+          {
+            "name": "account_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/analytics/{account_id}/post_insights": {
+      "get": {
+        "tags": ["ANALYTICS"],
+        "summary": "Post insights",
+        "parameters": [
+          {
+            "name": "Publer-Workspace-Id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{workspace_id}}",
+            "required": true
+          },
+          {
+            "name": "competitors",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false"]
+            },
+            "example": "false",
+            "description": "Include competitor analysis data"
+          },
+          {
+            "name": "competitor_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Specific competitor account ID to analyze"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-05-13",
+            "description": "Start date (YYYY-MM-DD)"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-08-10",
+            "description": "End date (YYYY-MM-DD)"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search posts by text content"
+          },
+          {
+            "name": "postType",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "poll",
+                "status",
+                "link",
+                "carousel",
+                "photo",
+                "gif",
+                "video",
+                "reel",
+                "document",
+                "short",
+                "article",
+                "story"
+              ]
+            },
+            "description": "Filter by post type"
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "scheduled_at",
+                "reach",
+                "engagement",
+                "engagement_rate",
+                "click_through_rate",
+                "reach_rate",
+                "postType",
+                "likes",
+                "video_views",
+                "comments",
+                "shares",
+                "saves",
+                "link_clicks",
+                "post_clicks"
+              ]
+            },
+            "description": "Field to sort results by"
+          },
+          {
+            "name": "sort_type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["ASC", "DESC"]
+            },
+            "description": "Sort direction (ASC or DESC)"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 0,
+            "description": "Page number (0-based, 10 posts per page)"
+          },
+          {
+            "name": "member_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by workspace member who created the post"
+          },
+          {
+            "name": "account_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Social account ID (omit for all workspace accounts)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/analytics/{account_id}/hashtag_insights": {
+      "get": {
+        "tags": ["ANALYTICS"],
+        "summary": "Hashtag insights",
+        "parameters": [
+          {
+            "name": "Publer-Workspace-Id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{workspace_id}}",
+            "required": true
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2025-07-15"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2025-08-11"
+          },
+          {
+            "name": "account_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/analytics/{account_id}/hashtag_performing_posts": {
+      "get": {
+        "tags": ["ANALYTICS"],
+        "summary": "Hashtag performing posts",
+        "parameters": [
+          {
+            "name": "Publer-Workspace-Id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{workspace_id}}",
+            "required": true
+          },
+          {
+            "name": "hashtag",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "#smm",
+            "example": "%23smm"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2025-01-31"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2025-12-31"
+          },
+          {
+            "name": "account_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/analytics/{account_id}/best_times": {
+      "get": {
+        "tags": ["ANALYTICS"],
+        "summary": "Best times to post",
+        "parameters": [
+          {
+            "name": "Publer-Workspace-Id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{workspace_id}}",
+            "required": true
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2024-01-01"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2024-12-31"
+          },
+          {
+            "name": "account_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/analytics/members": {
+      "get": {
+        "tags": ["ANALYTICS"],
+        "summary": "Members",
+        "parameters": [
+          {
+            "name": "Publer-Workspace-Id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{workspace_id}}",
+            "required": true
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-07-16",
+            "required": true,
+            "description": "Start date (YYYY-MM-DD)"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-08-12",
+            "required": true,
+            "description": "End date (YYYY-MM-DD)"
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Restrict analytics to one social account. Omit for all workspace accounts."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}
