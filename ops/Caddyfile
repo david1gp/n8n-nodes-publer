@@ -1,0 +1,7 @@
+n8n.com {
+	import shared_config_simple
+	header {
+		Routed "n8n.com"
+	}
+	reverse_proxy localhost:3066
+}
