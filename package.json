@@ -25,6 +25,7 @@
     "dev": "tsc --watch",
     "test": "jest",
     "release": "bash ./ops/release.sh",
+    "validate": "bunx ibm-openapi-validator ./nodes/Publer/openapi.json",
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
     "lintfix": "eslint nodes credentials package.json --fix"
@@ -58,5 +59,10 @@
   },
   "dependencies": {
     "@devlikeapro/n8n-openapi-node": "^0.1.4"
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 120,
+    "trailingComma": "all"
   }
 }
