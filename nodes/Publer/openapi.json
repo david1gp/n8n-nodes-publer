@@ -12,9 +12,151 @@
   ],
   "security": [
     {
-      "bearerAuth": []
+      "BearerApiAuth": []
     }
   ],
+  "components": {
+    "securitySchemes": {
+      "BearerApiAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "API key authentication. Format: \"Bearer-API YOUR_API_KEY\""
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the user"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email address of the user"
+          },
+          "name": {
+            "type": "string",
+            "description": "Full name of the user"
+          },
+          "first_name": {
+            "type": "string",
+            "description": "First name of the user"
+          },
+          "picture": {
+            "type": "string",
+            "description": "URL to the profile picture of the user"
+          }
+        }
+      },
+      "Workspace": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the workspace"
+          },
+          "owner": {
+            "type": "object",
+            "description": "Information about the workspace owner",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique identifier for the owner"
+              },
+              "email": {
+                "type": "string",
+                "description": "Email address of the owner"
+              },
+              "name": {
+                "type": "string",
+                "description": "Username of the owner"
+              },
+              "first_name": {
+                "type": "string",
+                "description": "First name of the owner"
+              },
+              "picture": {
+                "type": "string",
+                "description": "URL to the owner's profile picture"
+              }
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "The workspace's display name"
+          },
+          "members": {
+            "type": "array",
+            "description": "List of users with access to the workspace"
+          },
+          "plan": {
+            "type": "string",
+            "description": "Subscription plan of the workspace"
+          },
+          "picture": {
+            "type": "string",
+            "description": "URL to the workspace's logo"
+          }
+        }
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the account"
+          },
+          "provider": {
+            "type": "string",
+            "description": "The social network provider",
+            "enum": [
+              "bluesky",
+              "facebook",
+              "instagram",
+              "linkedin",
+              "twitter",
+              "tiktok",
+              "youtube",
+              "pinterest",
+              "google",
+              "wordpress",
+              "telegram",
+              "mastodon",
+              "threads"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "The display name of the social media account"
+          },
+          "social_id": {
+            "type": "string",
+            "description": "Unique identifier for the account on the social media platform"
+          },
+          "picture": {
+            "type": "string",
+            "description": "URL to the account's avatar/logo"
+          },
+          "type": {
+            "type": "string",
+            "description": "Account type",
+            "enum": [
+              "page",
+              "profile",
+              "group",
+              "business",
+              "channel",
+              "location",
+              "blog"
+            ]
+          }
+        }
+      }
+    }
+  },
   "tags": [
     {
       "name": "USERS"
@@ -232,6 +374,7 @@
           {
             "name": "types[]",
             "in": "query",
+            "required": true,
             "schema": {
               "type": "array",
               "items": {
@@ -250,6 +393,7 @@
           {
             "name": "used[]",
             "in": "query",
+            "required": true,
             "schema": {
               "type": "array",
               "items": {
@@ -273,8 +417,7 @@
                   "postnitro",
                   "contentdrips",
                   "openai",
-                  "favorites",
-                  "upload"
+                  "favorites"
                 ]
               }
             }
@@ -501,7 +644,7 @@
                                       "document",
                                       "event",
                                       "offer",
-                                      "shorts"
+                                      "short"
                                     ],
                                     "description": "Content type: status (text only), photo, video, link, carousel, story, reel, or gif",
                                     "example": "status"
@@ -718,7 +861,7 @@
                                       "document",
                                       "event",
                                       "offer",
-                                      "shorts"
+                                      "short"
                                     ],
                                     "description": "Content type: status (text only), photo, video, link, carousel, story, reel, or gif",
                                     "example": "status"
@@ -999,7 +1142,7 @@
                 "video",
                 "reel",
                 "story",
-                "shorts",
+                "short",
                 "poll",
                 "document",
                 "carousel",
@@ -1094,11 +1237,124 @@
       }
     },
     "/posts/{post_id}": {
-      "put": {
+        "put": {
         "tags": [
           "POSTS"
         ],
         "summary": "Update post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bulk": {
+                    "type": "object",
+                    "properties": {
+                      "state": {
+                        "type": "string",
+                        "enum": [
+                          "scheduled",
+                          "draft"
+                        ],
+                        "description": "Post state"
+                      },
+                      "posts": {
+                        "type": "array",
+                        "description": "Posts to update",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "networks",
+                            "accounts"
+                          ],
+                          "properties": {
+                            "networks": {
+                              "type": "object",
+                              "description": "Network-specific post content",
+                              "additionalProperties": {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "status",
+                                      "photo",
+                                      "video",
+                                      "link",
+                                      "carousel",
+                                      "story",
+                                      "reel",
+                                      "gif",
+                                      "poll",
+                                      "document",
+                                      "event",
+                                      "offer",
+                                      "short"
+                                    ]
+                                  },
+                                  "text": {
+                                    "type": "string"
+                                  },
+                                  "media": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "id": {
+                                          "type": "string"
+                                        },
+                                        "type": {
+                                          "type": "string",
+                                          "enum": [
+                                            "image",
+                                            "photo",
+                                            "video",
+                                            "gif"
+                                          ]
+                                        },
+                                        "caption": {
+                                          "type": "string"
+                                        },
+                                        "alt_text": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "url": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "accounts": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "id"
+                                ],
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "scheduled_at": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "parameters": [
           {
             "name": "post_id",
@@ -1883,71 +2139,6 @@
             }
           }
         }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Account": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Unique identifier for the account"
-          },
-          "provider": {
-            "type": "string",
-            "description": "The social network provider",
-            "enum": [
-              "bluesky",
-              "facebook",
-              "instagram",
-              "linkedin",
-              "twitter",
-              "tiktok",
-              "youtube",
-              "pinterest",
-              "google",
-              "wordpress",
-              "telegram",
-              "mastodon",
-              "threads"
-            ]
-          },
-          "name": {
-            "type": "string",
-            "description": "The display name of the social media account"
-          },
-          "social_id": {
-            "type": "string",
-            "description": "Unique identifier for the account on the social media platform"
-          },
-          "picture": {
-            "type": "string",
-            "description": "URL to the account's avatar/logo"
-          },
-          "type": {
-            "type": "string",
-            "description": "Account type",
-            "enum": [
-              "page",
-              "profile",
-              "group",
-              "business",
-              "channel",
-              "location",
-              "blog"
-            ]
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "apiKey",
-        "name": "Authorization",
-        "in": "header",
-        "description": "API key authentication. Format: \"Bearer-API YOUR_API_KEY\""
       }
     }
   }
