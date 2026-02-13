@@ -26,7 +26,7 @@ export class Publer implements INodeType {
     credentials: [
       {
         name: "publerApi",
-        required: false,
+        required: true,
       },
     ],
     requestDefaults: {

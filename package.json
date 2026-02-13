@@ -33,7 +33,9 @@
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
-    "credentials": [],
+    "credentials": [
+      "dist/credentials/PublerApi.credentials.js"
+    ],
     "nodes": [
       "dist/nodes/Publer/Publer.node.js"
     ]
