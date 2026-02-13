@@ -122,7 +122,8 @@
               "youtube",
               "pinterest",
               "google",
-              "wordpress",
+              "wordpress_basic",
+              "wordpress_oauth",
               "telegram",
               "mastodon",
               "threads"
@@ -331,9 +332,7 @@
               }
             }
           }
-        }
-      }
-    },
+        },
     "/media": {
       "get": {
         "tags": [
@@ -607,7 +606,10 @@
                         "type": "string",
                         "enum": [
                           "scheduled",
-                          "draft"
+                          "draft",
+                          "draft_private",
+                          "draft_public",
+                          "recurring"
                         ],
                         "description": "Post state",
                         "example": "scheduled"
@@ -643,10 +645,9 @@
                                       "poll",
                                       "document",
                                       "event",
-                                      "offer",
-                                      "short"
+                                      "offer"
                                     ],
-                                    "description": "Content type: status (text only), photo, video, link, carousel, story, reel, or gif",
+                                    "description": "Content type",
                                     "example": "status"
                                   },
                                   "text": {
@@ -664,16 +665,15 @@
                                           "type": "string",
                                           "description": "Media asset ID from upload"
                                         },
-                                        "type": {
-                                          "type": "string",
-                                          "enum": [
-                                            "image",
-                                            "photo",
-                                            "video",
-                                            "gif"
-                                          ],
-                                          "description": "Media type"
-                                        },
+                                         "type": {
+                                           "type": "string",
+                                           "enum": [
+                                             "photo",
+                                             "video",
+                                             "document"
+                                           ],
+                                           "description": "Media type"
+                                         },
                                         "caption": {
                                           "type": "string",
                                           "description": "Media caption"
@@ -763,6 +763,93 @@
                               }
                             }
                           }
+                        },
+                        "auto": {
+                          "type": "boolean",
+                          "description": "Enable AI-powered auto-scheduling"
+                        },
+                        "range": {
+                          "type": "object",
+                          "description": "Date range for auto-scheduled posts",
+                          "properties": {
+                            "start_date": {
+                              "type": "string",
+                              "format": "date-time",
+                              "description": "Earliest date/time for posting"
+                            },
+                            "end_date": {
+                              "type": "string",
+                              "format": "date-time",
+                              "description": "Latest date/time for posting"
+                            }
+                          }
+                        },
+                        "recurring": {
+                          "type": "object",
+                          "description": "Recurring post configuration",
+                          "properties": {
+                            "start_date": {
+                              "type": "string",
+                              "format": "date-time",
+                              "description": "Start date for recurring posts"
+                            },
+                            "end_date": {
+                              "type": "string",
+                              "format": "date-time",
+                              "description": "End date for recurring posts"
+                            },
+                            "repeat": {
+                              "type": "string",
+                              "enum": ["daily", "weekly", "monthly", "yearly"],
+                              "description": "Recurrence pattern"
+                            },
+                            "days_of_week": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 6
+                              },
+                              "description": "Days of week (0=Monday, 6=Sunday)"
+                            },
+                            "repeat_rate": {
+                              "type": "integer",
+                              "description": "Rate of repetition"
+                            }
+                          }
+                        },
+                        "recycling": {
+                          "type": "object",
+                          "description": "Recycling configuration for reusing content",
+                          "properties": {
+                            "gap": {
+                              "type": "integer",
+                              "description": "Gap between recycles"
+                            },
+                            "gap_freq": {
+                              "type": "string",
+                              "enum": ["Day", "Week", "Month"],
+                              "description": "Frequency of the gap"
+                            },
+                            "start_date": {
+                              "type": "string",
+                              "format": "date",
+                              "description": "Start date for recycling"
+                            },
+                            "expire_count": {
+                              "type": "string",
+                              "description": "Number of times to recycle"
+                            },
+                            "expire_date": {
+                              "type": "string",
+                              "format": "date",
+                              "description": "Date when recycling expires"
+                            }
+                          }
+                        },
+                        "share_next": {
+                          "type": "boolean",
+                          "description": "Schedule in the next available slot"
                         }
                       }
                     }
@@ -824,11 +911,6 @@
                         "description": "Must be 'published' for immediate publishing",
                         "example": "published"
                       },
-                      "url": {
-                        "type": "string",
-                        "description": "Must be 'publish'",
-                        "example": "publish"
-                      },
                       "posts": {
                         "type": "array",
                         "description": "Posts to publish",
@@ -860,10 +942,9 @@
                                       "poll",
                                       "document",
                                       "event",
-                                      "offer",
-                                      "short"
+                                      "offer"
                                     ],
-                                    "description": "Content type: status (text only), photo, video, link, carousel, story, reel, or gif",
+                                    "description": "Content type",
                                     "example": "status"
                                   },
                                   "text": {
@@ -881,16 +962,15 @@
                                           "type": "string",
                                           "description": "Media asset ID from upload"
                                         },
-                                        "type": {
-                                          "type": "string",
-                                          "enum": [
-                                            "image",
-                                            "photo",
-                                            "video",
-                                            "gif"
-                                          ],
-                                          "description": "Media type"
-                                        },
+                                         "type": {
+                                           "type": "string",
+                                           "enum": [
+                                             "photo",
+                                             "video",
+                                             "document"
+                                           ],
+                                           "description": "Media type"
+                                         },
                                         "caption": {
                                           "type": "string",
                                           "description": "Media caption"
@@ -2142,4 +2222,6 @@
       }
     }
   }
+}
+}
 }
