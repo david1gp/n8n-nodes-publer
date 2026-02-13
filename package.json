@@ -26,8 +26,7 @@
     "test": "bun test",
     "release": "bash ./ops/release.sh",
     "validate": "bun run validate:all",
-    "validate:all": "bun run validate:publer && bun run validate:analytics && bun run validate:basic && bun run validate:competitors && bun run validate:locations && bun run validate:media && bun run validate:posts && bun run validate:posts-publish && bun run validate:posts-schedule",
-    "validate:publer": "bunx ibm-openapi-validator --ruleset spectral.yml ./nodes/Publer/openapi.json",
+    "validate:all": "bun run validate:analytics && bun run validate:basic && bun run validate:competitors && bun run validate:locations && bun run validate:media && bun run validate:posts && bun run validate:posts-publish && bun run validate:posts-schedule",
     "validate:analytics": "bunx ibm-openapi-validator --ruleset spectral.yml ./nodes/PublerAnalytics/openapi.json",
     "validate:basic": "bunx ibm-openapi-validator --ruleset spectral.yml ./nodes/PublerBasic/openapi.json",
     "validate:competitors": "bunx ibm-openapi-validator --ruleset spectral.yml ./nodes/PublerCompetitors/openapi.json",
@@ -49,7 +48,6 @@
       "dist/credentials/PublerApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Publer/Publer.node.js",
       "dist/nodes/PublerBasic/PublerBasic.node.js",
       "dist/nodes/PublerMedia/PublerMedia.node.js",
       "dist/nodes/PublerPostsSchedule/PublerPostsSchedule.node.js",
