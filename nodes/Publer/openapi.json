@@ -742,28 +742,21 @@
         }
       }
     },
-    "/api/v1/posts/684945796a88bf9baa9c182c": {
+    "/api/v1/posts/{post_id}": {
       "put": {
         "tags": [
           "POSTS"
         ],
         "summary": "Update post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "example": {
-                  "post": {
-                    "text": "Status Update UPDATED",
-                    "title": null
-                  }
-                }
-              }
-            }
-          }
-        },
         "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
           {
             "name": "Publer-Workspace-Id",
             "in": "header",
@@ -783,13 +776,21 @@
         }
       }
     },
-    "/api/v1/job_status/6849530cdd9d40170723cd66": {
+    "/api/v1/job_status/{job_id}": {
       "get": {
         "tags": [
           "JOB STATUS"
         ],
         "summary": "Job status",
         "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
           {
             "name": "Publer-Workspace-Id",
             "in": "header",
@@ -1162,7 +1163,7 @@
         }
       }
     },
-    "/api/v1/analytics/{account_id}best_times": {
+    "/api/v1/analytics/{account_id}/best_times": {
       "get": {
         "tags": [
           "ANALYTICS"
@@ -1280,13 +1281,21 @@
         }
       }
     },
-    "/api/v1/competitors/66e011b94e299eb49376c715/analytics": {
+    "/api/v1/competitors/{competitor_id}/analytics": {
       "get": {
         "tags": [
           "ANALYTICS"
         ],
         "summary": "Competitors analytics",
         "parameters": [
+          {
+            "name": "competitor_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
           {
             "name": "Publer-Workspace-Id",
             "in": "header",
