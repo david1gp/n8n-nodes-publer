@@ -23,6 +23,160 @@
         "in": "header",
         "description": "API key authentication. Format: \"Bearer-API YOUR_API_KEY\""
       }
+    },
+    "schemas": {
+      "ScheduledMediaAttachment": {
+        "type": "object",
+        "description": "Media attachment for a scheduled post",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Media asset ID from upload"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["photo", "video", "document"],
+            "description": "Media type"
+          },
+          "caption": {
+            "type": "string",
+            "description": "Media caption"
+          },
+          "alt_text": {
+            "type": "string",
+            "description": "Alt text for accessibility"
+          }
+        }
+      },
+      "ScheduledNetworkContent": {
+        "type": "object",
+        "description": "Per-network post configuration for scheduling",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "status",
+              "photo",
+              "video",
+              "link",
+              "carousel",
+              "story",
+              "reel",
+              "gif",
+              "poll",
+              "document",
+              "event",
+              "offer"
+            ],
+            "description": "Content type",
+            "example": "status"
+          },
+          "text": {
+            "type": "string",
+            "description": "Post text content",
+            "example": "Hello world!"
+          },
+          "media": {
+            "type": "array",
+            "description": "Media attachments (required for photo, video, carousel, story, reel, gif types)",
+            "items": {
+              "$ref": "#/components/schemas/ScheduledMediaAttachment"
+            }
+          },
+          "url": {
+            "type": "string",
+            "description": "URL for link posts (required when type=link)",
+            "example": "https://publer.com"
+          }
+        }
+      },
+      "ScheduledTargetAccount": {
+        "type": "object",
+        "description": "Target account for scheduled post",
+        "required": ["id"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Account ID",
+            "example": "647a0edddb2797b89044e2c1"
+          },
+          "scheduled_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 scheduled time",
+            "example": "2025-06-14T10:21:00+02:00"
+          }
+        }
+      },
+      "PostToSchedule": {
+        "type": "object",
+        "description": "Post data for scheduling",
+        "required": ["networks", "accounts"],
+        "properties": {
+          "networks": {
+            "type": "object",
+            "description": "Network-specific post content",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ScheduledNetworkContent"
+            }
+          },
+          "accounts": {
+            "type": "array",
+            "description": "Target social media accounts",
+            "items": {
+              "$ref": "#/components/schemas/ScheduledTargetAccount"
+            }
+          }
+        }
+      },
+      "BulkScheduleConfig": {
+        "type": "object",
+        "description": "Bulk scheduling configuration",
+        "required": ["state", "posts"],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": ["scheduled", "draft", "draft_private", "draft_public", "recurring"],
+            "description": "Post state",
+            "example": "scheduled"
+          },
+          "posts": {
+            "type": "array",
+            "description": "Posts to create",
+            "items": {
+              "$ref": "#/components/schemas/PostToSchedule"
+            }
+          }
+        }
+      },
+      "SchedulePostRequest": {
+        "type": "object",
+        "description": "Request body for scheduling posts",
+        "required": ["bulk"],
+        "properties": {
+          "bulk": {
+            "$ref": "#/components/schemas/BulkScheduleConfig"
+          }
+        }
+      },
+      "SchedulePostResponse": {
+        "type": "object",
+        "description": "Response after scheduling posts",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Whether the scheduling was successful"
+          },
+          "scheduled": {
+            "type": "array",
+            "description": "List of scheduled post IDs",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["scheduled"]
+      }
     }
   },
   "tags": [
@@ -36,121 +190,13 @@
         "tags": ["POSTS > SCHEDULING"],
         "summary": "Schedule post",
         "description": "Schedule a post. Supports text, photo, video, link, carousel, story, reel, and gif content types.",
+        "operationId": "schedule_post",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": ["bulk"],
-                "properties": {
-                  "bulk": {
-                    "type": "object",
-                    "required": ["state", "posts"],
-                    "properties": {
-                      "state": {
-                        "type": "string",
-                        "enum": ["scheduled", "draft", "draft_private", "draft_public", "recurring"],
-                        "description": "Post state",
-                        "example": "scheduled"
-                      },
-                      "posts": {
-                        "type": "array",
-                        "description": "Posts to create",
-                        "items": {
-                          "type": "object",
-                          "required": ["networks", "accounts"],
-                          "properties": {
-                            "networks": {
-                              "type": "object",
-                              "description": "Network-specific post content",
-                              "additionalProperties": {
-                                "type": "object",
-                                "description": "Per-network post configuration",
-                                "properties": {
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "status",
-                                      "photo",
-                                      "video",
-                                      "link",
-                                      "carousel",
-                                      "story",
-                                      "reel",
-                                      "gif",
-                                      "poll",
-                                      "document",
-                                      "event",
-                                      "offer"
-                                    ],
-                                    "description": "Content type",
-                                    "example": "status"
-                                  },
-                                  "text": {
-                                    "type": "string",
-                                    "description": "Post text content",
-                                    "example": "Hello world!"
-                                  },
-                                  "media": {
-                                    "type": "array",
-                                    "description": "Media attachments (required for photo, video, carousel, story, reel, gif types)",
-                                    "items": {
-                                      "type": "object",
-                                      "properties": {
-                                        "id": {
-                                          "type": "string",
-                                          "description": "Media asset ID from upload"
-                                        },
-                                        "type": {
-                                          "type": "string",
-                                          "enum": ["photo", "video", "document"],
-                                          "description": "Media type"
-                                        },
-                                        "caption": {
-                                          "type": "string",
-                                          "description": "Media caption"
-                                        },
-                                        "alt_text": {
-                                          "type": "string",
-                                          "description": "Alt text for accessibility"
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "url": {
-                                    "type": "string",
-                                    "description": "URL for link posts (required when type=link)",
-                                    "example": "https://publer.com"
-                                  }
-                                }
-                              }
-                            },
-                            "accounts": {
-                              "type": "array",
-                              "description": "Target social media accounts",
-                              "items": {
-                                "type": "object",
-                                "required": ["id"],
-                                "properties": {
-                                  "id": {
-                                    "type": "string",
-                                    "description": "Account ID",
-                                    "example": "647a0edddb2797b89044e2c1"
-                                  },
-                                  "scheduled_at": {
-                                    "type": "string",
-                                    "description": "ISO 8601 scheduled time",
-                                    "example": "2025-06-14T10:21+02:00"
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/SchedulePostRequest"
               }
             }
           }
@@ -163,14 +209,23 @@
               "type": "string"
             },
             "example": "{{workspace_id}}",
-            "required": true
+            "required": true,
+            "description": "Workspace ID to schedule posts in"
           }
         ],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchedulePostResponse"
+                },
+                "example": {
+                  "success": true,
+                  "scheduled": ["post123", "post456"]
+                }
+              }
             }
           }
         }

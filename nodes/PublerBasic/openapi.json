@@ -27,6 +27,8 @@
     "schemas": {
       "User": {
         "type": "object",
+        "description": "User information",
+        "required": ["id", "email"],
         "properties": {
           "id": {
             "type": "string",
@@ -53,36 +55,15 @@
       },
       "Workspace": {
         "type": "object",
+        "description": "Workspace information",
+        "required": ["id", "name", "members"],
         "properties": {
           "id": {
             "type": "string",
             "description": "Unique identifier for the workspace"
           },
           "owner": {
-            "type": "object",
-            "description": "Information about the workspace owner",
-            "properties": {
-              "id": {
-                "type": "string",
-                "description": "Unique identifier for the owner"
-              },
-              "email": {
-                "type": "string",
-                "description": "Email address of the owner"
-              },
-              "name": {
-                "type": "string",
-                "description": "Username of the owner"
-              },
-              "first_name": {
-                "type": "string",
-                "description": "First name of the owner"
-              },
-              "picture": {
-                "type": "string",
-                "description": "URL to the owner's profile picture"
-              }
-            }
+            "$ref": "#/components/schemas/WorkspaceOwner"
           },
           "name": {
             "type": "string",
@@ -90,7 +71,13 @@
           },
           "members": {
             "type": "array",
-            "description": "List of users with access to the workspace"
+            "description": "List of users with access to the workspace",
+            "minItems": 0,
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
           },
           "plan": {
             "type": "string",
@@ -104,10 +91,15 @@
       },
       "Account": {
         "type": "object",
+        "description": "Social media account information",
+        "required": ["id", "provider", "type"],
         "properties": {
           "id": {
             "type": "string",
-            "description": "Unique identifier for the account"
+            "description": "Unique identifier for the account",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[a-zA-Z0-9_-]+$"
           },
           "provider": {
             "type": "string",
@@ -131,20 +123,123 @@
           },
           "name": {
             "type": "string",
-            "description": "The display name of the social media account"
+            "description": "The display name of the social media account",
+            "minLength": 1,
+            "maxLength": 255
           },
           "social_id": {
             "type": "string",
-            "description": "Unique identifier for the account on the social media platform"
+            "description": "Unique identifier for the account on the social media platform",
+            "minLength": 1,
+            "maxLength": 255
           },
           "picture": {
             "type": "string",
-            "description": "URL to the account's avatar/logo"
+            "description": "URL to the account's avatar/logo",
+            "minLength": 1,
+            "maxLength": 2048,
+            "format": "url"
           },
           "type": {
             "type": "string",
             "description": "Account type",
             "enum": ["page", "profile", "group", "business", "channel", "location", "blog"]
+          }
+        }
+      },
+      "AccountsResponse": {
+        "type": "object",
+        "description": "Wrapper object for accounts list response",
+        "required": ["accounts"],
+        "properties": {
+          "accounts": {
+            "type": "array",
+            "description": "List of social media accounts",
+            "minItems": 0,
+            "maxItems": 1000,
+            "items": {
+              "$ref": "#/components/schemas/Account"
+            }
+          }
+        }
+      },
+      "WorkspacesResponse": {
+        "type": "object",
+        "description": "Wrapper object for workspaces list response",
+        "required": ["workspaces"],
+        "properties": {
+          "workspaces": {
+            "type": "array",
+            "description": "List of workspaces",
+            "minItems": 0,
+            "maxItems": 1000,
+            "items": {
+              "$ref": "#/components/schemas/Workspace"
+            }
+          }
+        }
+      },
+      "SignaturesResponse": {
+        "type": "object",
+        "description": "Response object for signatures endpoint",
+        "required": ["signatures"],
+        "properties": {
+          "signatures": {
+            "type": "array",
+            "description": "List of signatures",
+            "minItems": 0,
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        }
+      },
+      "MediaOptionsResponse": {
+        "type": "object",
+        "description": "Response object for media options endpoint",
+        "properties": {
+          "media_options": {
+            "type": "object",
+            "description": "Media options configuration",
+            "additionalProperties": true
+          }
+        }
+      },
+      "JobStatusResponse": {
+        "type": "object",
+        "description": "Response object for job status endpoint",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Current status of the job"
+          }
+        }
+      },
+      "WorkspaceOwner": {
+        "type": "object",
+        "description": "Information about the workspace owner",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the owner"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address of the owner"
+          },
+          "name": {
+            "type": "string",
+            "description": "Username of the owner"
+          },
+          "first_name": {
+            "type": "string",
+            "description": "First name of the owner"
+          },
+          "picture": {
+            "type": "string",
+            "description": "URL to the owner's profile picture"
           }
         }
       }
@@ -169,11 +264,24 @@
       "get": {
         "tags": ["USERS"],
         "summary": "Me",
+        "description": "Retrieve the current authenticated user's information",
+        "operationId": "get_current_user",
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "example": {
+                  "id": "12345",
+                  "email": "user@example.com",
+                  "name": "John Doe",
+                  "first_name": "John",
+                  "picture": "https://example.com/picture.jpg"
+                }
+              }
             }
           }
         }
@@ -183,11 +291,26 @@
       "get": {
         "tags": ["WORKSPACES"],
         "summary": "Fetch workspaces",
+        "description": "Retrieve all workspaces accessible to the current user",
+        "operationId": "list_workspaces",
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspacesResponse"
+                },
+                "example": {
+                  "workspaces": [
+                    {
+                      "id": "ws_123",
+                      "name": "My Workspace",
+                      "members": []
+                    }
+                  ]
+                }
+              }
             }
           }
         }
@@ -197,29 +320,44 @@
       "get": {
         "tags": ["WORKSPACES"],
         "summary": "Fetch signatures",
+        "description": "Retrieve signatures for the specified workspace and accounts",
+        "operationId": "get_signatures",
         "parameters": [
-          {
-            "name": "accounts[]",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "647a0edddb2797b89044e2c1"
-          },
           {
             "name": "workspace_id",
             "in": "path",
+            "description": "The unique identifier of the workspace",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
             },
             "required": true
+          },
+          {
+            "name": "accounts",
+            "in": "query",
+            "description": "Array of account IDs to fetch signatures for",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "example": "647a0edddb2797b89044e2c1"
           }
         ],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignaturesResponse"
+                },
+                "example": {
+                  "signatures": []
+                }
+              }
             }
           }
         }
@@ -229,22 +367,30 @@
       "get": {
         "tags": ["WORKSPACES"],
         "summary": "Fetch media options",
+        "description": "Retrieve media options for the specified workspace and accounts",
+        "operationId": "get_media_options",
         "parameters": [
-          {
-            "name": "accounts[]",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "661ce240db2797a7148a6b49",
-            "required": true
-          },
           {
             "name": "workspace_id",
             "in": "path",
+            "description": "The unique identifier of the workspace",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
             },
+            "required": true
+          },
+          {
+            "name": "accounts",
+            "in": "query",
+            "description": "Array of account IDs to fetch media options for",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "example": "661ce240db2797a7148a6b49",
             "required": true
           }
         ],
@@ -252,7 +398,14 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaOptionsResponse"
+                },
+                "example": {
+                  "media_options": {}
+                }
+              }
             }
           }
         }
@@ -262,12 +415,17 @@
       "get": {
         "tags": ["ACCOUNTS"],
         "summary": "List Accounts",
+        "description": "Retrieve all social media accounts for the specified workspace",
+        "operationId": "list_accounts",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
             "in": "header",
+            "description": "The unique identifier of the workspace",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
             },
             "example": "{{workspace_id}}",
             "required": true
@@ -279,10 +437,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Account"
-                  }
+                  "$ref": "#/components/schemas/AccountsResponse"
+                },
+                "example": {
+                  "accounts": [
+                    {
+                      "id": "acc_123",
+                      "provider": "facebook",
+                      "type": "page",
+                      "name": "My Page"
+                    }
+                  ]
                 }
               }
             }
@@ -294,20 +459,28 @@
       "get": {
         "tags": ["JOB STATUS"],
         "summary": "Job status",
+        "description": "Check the status of an asynchronous job",
+        "operationId": "get_job_status",
         "parameters": [
           {
             "name": "job_id",
             "in": "path",
+            "description": "The unique identifier of the job",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
             },
             "required": true
           },
           {
             "name": "Publer-Workspace-Id",
             "in": "header",
+            "description": "The unique identifier of the workspace",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
             },
             "example": "{{workspace_id}}",
             "required": true
@@ -317,7 +490,14 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobStatusResponse"
+                },
+                "example": {
+                  "status": "completed"
+                }
+              }
             }
           }
         }

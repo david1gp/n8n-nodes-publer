@@ -23,6 +23,23 @@
         "in": "header",
         "description": "API key authentication. Format: \"Bearer-API YOUR_API_KEY\""
       }
+    },
+    "schemas": {
+      "LocationsResponse": {
+        "type": "object",
+        "description": "Response containing location search results",
+        "properties": {
+          "data": {
+            "type": "array",
+            "description": "List of locations matching the search query",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "required": ["data"]
+      }
     }
   },
   "tags": [
@@ -35,6 +52,8 @@
       "get": {
         "tags": ["LOCATIONS"],
         "summary": "Instagram locations",
+        "description": "Search for Instagram locations by query string",
+        "operationId": "search_instagram_locations",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -43,7 +62,8 @@
               "type": "string"
             },
             "example": "{{workspace_id}}",
-            "required": true
+            "required": true,
+            "description": "Workspace ID to search locations for"
           },
           {
             "name": "q",
@@ -51,14 +71,29 @@
             "schema": {
               "type": "string"
             },
-            "example": "Tirana"
+            "example": "Tirana",
+            "description": "Search query for location name"
           }
         ],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationsResponse"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "12345",
+                      "name": "Tirana, Albania",
+                      "lat": 41.3275,
+                      "lng": 19.8187
+                    }
+                  ]
+                }
+              }
             }
           }
         }
@@ -68,6 +103,8 @@
       "get": {
         "tags": ["LOCATIONS"],
         "summary": "Facebook locations",
+        "description": "Search for Facebook locations by query string",
+        "operationId": "search_facebook_locations",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -76,7 +113,8 @@
               "type": "string"
             },
             "example": "{{workspace_id}}",
-            "required": true
+            "required": true,
+            "description": "Workspace ID to search locations for"
           },
           {
             "name": "q",
@@ -84,14 +122,29 @@
             "schema": {
               "type": "string"
             },
-            "example": "Tirana"
+            "example": "Tirana",
+            "description": "Search query for location name"
           }
         ],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationsResponse"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "67890",
+                      "name": "Tirana",
+                      "city": "Tirana",
+                      "country": "Albania"
+                    }
+                  ]
+                }
+              }
             }
           }
         }
@@ -101,6 +154,8 @@
       "get": {
         "tags": ["LOCATIONS"],
         "summary": "Threads locations",
+        "description": "Search for Threads locations by query string",
+        "operationId": "search_threads_locations",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -109,7 +164,8 @@
               "type": "string"
             },
             "example": "{{workspace_id}}",
-            "required": true
+            "required": true,
+            "description": "Workspace ID to search locations for"
           },
           {
             "name": "q",
@@ -117,14 +173,29 @@
             "schema": {
               "type": "string"
             },
-            "example": "Tirana"
+            "example": "Tirana",
+            "description": "Search query for location name"
           }
         ],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationsResponse"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "11223",
+                      "name": "Tirana",
+                      "lat": 41.3275,
+                      "lng": 19.8187
+                    }
+                  ]
+                }
+              }
             }
           }
         }

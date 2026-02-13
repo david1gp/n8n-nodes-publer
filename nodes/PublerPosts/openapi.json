@@ -23,6 +23,208 @@
         "in": "header",
         "description": "API key authentication. Format: \"Bearer-API YOUR_API_KEY\""
       }
+    },
+    "schemas": {
+      "LinkMetadataRequest": {
+        "type": "object",
+        "description": "Request body for extracting link metadata",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL to extract metadata from"
+          }
+        }
+      },
+      "LinkMetadataResponse": {
+        "type": "object",
+        "description": "Response containing extracted link metadata",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Page title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Page description"
+          },
+          "image": {
+            "type": "string",
+            "description": "Preview image URL"
+          }
+        }
+      },
+      "MediaItem": {
+        "type": "object",
+        "description": "Media item for a post",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Media ID"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["image", "photo", "video", "gif"],
+            "description": "Media type"
+          },
+          "caption": {
+            "type": "string",
+            "description": "Media caption"
+          },
+          "alt_text": {
+            "type": "string",
+            "description": "Alternative text for accessibility"
+          }
+        }
+      },
+      "NetworkContent": {
+        "type": "object",
+        "description": "Network-specific post content",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "status",
+              "photo",
+              "video",
+              "link",
+              "carousel",
+              "story",
+              "reel",
+              "gif",
+              "poll",
+              "document",
+              "event",
+              "offer",
+              "short"
+            ],
+            "description": "Post type for this network"
+          },
+          "text": {
+            "type": "string",
+            "description": "Post text content"
+          },
+          "media": {
+            "type": "array",
+            "description": "Media attachments",
+            "items": {
+              "$ref": "#/components/schemas/MediaItem"
+            }
+          },
+          "url": {
+            "type": "string",
+            "description": "Link URL"
+          }
+        }
+      },
+      "PostAccount": {
+        "type": "object",
+        "description": "Account assignment for a post",
+        "required": ["id"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Account ID"
+          },
+          "scheduled_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Scheduled publish time"
+          }
+        }
+      },
+      "PostUpdate": {
+        "type": "object",
+        "description": "Post update data",
+        "properties": {
+          "networks": {
+            "type": "object",
+            "description": "Network-specific post content",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/NetworkContent"
+            }
+          },
+          "accounts": {
+            "type": "array",
+            "description": "Accounts to publish to",
+            "items": {
+              "$ref": "#/components/schemas/PostAccount"
+            }
+          }
+        }
+      },
+      "PostUpdateRequest": {
+        "type": "object",
+        "description": "Request body for updating posts",
+        "properties": {
+          "bulk": {
+            "type": "object",
+            "description": "Bulk update configuration",
+            "properties": {
+              "state": {
+                "type": "string",
+                "enum": ["scheduled", "draft"],
+                "description": "Post state"
+              },
+              "posts": {
+                "type": "array",
+                "description": "Posts to update",
+                "items": {
+                  "$ref": "#/components/schemas/PostUpdate"
+                }
+              }
+            }
+          }
+        }
+      },
+      "PostUpdateResponse": {
+        "type": "object",
+        "description": "Response after updating posts",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Whether the update was successful"
+          },
+          "updated": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "Number of posts updated"
+          }
+        }
+      },
+      "PostListResponse": {
+        "type": "object",
+        "description": "Response containing list of posts",
+        "properties": {
+          "data": {
+            "type": "array",
+            "description": "List of posts",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "required": ["data"]
+      },
+      "PostsDeleteResponse": {
+        "type": "object",
+        "description": "Response after deleting posts",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Whether the deletion was successful"
+          },
+          "deleted": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "Number of posts deleted"
+          }
+        }
+      }
     }
   },
   "tags": [
@@ -35,6 +237,8 @@
       "get": {
         "tags": ["POSTS"],
         "summary": "List Posts",
+        "description": "Retrieve a list of posts with optional filtering",
+        "operationId": "list_posts",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -43,7 +247,8 @@
               "type": "string"
             },
             "example": "{{workspace_id}}",
-            "required": true
+            "required": true,
+            "description": "Workspace ID to list posts from"
           },
           {
             "name": "state",
@@ -80,7 +285,8 @@
                 "recurring"
               ]
             },
-            "example": "scheduled"
+            "example": "scheduled",
+            "description": "Filter posts by state"
           },
           {
             "name": "from",
@@ -89,7 +295,8 @@
               "type": "string",
               "format": "date"
             },
-            "example": "2025-01-01"
+            "example": "2025-01-01",
+            "description": "Start date for filtering (YYYY-MM-DD)"
           },
           {
             "name": "to",
@@ -98,15 +305,20 @@
               "type": "string",
               "format": "date"
             },
-            "example": "2025-12-31"
+            "example": "2025-12-31",
+            "description": "End date for filtering (YYYY-MM-DD)"
           },
           {
             "name": "page",
             "in": "query",
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "maximum": 10000
             },
-            "example": 0
+            "example": 0,
+            "description": "Page number for pagination"
           },
           {
             "name": "account_ids",
@@ -119,17 +331,19 @@
             },
             "style": "form",
             "explode": true,
-            "example": ["63c675b54e299e9cf2b667ea"]
+            "example": ["63c675b54e299e9cf2b667ea"],
+            "description": "Filter by account IDs"
           },
           {
             "name": "query",
             "in": "query",
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "Search query for posts"
           },
           {
-            "name": "postType",
+            "name": "post_type",
             "in": "query",
             "schema": {
               "type": "string",
@@ -149,21 +363,36 @@
                 "event",
                 "offer"
               ]
-            }
+            },
+            "description": "Filter by post type"
           },
           {
             "name": "member_id",
             "in": "query",
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "Filter by member ID who created the post"
           }
         ],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostListResponse"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "post123",
+                      "state": "scheduled",
+                      "content": "Post content"
+                    }
+                  ]
+                }
+              }
             }
           }
         }
@@ -171,6 +400,8 @@
       "delete": {
         "tags": ["POSTS"],
         "summary": "Delete posts",
+        "description": "Delete multiple posts by their IDs",
+        "operationId": "delete_posts",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -179,10 +410,11 @@
               "type": "string"
             },
             "example": "{{workspace_id}}",
-            "required": true
+            "required": true,
+            "description": "Workspace ID to delete posts from"
           },
           {
-            "name": "post_ids[]",
+            "name": "post_ids",
             "in": "query",
             "schema": {
               "type": "array",
@@ -190,14 +422,23 @@
                 "type": "string"
               }
             },
-            "example": ["684945796a88bf9baa9c182c"]
+            "example": ["684945796a88bf9baa9c182c"],
+            "description": "Array of post IDs to delete"
           }
         ],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostsDeleteResponse"
+                },
+                "example": {
+                  "success": true,
+                  "deleted": 1
+                }
+              }
             }
           }
         }
@@ -207,14 +448,13 @@
       "post": {
         "tags": ["POSTS"],
         "summary": "Extract link metadata",
+        "description": "Extract metadata from a URL for link previews",
+        "operationId": "extract_link_metadata",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "example": {
-                  "url": "publer.com"
-                }
+                "$ref": "#/components/schemas/LinkMetadataRequest"
               }
             }
           }
@@ -223,7 +463,16 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkMetadataResponse"
+                },
+                "example": {
+                  "title": "Example Page",
+                  "description": "This is an example page",
+                  "image": "https://example.com/image.jpg"
+                }
+              }
             }
           }
         }
@@ -233,106 +482,8 @@
       "put": {
         "tags": ["POSTS"],
         "summary": "Update post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "bulk": {
-                    "type": "object",
-                    "properties": {
-                      "state": {
-                        "type": "string",
-                        "enum": ["scheduled", "draft"],
-                        "description": "Post state"
-                      },
-                      "posts": {
-                        "type": "array",
-                        "description": "Posts to update",
-                        "items": {
-                          "type": "object",
-                          "required": ["networks", "accounts"],
-                          "properties": {
-                            "networks": {
-                              "type": "object",
-                              "description": "Network-specific post content",
-                              "additionalProperties": {
-                                "type": "object",
-                                "properties": {
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "status",
-                                      "photo",
-                                      "video",
-                                      "link",
-                                      "carousel",
-                                      "story",
-                                      "reel",
-                                      "gif",
-                                      "poll",
-                                      "document",
-                                      "event",
-                                      "offer",
-                                      "short"
-                                    ]
-                                  },
-                                  "text": {
-                                    "type": "string"
-                                  },
-                                  "media": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object",
-                                      "properties": {
-                                        "id": {
-                                          "type": "string"
-                                        },
-                                        "type": {
-                                          "type": "string",
-                                          "enum": ["image", "photo", "video", "gif"]
-                                        },
-                                        "caption": {
-                                          "type": "string"
-                                        },
-                                        "alt_text": {
-                                          "type": "string"
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "url": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
-                            "accounts": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": ["id"],
-                                "properties": {
-                                  "id": {
-                                    "type": "string"
-                                  },
-                                  "scheduled_at": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
+        "description": "Update an existing post with new content and settings",
+        "operationId": "update_post",
         "parameters": [
           {
             "name": "post_id",
@@ -340,7 +491,8 @@
             "schema": {
               "type": "string"
             },
-            "required": true
+            "required": true,
+            "description": "ID of the post to update"
           },
           {
             "name": "Publer-Workspace-Id",
@@ -349,14 +501,32 @@
               "type": "string"
             },
             "example": "{{workspace_id}}",
-            "required": true
+            "required": true,
+            "description": "Workspace ID containing the post"
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostUpdateRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostUpdateResponse"
+                },
+                "example": {
+                  "success": true,
+                  "updated": 1
+                }
+              }
             }
           }
         }

@@ -23,6 +23,154 @@
         "in": "header",
         "description": "API key authentication. Format: \"Bearer-API YOUR_API_KEY\""
       }
+    },
+    "schemas": {
+      "MediaAttachment": {
+        "type": "object",
+        "description": "Media attachment for a post",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Media asset ID from upload"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["photo", "video", "document"],
+            "description": "Media type"
+          },
+          "caption": {
+            "type": "string",
+            "description": "Media caption"
+          },
+          "alt_text": {
+            "type": "string",
+            "description": "Alt text for accessibility"
+          }
+        }
+      },
+      "NetworkPostContent": {
+        "type": "object",
+        "description": "Per-network post configuration",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "status",
+              "photo",
+              "video",
+              "link",
+              "carousel",
+              "story",
+              "reel",
+              "gif",
+              "poll",
+              "document",
+              "event",
+              "offer"
+            ],
+            "description": "Content type",
+            "example": "status"
+          },
+          "text": {
+            "type": "string",
+            "description": "Post text content",
+            "example": "Hello world!"
+          },
+          "media": {
+            "type": "array",
+            "description": "Media attachments (required for photo, video, carousel, story, reel, gif types)",
+            "items": {
+              "$ref": "#/components/schemas/MediaAttachment"
+            }
+          },
+          "url": {
+            "type": "string",
+            "description": "URL for link posts (required when type=link)",
+            "example": "https://publer.com"
+          }
+        }
+      },
+      "TargetAccount": {
+        "type": "object",
+        "description": "Target social media account",
+        "required": ["id"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Account ID",
+            "example": "647a0edddb2797b89044e2c1"
+          }
+        }
+      },
+      "PostToPublish": {
+        "type": "object",
+        "description": "Post data for publishing",
+        "required": ["networks", "accounts"],
+        "properties": {
+          "networks": {
+            "type": "object",
+            "description": "Network-specific post content",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/NetworkPostContent"
+            }
+          },
+          "accounts": {
+            "type": "array",
+            "description": "Target social media accounts",
+            "items": {
+              "$ref": "#/components/schemas/TargetAccount"
+            }
+          }
+        }
+      },
+      "BulkPublishConfig": {
+        "type": "object",
+        "description": "Bulk publishing configuration",
+        "required": ["state", "posts"],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": ["published"],
+            "description": "Must be 'published' for immediate publishing",
+            "example": "published"
+          },
+          "posts": {
+            "type": "array",
+            "description": "Posts to publish",
+            "items": {
+              "$ref": "#/components/schemas/PostToPublish"
+            }
+          }
+        }
+      },
+      "PublishPostRequest": {
+        "type": "object",
+        "description": "Request body for publishing posts immediately",
+        "required": ["bulk"],
+        "properties": {
+          "bulk": {
+            "$ref": "#/components/schemas/BulkPublishConfig"
+          }
+        }
+      },
+      "PublishPostResponse": {
+        "type": "object",
+        "description": "Response after publishing posts",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Whether the publish was successful"
+          },
+          "published": {
+            "type": "array",
+            "description": "List of published post IDs",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["published"]
+      }
     }
   },
   "tags": [
@@ -36,116 +184,13 @@
         "tags": ["POSTS > PUBLISHING"],
         "summary": "Publish immediately",
         "description": "Publish a post immediately. Supports text, photo, video, link, carousel, story, reel, and gif content types.",
+        "operationId": "publish_post_immediately",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": ["bulk"],
-                "properties": {
-                  "bulk": {
-                    "type": "object",
-                    "required": ["state", "posts"],
-                    "properties": {
-                      "state": {
-                        "type": "string",
-                        "enum": ["published"],
-                        "description": "Must be 'published' for immediate publishing",
-                        "example": "published"
-                      },
-                      "posts": {
-                        "type": "array",
-                        "description": "Posts to publish",
-                        "items": {
-                          "type": "object",
-                          "required": ["networks", "accounts"],
-                          "properties": {
-                            "networks": {
-                              "type": "object",
-                              "description": "Network-specific post content",
-                              "additionalProperties": {
-                                "type": "object",
-                                "description": "Per-network post configuration",
-                                "properties": {
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "status",
-                                      "photo",
-                                      "video",
-                                      "link",
-                                      "carousel",
-                                      "story",
-                                      "reel",
-                                      "gif",
-                                      "poll",
-                                      "document",
-                                      "event",
-                                      "offer"
-                                    ],
-                                    "description": "Content type",
-                                    "example": "status"
-                                  },
-                                  "text": {
-                                    "type": "string",
-                                    "description": "Post text content",
-                                    "example": "Hello world!"
-                                  },
-                                  "media": {
-                                    "type": "array",
-                                    "description": "Media attachments (required for photo, video, carousel, story, reel, gif types)",
-                                    "items": {
-                                      "type": "object",
-                                      "properties": {
-                                        "id": {
-                                          "type": "string",
-                                          "description": "Media asset ID from upload"
-                                        },
-                                        "type": {
-                                          "type": "string",
-                                          "enum": ["photo", "video", "document"],
-                                          "description": "Media type"
-                                        },
-                                        "caption": {
-                                          "type": "string",
-                                          "description": "Media caption"
-                                        },
-                                        "alt_text": {
-                                          "type": "string",
-                                          "description": "Alt text for accessibility"
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "url": {
-                                    "type": "string",
-                                    "description": "URL for link posts (required when type=link)",
-                                    "example": "https://publer.com"
-                                  }
-                                }
-                              }
-                            },
-                            "accounts": {
-                              "type": "array",
-                              "description": "Target social media accounts",
-                              "items": {
-                                "type": "object",
-                                "required": ["id"],
-                                "properties": {
-                                  "id": {
-                                    "type": "string",
-                                    "description": "Account ID",
-                                    "example": "647a0edddb2797b89044e2c1"
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/PublishPostRequest"
               }
             }
           }
@@ -158,14 +203,23 @@
               "type": "string"
             },
             "example": "{{workspace_id}}",
-            "required": true
+            "required": true,
+            "description": "Workspace ID to publish posts in"
           }
         ],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublishPostResponse"
+                },
+                "example": {
+                  "success": true,
+                  "published": ["post123", "post456"]
+                }
+              }
             }
           }
         }

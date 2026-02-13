@@ -144,15 +144,7 @@
           "type": {
             "type": "string",
             "description": "Account type",
-            "enum": [
-              "page",
-              "profile",
-              "group",
-              "business",
-              "channel",
-              "location",
-              "blog"
-            ]
+            "enum": ["page", "profile", "group", "business", "channel", "location", "blog"]
           }
         }
       }
@@ -202,9 +194,7 @@
   "paths": {
     "/users/me": {
       "get": {
-        "tags": [
-          "USERS"
-        ],
+        "tags": ["USERS"],
         "summary": "Me",
         "responses": {
           "200": {
@@ -218,9 +208,7 @@
     },
     "/workspaces": {
       "get": {
-        "tags": [
-          "WORKSPACES"
-        ],
+        "tags": ["WORKSPACES"],
         "summary": "Fetch workspaces",
         "responses": {
           "200": {
@@ -234,9 +222,7 @@
     },
     "/workspaces/{workspace_id}/signatures": {
       "get": {
-        "tags": [
-          "WORKSPACES"
-        ],
+        "tags": ["WORKSPACES"],
         "summary": "Fetch signatures",
         "parameters": [
           {
@@ -268,9 +254,7 @@
     },
     "/workspaces/{workspace_id}/media_options": {
       "get": {
-        "tags": [
-          "WORKSPACES"
-        ],
+        "tags": ["WORKSPACES"],
         "summary": "Fetch media options",
         "parameters": [
           {
@@ -303,9 +287,7 @@
     },
     "/accounts": {
       "get": {
-        "tags": [
-          "ACCOUNTS"
-        ],
+        "tags": ["ACCOUNTS"],
         "summary": "List Accounts",
         "parameters": [
           {
@@ -333,705 +315,635 @@
             }
           }
         },
-    "/media": {
-      "get": {
-        "tags": [
-          "MEDIA"
-        ],
-        "summary": "List media",
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          },
-          {
-            "name": "ids[]",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": [
-              "647a0edddb2797b89044e2c1"
-            ]
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            },
-            "example": 0
-          },
-          {
-            "name": "types[]",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "photo",
-                  "video",
-                  "gif"
-                ]
-              }
-            },
-            "example": [
-              "photo"
-            ]
-          },
-          {
-            "name": "used[]",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "boolean"
-              }
-            },
-            "example": [
-              false
-            ]
-          },
-          {
-            "name": "source[]",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "canva",
-                  "vista",
-                  "postnitro",
-                  "contentdrips",
-                  "openai",
-                  "favorites"
-                ]
-              }
-            }
-          },
-          {
-            "name": "search",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "MEDIA"
-        ],
-        "summary": "Upload file",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "direct_upload": {
-                    "type": "boolean",
-                    "example": false
-                  },
-                  "in_library": {
-                    "type": "boolean",
-                    "example": true
+        "/media": {
+          "get": {
+            "tags": ["MEDIA"],
+            "summary": "List media",
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              },
+              {
+                "name": "ids[]",
+                "in": "query",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
                   }
+                },
+                "example": ["647a0edddb2797b89044e2c1"]
+              },
+              {
+                "name": "page",
+                "in": "query",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 0
+              },
+              {
+                "name": "types[]",
+                "in": "query",
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": ["photo", "video", "gif"]
+                  }
+                },
+                "example": ["photo"]
+              },
+              {
+                "name": "used[]",
+                "in": "query",
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  }
+                },
+                "example": [false]
+              },
+              {
+                "name": "source[]",
+                "in": "query",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": ["canva", "vista", "postnitro", "contentdrips", "openai", "favorites"]
+                  }
+                }
+              },
+              {
+                "name": "search",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
                 }
               }
             }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/media/from-url": {
-      "post": {
-        "tags": [
-          "MEDIA"
-        ],
-        "summary": "Upload from url",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "media",
-                  "type"
-                ],
-                "properties": {
-                  "media": {
-                    "type": "array",
-                    "description": "List of media URLs and metadata",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "url",
-                        "name"
-                      ],
-                      "properties": {
-                        "url": {
-                          "type": "string",
-                          "description": "URL of the media file to download"
-                        },
-                        "name": {
-                          "type": "string",
-                          "description": "Custom name for the media file"
-                        },
-                        "caption": {
-                          "type": "string",
-                          "description": "Caption for the media"
-                        },
-                        "source": {
-                          "type": "string",
-                          "description": "Source attribution"
-                        }
+          },
+          "post": {
+            "tags": ["MEDIA"],
+            "summary": "Upload file",
+            "requestBody": {
+              "content": {
+                "multipart/form-data": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "file": {
+                        "type": "string",
+                        "format": "binary"
+                      },
+                      "direct_upload": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "in_library": {
+                        "type": "boolean",
+                        "example": true
                       }
                     }
-                  },
-                  "type": {
-                    "type": "string",
-                    "enum": [
-                      "single",
-                      "bulk"
-                    ],
-                    "description": "Upload type",
-                    "example": "single"
-                  },
-                  "direct_upload": {
-                    "type": "boolean",
-                    "description": "Whether to upload directly to S3 cloud, slower but returns id",
-                    "default": false,
-                    "example": false
-                  },
-                  "in_library": {
-                    "type": "boolean",
-                    "description": "Whether to save to media library",
-                    "default": false,
-                    "example": true
                   }
+                }
+              }
+            },
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
                 }
               }
             }
           }
         },
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/posts/schedule": {
-      "post": {
-        "tags": [
-          "POSTS > CONTENT TYPES"
-        ],
-        "summary": "Schedule post",
-        "description": "Schedule a post. Supports text, photo, video, link, carousel, story, reel, and gif content types.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "bulk"
-                ],
-                "properties": {
-                  "bulk": {
+        "/media/from-url": {
+          "post": {
+            "tags": ["MEDIA"],
+            "summary": "Upload from url",
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "type": "object",
-                    "required": [
-                      "state",
-                      "posts"
-                    ],
+                    "required": ["media", "type"],
                     "properties": {
-                      "state": {
-                        "type": "string",
-                        "enum": [
-                          "scheduled",
-                          "draft",
-                          "draft_private",
-                          "draft_public",
-                          "recurring"
-                        ],
-                        "description": "Post state",
-                        "example": "scheduled"
-                      },
-                      "posts": {
+                      "media": {
                         "type": "array",
-                        "description": "Posts to create",
+                        "description": "List of media URLs and metadata",
                         "items": {
                           "type": "object",
-                          "required": [
-                            "networks",
-                            "accounts"
-                          ],
+                          "required": ["url", "name"],
                           "properties": {
-                            "networks": {
+                            "url": {
+                              "type": "string",
+                              "description": "URL of the media file to download"
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "Custom name for the media file"
+                            },
+                            "caption": {
+                              "type": "string",
+                              "description": "Caption for the media"
+                            },
+                            "source": {
+                              "type": "string",
+                              "description": "Source attribution"
+                            }
+                          }
+                        }
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": ["single", "bulk"],
+                        "description": "Upload type",
+                        "example": "single"
+                      },
+                      "direct_upload": {
+                        "type": "boolean",
+                        "description": "Whether to upload directly to S3 cloud, slower but returns id",
+                        "default": false,
+                        "example": false
+                      },
+                      "in_library": {
+                        "type": "boolean",
+                        "description": "Whether to save to media library",
+                        "default": false,
+                        "example": true
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
+            }
+          }
+        },
+        "/posts/schedule": {
+          "post": {
+            "tags": ["POSTS > CONTENT TYPES"],
+            "summary": "Schedule post",
+            "description": "Schedule a post. Supports text, photo, video, link, carousel, story, reel, and gif content types.",
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "required": ["bulk"],
+                    "properties": {
+                      "bulk": {
+                        "type": "object",
+                        "required": ["state", "posts"],
+                        "properties": {
+                          "state": {
+                            "type": "string",
+                            "enum": ["scheduled", "draft", "draft_private", "draft_public", "recurring"],
+                            "description": "Post state",
+                            "example": "scheduled"
+                          },
+                          "posts": {
+                            "type": "array",
+                            "description": "Posts to create",
+                            "items": {
                               "type": "object",
-                              "description": "Network-specific post content",
-                              "additionalProperties": {
-                                "type": "object",
-                                "description": "Per-network post configuration",
-                                "properties": {
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "status",
-                                      "photo",
-                                      "video",
-                                      "link",
-                                      "carousel",
-                                      "story",
-                                      "reel",
-                                      "gif",
-                                      "poll",
-                                      "document",
-                                      "event",
-                                      "offer"
-                                    ],
-                                    "description": "Content type",
-                                    "example": "status"
-                                  },
-                                  "text": {
-                                    "type": "string",
-                                    "description": "Post text content",
-                                    "example": "Hello world!"
-                                  },
-                                  "media": {
-                                    "type": "array",
-                                    "description": "Media attachments (required for photo, video, carousel, story, reel, gif types)",
-                                    "items": {
-                                      "type": "object",
-                                      "properties": {
-                                        "id": {
-                                          "type": "string",
-                                          "description": "Media asset ID from upload"
-                                        },
-                                         "type": {
-                                           "type": "string",
-                                           "enum": [
-                                             "photo",
-                                             "video",
-                                             "document"
-                                           ],
-                                           "description": "Media type"
-                                         },
-                                        "caption": {
-                                          "type": "string",
-                                          "description": "Media caption"
-                                        },
-                                        "alt_text": {
-                                          "type": "string",
-                                          "description": "Alt text for accessibility"
-                                        },
-                                        "thumbnails": {
-                                          "type": "array",
-                                          "description": "Thumbnail objects for video posts (contains id, small, real)",
-                                          "items": {
-                                            "type": "object",
-                                            "properties": {
-                                              "id": {
-                                                "type": "string",
-                                                "description": "Thumbnail ID"
-                                              },
-                                              "small": {
-                                                "type": "string",
-                                                "description": "Small thumbnail URL"
-                                              },
-                                              "real": {
-                                                "type": "string",
-                                                "description": "Full size thumbnail URL"
+                              "required": ["networks", "accounts"],
+                              "properties": {
+                                "networks": {
+                                  "type": "object",
+                                  "description": "Network-specific post content",
+                                  "additionalProperties": {
+                                    "type": "object",
+                                    "description": "Per-network post configuration",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": [
+                                          "status",
+                                          "photo",
+                                          "video",
+                                          "link",
+                                          "carousel",
+                                          "story",
+                                          "reel",
+                                          "gif",
+                                          "poll",
+                                          "document",
+                                          "event",
+                                          "offer"
+                                        ],
+                                        "description": "Content type",
+                                        "example": "status"
+                                      },
+                                      "text": {
+                                        "type": "string",
+                                        "description": "Post text content",
+                                        "example": "Hello world!"
+                                      },
+                                      "media": {
+                                        "type": "array",
+                                        "description": "Media attachments (required for photo, video, carousel, story, reel, gif types)",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "id": {
+                                              "type": "string",
+                                              "description": "Media asset ID from upload"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": ["photo", "video", "document"],
+                                              "description": "Media type"
+                                            },
+                                            "caption": {
+                                              "type": "string",
+                                              "description": "Media caption"
+                                            },
+                                            "alt_text": {
+                                              "type": "string",
+                                              "description": "Alt text for accessibility"
+                                            },
+                                            "thumbnails": {
+                                              "type": "array",
+                                              "description": "Thumbnail objects for video posts (contains id, small, real)",
+                                              "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "id": {
+                                                    "type": "string",
+                                                    "description": "Thumbnail ID"
+                                                  },
+                                                  "small": {
+                                                    "type": "string",
+                                                    "description": "Small thumbnail URL"
+                                                  },
+                                                  "real": {
+                                                    "type": "string",
+                                                    "description": "Full size thumbnail URL"
+                                                  }
+                                                }
                                               }
+                                            },
+                                            "title": {
+                                              "type": "string",
+                                              "description": "Video title for video posts"
+                                            },
+                                            "default_thumbnail": {
+                                              "type": "integer",
+                                              "description": "0-based index to select default thumbnail"
                                             }
                                           }
-                                        },
-                                        "title": {
-                                          "type": "string",
-                                          "description": "Video title for video posts"
-                                        },
-                                        "default_thumbnail": {
-                                          "type": "integer",
-                                          "description": "0-based index to select default thumbnail"
                                         }
+                                      },
+                                      "url": {
+                                        "type": "string",
+                                        "description": "URL for link posts (required when type=link)",
+                                        "example": "https://publer.com"
                                       }
                                     }
-                                  },
-                                  "url": {
-                                    "type": "string",
-                                    "description": "URL for link posts (required when type=link)",
-                                    "example": "https://publer.com"
                                   }
-                                }
-                              }
-                            },
-                            "accounts": {
-                              "type": "array",
-                              "description": "Target social media accounts",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "id"
-                                ],
-                                "properties": {
-                                  "id": {
-                                    "type": "string",
-                                    "description": "Account ID",
-                                    "example": "647a0edddb2797b89044e2c1"
-                                  },
-                                  "scheduled_at": {
-                                    "type": "string",
-                                    "description": "ISO 8601 scheduled time",
-                                    "example": "2025-06-14T10:21+02:00"
-                                  },
-                                  "location": {
+                                },
+                                "accounts": {
+                                  "type": "array",
+                                  "description": "Target social media accounts",
+                                  "items": {
                                     "type": "object",
-                                    "description": "Location for Facebook/Instagram",
+                                    "required": ["id"],
                                     "properties": {
                                       "id": {
                                         "type": "string",
-                                        "description": "Location ID"
+                                        "description": "Account ID",
+                                        "example": "647a0edddb2797b89044e2c1"
                                       },
-                                      "name": {
+                                      "scheduled_at": {
                                         "type": "string",
-                                        "description": "Location name"
+                                        "description": "ISO 8601 scheduled time",
+                                        "example": "2025-06-14T10:21+02:00"
                                       },
-                                      "address": {
-                                        "type": "string",
-                                        "description": "Location address"
+                                      "location": {
+                                        "type": "object",
+                                        "description": "Location for Facebook/Instagram",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string",
+                                            "description": "Location ID"
+                                          },
+                                          "name": {
+                                            "type": "string",
+                                            "description": "Location name"
+                                          },
+                                          "address": {
+                                            "type": "string",
+                                            "description": "Location address"
+                                          }
+                                        }
                                       }
                                     }
                                   }
                                 }
                               }
+                            },
+                            "auto": {
+                              "type": "boolean",
+                              "description": "Enable AI-powered auto-scheduling"
+                            },
+                            "range": {
+                              "type": "object",
+                              "description": "Date range for auto-scheduled posts",
+                              "properties": {
+                                "start_date": {
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "description": "Earliest date/time for posting"
+                                },
+                                "end_date": {
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "description": "Latest date/time for posting"
+                                }
+                              }
+                            },
+                            "recurring": {
+                              "type": "object",
+                              "description": "Recurring post configuration",
+                              "properties": {
+                                "start_date": {
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "description": "Start date for recurring posts"
+                                },
+                                "end_date": {
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "description": "End date for recurring posts"
+                                },
+                                "repeat": {
+                                  "type": "string",
+                                  "enum": ["daily", "weekly", "monthly", "yearly"],
+                                  "description": "Recurrence pattern"
+                                },
+                                "days_of_week": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 6
+                                  },
+                                  "description": "Days of week (0=Monday, 6=Sunday)"
+                                },
+                                "repeat_rate": {
+                                  "type": "integer",
+                                  "description": "Rate of repetition"
+                                }
+                              }
+                            },
+                            "recycling": {
+                              "type": "object",
+                              "description": "Recycling configuration for reusing content",
+                              "properties": {
+                                "gap": {
+                                  "type": "integer",
+                                  "description": "Gap between recycles"
+                                },
+                                "gap_freq": {
+                                  "type": "string",
+                                  "enum": ["Day", "Week", "Month"],
+                                  "description": "Frequency of the gap"
+                                },
+                                "start_date": {
+                                  "type": "string",
+                                  "format": "date",
+                                  "description": "Start date for recycling"
+                                },
+                                "expire_count": {
+                                  "type": "string",
+                                  "description": "Number of times to recycle"
+                                },
+                                "expire_date": {
+                                  "type": "string",
+                                  "format": "date",
+                                  "description": "Date when recycling expires"
+                                }
+                              }
+                            },
+                            "share_next": {
+                              "type": "boolean",
+                              "description": "Schedule in the next available slot"
                             }
                           }
-                        },
-                        "auto": {
-                          "type": "boolean",
-                          "description": "Enable AI-powered auto-scheduling"
-                        },
-                        "range": {
-                          "type": "object",
-                          "description": "Date range for auto-scheduled posts",
-                          "properties": {
-                            "start_date": {
-                              "type": "string",
-                              "format": "date-time",
-                              "description": "Earliest date/time for posting"
-                            },
-                            "end_date": {
-                              "type": "string",
-                              "format": "date-time",
-                              "description": "Latest date/time for posting"
-                            }
-                          }
-                        },
-                        "recurring": {
-                          "type": "object",
-                          "description": "Recurring post configuration",
-                          "properties": {
-                            "start_date": {
-                              "type": "string",
-                              "format": "date-time",
-                              "description": "Start date for recurring posts"
-                            },
-                            "end_date": {
-                              "type": "string",
-                              "format": "date-time",
-                              "description": "End date for recurring posts"
-                            },
-                            "repeat": {
-                              "type": "string",
-                              "enum": ["daily", "weekly", "monthly", "yearly"],
-                              "description": "Recurrence pattern"
-                            },
-                            "days_of_week": {
-                              "type": "array",
-                              "items": {
-                                "type": "integer",
-                                "minimum": 0,
-                                "maximum": 6
-                              },
-                              "description": "Days of week (0=Monday, 6=Sunday)"
-                            },
-                            "repeat_rate": {
-                              "type": "integer",
-                              "description": "Rate of repetition"
-                            }
-                          }
-                        },
-                        "recycling": {
-                          "type": "object",
-                          "description": "Recycling configuration for reusing content",
-                          "properties": {
-                            "gap": {
-                              "type": "integer",
-                              "description": "Gap between recycles"
-                            },
-                            "gap_freq": {
-                              "type": "string",
-                              "enum": ["Day", "Week", "Month"],
-                              "description": "Frequency of the gap"
-                            },
-                            "start_date": {
-                              "type": "string",
-                              "format": "date",
-                              "description": "Start date for recycling"
-                            },
-                            "expire_count": {
-                              "type": "string",
-                              "description": "Number of times to recycle"
-                            },
-                            "expire_date": {
-                              "type": "string",
-                              "format": "date",
-                              "description": "Date when recycling expires"
-                            }
-                          }
-                        },
-                        "share_next": {
-                          "type": "boolean",
-                          "description": "Schedule in the next available slot"
                         }
                       }
                     }
                   }
                 }
               }
+            },
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
             }
           }
         },
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/posts/schedule/publish": {
-      "post": {
-        "tags": [
-          "POSTS > PUBLISHING METHODS"
-        ],
-        "summary": "Publish immediately",
-        "description": "Publish a post immediately. Supports text, photo, video, link, carousel, story, reel, and gif content types.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "bulk"
-                ],
-                "properties": {
-                  "bulk": {
+        "/posts/schedule/publish": {
+          "post": {
+            "tags": ["POSTS > PUBLISHING METHODS"],
+            "summary": "Publish immediately",
+            "description": "Publish a post immediately. Supports text, photo, video, link, carousel, story, reel, and gif content types.",
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "type": "object",
-                    "required": [
-                      "state",
-                      "posts"
-                    ],
+                    "required": ["bulk"],
                     "properties": {
-                      "state": {
-                        "type": "string",
-                        "enum": [
-                          "published"
-                        ],
-                        "description": "Must be 'published' for immediate publishing",
-                        "example": "published"
-                      },
-                      "posts": {
-                        "type": "array",
-                        "description": "Posts to publish",
-                        "items": {
-                          "type": "object",
-                          "required": [
-                            "networks",
-                            "accounts"
-                          ],
-                          "properties": {
-                            "networks": {
+                      "bulk": {
+                        "type": "object",
+                        "required": ["state", "posts"],
+                        "properties": {
+                          "state": {
+                            "type": "string",
+                            "enum": ["published"],
+                            "description": "Must be 'published' for immediate publishing",
+                            "example": "published"
+                          },
+                          "posts": {
+                            "type": "array",
+                            "description": "Posts to publish",
+                            "items": {
                               "type": "object",
-                              "description": "Network-specific post content",
-                              "additionalProperties": {
-                                "type": "object",
-                                "description": "Per-network post configuration",
-                                "properties": {
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "status",
-                                      "photo",
-                                      "video",
-                                      "link",
-                                      "carousel",
-                                      "story",
-                                      "reel",
-                                      "gif",
-                                      "poll",
-                                      "document",
-                                      "event",
-                                      "offer"
-                                    ],
-                                    "description": "Content type",
-                                    "example": "status"
-                                  },
-                                  "text": {
-                                    "type": "string",
-                                    "description": "Post text content",
-                                    "example": "Hello world!"
-                                  },
-                                  "media": {
-                                    "type": "array",
-                                    "description": "Media attachments (required for photo, video, carousel, story, reel, gif types)",
-                                    "items": {
-                                      "type": "object",
-                                      "properties": {
-                                        "id": {
-                                          "type": "string",
-                                          "description": "Media asset ID from upload"
-                                        },
-                                         "type": {
-                                           "type": "string",
-                                           "enum": [
-                                             "photo",
-                                             "video",
-                                             "document"
-                                           ],
-                                           "description": "Media type"
-                                         },
-                                        "caption": {
-                                          "type": "string",
-                                          "description": "Media caption"
-                                        },
-                                        "alt_text": {
-                                          "type": "string",
-                                          "description": "Alt text for accessibility"
-                                        },
-                                        "thumbnails": {
-                                          "type": "array",
-                                          "description": "Thumbnail objects for video posts (contains id, small, real)",
-                                          "items": {
-                                            "type": "object",
-                                            "properties": {
-                                              "id": {
-                                                "type": "string",
-                                                "description": "Thumbnail ID"
-                                              },
-                                              "small": {
-                                                "type": "string",
-                                                "description": "Small thumbnail URL"
-                                              },
-                                              "real": {
-                                                "type": "string",
-                                                "description": "Full size thumbnail URL"
+                              "required": ["networks", "accounts"],
+                              "properties": {
+                                "networks": {
+                                  "type": "object",
+                                  "description": "Network-specific post content",
+                                  "additionalProperties": {
+                                    "type": "object",
+                                    "description": "Per-network post configuration",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": [
+                                          "status",
+                                          "photo",
+                                          "video",
+                                          "link",
+                                          "carousel",
+                                          "story",
+                                          "reel",
+                                          "gif",
+                                          "poll",
+                                          "document",
+                                          "event",
+                                          "offer"
+                                        ],
+                                        "description": "Content type",
+                                        "example": "status"
+                                      },
+                                      "text": {
+                                        "type": "string",
+                                        "description": "Post text content",
+                                        "example": "Hello world!"
+                                      },
+                                      "media": {
+                                        "type": "array",
+                                        "description": "Media attachments (required for photo, video, carousel, story, reel, gif types)",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "id": {
+                                              "type": "string",
+                                              "description": "Media asset ID from upload"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": ["photo", "video", "document"],
+                                              "description": "Media type"
+                                            },
+                                            "caption": {
+                                              "type": "string",
+                                              "description": "Media caption"
+                                            },
+                                            "alt_text": {
+                                              "type": "string",
+                                              "description": "Alt text for accessibility"
+                                            },
+                                            "thumbnails": {
+                                              "type": "array",
+                                              "description": "Thumbnail objects for video posts (contains id, small, real)",
+                                              "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "id": {
+                                                    "type": "string",
+                                                    "description": "Thumbnail ID"
+                                                  },
+                                                  "small": {
+                                                    "type": "string",
+                                                    "description": "Small thumbnail URL"
+                                                  },
+                                                  "real": {
+                                                    "type": "string",
+                                                    "description": "Full size thumbnail URL"
+                                                  }
+                                                }
                                               }
+                                            },
+                                            "title": {
+                                              "type": "string",
+                                              "description": "Video title for video posts"
+                                            },
+                                            "default_thumbnail": {
+                                              "type": "integer",
+                                              "description": "0-based index to select default thumbnail"
                                             }
                                           }
-                                        },
-                                        "title": {
-                                          "type": "string",
-                                          "description": "Video title for video posts"
-                                        },
-                                        "default_thumbnail": {
-                                          "type": "integer",
-                                          "description": "0-based index to select default thumbnail"
                                         }
+                                      },
+                                      "url": {
+                                        "type": "string",
+                                        "description": "URL for link posts (required when type=link)",
+                                        "example": "https://publer.com"
                                       }
                                     }
-                                  },
-                                  "url": {
-                                    "type": "string",
-                                    "description": "URL for link posts (required when type=link)",
-                                    "example": "https://publer.com"
                                   }
-                                }
-                              }
-                            },
-                            "accounts": {
-                              "type": "array",
-                              "description": "Target social media accounts",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "id"
-                                ],
-                                "properties": {
-                                  "id": {
-                                    "type": "string",
-                                    "description": "Account ID",
-                                    "example": "647a0edddb2797b89044e2c1"
+                                },
+                                "accounts": {
+                                  "type": "array",
+                                  "description": "Target social media accounts",
+                                  "items": {
+                                    "type": "object",
+                                    "required": ["id"],
+                                    "properties": {
+                                      "id": {
+                                        "type": "string",
+                                        "description": "Account ID",
+                                        "example": "647a0edddb2797b89044e2c1"
+                                      }
+                                    }
                                   }
                                 }
                               }
@@ -1043,384 +955,359 @@
                   }
                 }
               }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
             },
-            "example": "{{workspace_id}}",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/posts": {
-      "get": {
-        "tags": [
-          "POSTS"
-        ],
-        "summary": "List Posts",
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          },
-          {
-            "name": "state",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "all",
-                "scheduled",
-                "scheduled_approved",
-                "scheduled_pending",
-                "scheduled_declined",
-                "scheduled_reauth",
-                "scheduled_locked",
-                "published",
-                "published_posted",
-                "published_deleted",
-                "published_hidden",
-                "draft",
-                "draft_dated",
-                "draft_undated",
-                "draft_private",
-                "draft_public",
-                "failed",
-                "recycling",
-                "recycling_active",
-                "recycling_paused",
-                "recycling_expired",
-                "recycling_failed",
-                "recycling_pending",
-                "recycling_declined",
-                "recycling_reauth",
-                "recycling_locked",
-                "recurring"
-              ]
-            },
-            "example": "scheduled"
-          },
-          {
-            "name": "state",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "all",
-                  "scheduled",
-                  "scheduled_approved",
-                  "scheduled_pending",
-                  "scheduled_declined",
-                  "scheduled_reauth",
-                  "scheduled_locked",
-                  "published",
-                  "published_posted",
-                  "published_deleted",
-                  "published_hidden",
-                  "draft",
-                  "draft_dated",
-                  "draft_undated",
-                  "draft_private",
-                  "draft_public",
-                  "failed",
-                  "recycling",
-                  "recycling_active",
-                  "recycling_paused",
-                  "recycling_expired",
-                  "recycling_failed",
-                  "recycling_pending",
-                  "recycling_declined",
-                  "recycling_reauth",
-                  "recycling_locked",
-                  "recurring"
-                ]
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
               }
-            },
-            "style": "form",
-            "explode": true
-          },
-          {
-            "name": "from",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            },
-            "example": "2025-01-01"
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            },
-            "example": "2025-12-31"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            },
-            "example": 0
-          },
-          {
-            "name": "account_ids",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "style": "form",
-            "explode": true,
-            "example": [
-              "63c675b54e299e9cf2b667ea"
-            ]
-          },
-          {
-            "name": "query",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "postType",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "status",
-                "link",
-                "photo",
-                "gif",
-                "video",
-                "reel",
-                "story",
-                "short",
-                "poll",
-                "document",
-                "carousel",
-                "article",
-                "event",
-                "offer"
-              ]
-            }
-          },
-          {
-            "name": "member_id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "POSTS"
-        ],
-        "summary": "Delete posts",
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          },
-          {
-            "name": "post_ids[]",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": [
-              "684945796a88bf9baa9c182c"
-            ]
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/posts/links": {
-      "post": {
-        "tags": [
-          "POSTS"
-        ],
-        "summary": "Extract link metadata",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "example": {
-                  "url": "publer.com"
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
                 }
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
+        "/posts": {
+          "get": {
+            "tags": ["POSTS"],
+            "summary": "List Posts",
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              },
+              {
+                "name": "state",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "all",
+                    "scheduled",
+                    "scheduled_approved",
+                    "scheduled_pending",
+                    "scheduled_declined",
+                    "scheduled_reauth",
+                    "scheduled_locked",
+                    "published",
+                    "published_posted",
+                    "published_deleted",
+                    "published_hidden",
+                    "draft",
+                    "draft_dated",
+                    "draft_undated",
+                    "draft_private",
+                    "draft_public",
+                    "failed",
+                    "recycling",
+                    "recycling_active",
+                    "recycling_paused",
+                    "recycling_expired",
+                    "recycling_failed",
+                    "recycling_pending",
+                    "recycling_declined",
+                    "recycling_reauth",
+                    "recycling_locked",
+                    "recurring"
+                  ]
+                },
+                "example": "scheduled"
+              },
+              {
+                "name": "state",
+                "in": "query",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "all",
+                      "scheduled",
+                      "scheduled_approved",
+                      "scheduled_pending",
+                      "scheduled_declined",
+                      "scheduled_reauth",
+                      "scheduled_locked",
+                      "published",
+                      "published_posted",
+                      "published_deleted",
+                      "published_hidden",
+                      "draft",
+                      "draft_dated",
+                      "draft_undated",
+                      "draft_private",
+                      "draft_public",
+                      "failed",
+                      "recycling",
+                      "recycling_active",
+                      "recycling_paused",
+                      "recycling_expired",
+                      "recycling_failed",
+                      "recycling_pending",
+                      "recycling_declined",
+                      "recycling_reauth",
+                      "recycling_locked",
+                      "recurring"
+                    ]
+                  }
+                },
+                "style": "form",
+                "explode": true
+              },
+              {
+                "name": "from",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "example": "2025-01-01"
+              },
+              {
+                "name": "to",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "example": "2025-12-31"
+              },
+              {
+                "name": "page",
+                "in": "query",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 0
+              },
+              {
+                "name": "account_ids",
+                "in": "query",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "style": "form",
+                "explode": true,
+                "example": ["63c675b54e299e9cf2b667ea"]
+              },
+              {
+                "name": "query",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "postType",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "status",
+                    "link",
+                    "photo",
+                    "gif",
+                    "video",
+                    "reel",
+                    "story",
+                    "short",
+                    "poll",
+                    "document",
+                    "carousel",
+                    "article",
+                    "event",
+                    "offer"
+                  ]
+                }
+              },
+              {
+                "name": "member_id",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
+            }
+          },
+          "delete": {
+            "tags": ["POSTS"],
+            "summary": "Delete posts",
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              },
+              {
+                "name": "post_ids[]",
+                "in": "query",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "example": ["684945796a88bf9baa9c182c"]
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
             }
           }
-        }
-      }
-    },
-    "/posts/{post_id}": {
-        "put": {
-        "tags": [
-          "POSTS"
-        ],
-        "summary": "Update post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "bulk": {
+        },
+        "/posts/links": {
+          "post": {
+            "tags": ["POSTS"],
+            "summary": "Extract link metadata",
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "example": {
+                      "url": "publer.com"
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
+            }
+          }
+        },
+        "/posts/{post_id}": {
+          "put": {
+            "tags": ["POSTS"],
+            "summary": "Update post",
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "type": "object",
                     "properties": {
-                      "state": {
-                        "type": "string",
-                        "enum": [
-                          "scheduled",
-                          "draft"
-                        ],
-                        "description": "Post state"
-                      },
-                      "posts": {
-                        "type": "array",
-                        "description": "Posts to update",
-                        "items": {
-                          "type": "object",
-                          "required": [
-                            "networks",
-                            "accounts"
-                          ],
-                          "properties": {
-                            "networks": {
+                      "bulk": {
+                        "type": "object",
+                        "properties": {
+                          "state": {
+                            "type": "string",
+                            "enum": ["scheduled", "draft"],
+                            "description": "Post state"
+                          },
+                          "posts": {
+                            "type": "array",
+                            "description": "Posts to update",
+                            "items": {
                               "type": "object",
-                              "description": "Network-specific post content",
-                              "additionalProperties": {
-                                "type": "object",
-                                "properties": {
-                                  "type": {
-                                    "type": "string",
-                                    "enum": [
-                                      "status",
-                                      "photo",
-                                      "video",
-                                      "link",
-                                      "carousel",
-                                      "story",
-                                      "reel",
-                                      "gif",
-                                      "poll",
-                                      "document",
-                                      "event",
-                                      "offer",
-                                      "short"
-                                    ]
-                                  },
-                                  "text": {
-                                    "type": "string"
-                                  },
-                                  "media": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object",
-                                      "properties": {
-                                        "id": {
-                                          "type": "string"
-                                        },
-                                        "type": {
-                                          "type": "string",
-                                          "enum": [
-                                            "image",
-                                            "photo",
-                                            "video",
-                                            "gif"
-                                          ]
-                                        },
-                                        "caption": {
-                                          "type": "string"
-                                        },
-                                        "alt_text": {
-                                          "type": "string"
+                              "required": ["networks", "accounts"],
+                              "properties": {
+                                "networks": {
+                                  "type": "object",
+                                  "description": "Network-specific post content",
+                                  "additionalProperties": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": [
+                                          "status",
+                                          "photo",
+                                          "video",
+                                          "link",
+                                          "carousel",
+                                          "story",
+                                          "reel",
+                                          "gif",
+                                          "poll",
+                                          "document",
+                                          "event",
+                                          "offer",
+                                          "short"
+                                        ]
+                                      },
+                                      "text": {
+                                        "type": "string"
+                                      },
+                                      "media": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "id": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": ["image", "photo", "video", "gif"]
+                                            },
+                                            "caption": {
+                                              "type": "string"
+                                            },
+                                            "alt_text": {
+                                              "type": "string"
+                                            }
+                                          }
                                         }
+                                      },
+                                      "url": {
+                                        "type": "string"
                                       }
                                     }
-                                  },
-                                  "url": {
-                                    "type": "string"
                                   }
-                                }
-                              }
-                            },
-                            "accounts": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "id"
-                                ],
-                                "properties": {
-                                  "id": {
-                                    "type": "string"
-                                  },
-                                  "scheduled_at": {
-                                    "type": "string"
+                                },
+                                "accounts": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "required": ["id"],
+                                    "properties": {
+                                      "id": {
+                                        "type": "string"
+                                      },
+                                      "scheduled_at": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 }
                               }
@@ -1432,796 +1319,757 @@
                   }
                 }
               }
+            },
+            "parameters": [
+              {
+                "name": "post_id",
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                },
+                "required": true
+              },
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
             }
           }
         },
-        "parameters": [
-          {
-            "name": "post_id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/job_status/{job_id}": {
-      "get": {
-        "tags": [
-          "JOB STATUS"
-        ],
-        "summary": "Job status",
-        "parameters": [
-          {
-            "name": "job_id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/locations/instagram": {
-      "get": {
-        "tags": [
-          "LOCATIONS"
-        ],
-        "summary": "Instagram locations",
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          },
-          {
-            "name": "q",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "Tirana"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/locations/facebook": {
-      "get": {
-        "tags": [
-          "LOCATIONS"
-        ],
-        "summary": "Facebook locations",
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          },
-          {
-            "name": "q",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "Tirana"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/locations/threads": {
-      "get": {
-        "tags": [
-          "LOCATIONS"
-        ],
-        "summary": "Threads locations",
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          },
-          {
-            "name": "q",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "Tirana"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/analytics/charts": {
-      "get": {
-        "tags": [
-          "ANALYTICS"
-        ],
-        "summary": "Get charts",
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/analytics/{account_id}/chart_data": {
-      "get": {
-        "tags": [
-          "ANALYTICS"
-        ],
-        "summary": "Charts data",
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          },
-          {
-            "name": "from",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "2025-03-21"
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "2025-08-18"
-          },
-          {
-            "name": "chart_ids[]",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
+        "/job_status/{job_id}": {
+          "get": {
+            "tags": ["JOB STATUS"],
+            "summary": "Job status",
+            "parameters": [
+              {
+                "name": "job_id",
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                },
+                "required": true
+              },
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
               }
-            },
-            "example": [
-              "followers"
-            ]
-          },
-          {
-            "name": "account_id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
             }
           }
-        }
-      }
-    },
-    "/analytics/{account_id}/post_insights": {
-      "get": {
-        "tags": [
-          "ANALYTICS"
-        ],
-        "summary": "Post insights",
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          },
-          {
-            "name": "competitors",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "true",
-                "false"
-              ]
-            },
-            "example": "false",
-            "description": "Include competitor analysis data"
-          },
-          {
-            "name": "competitor_id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Specific competitor account ID to analyze"
-          },
-          {
-            "name": "from",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            },
-            "example": "2025-05-13",
-            "description": "Start date (YYYY-MM-DD)"
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            },
-            "example": "2025-08-10",
-            "description": "End date (YYYY-MM-DD)"
-          },
-          {
-            "name": "query",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Search posts by text content"
-          },
-          {
-            "name": "postType",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "poll",
-                "status",
-                "link",
-                "carousel",
-                "photo",
-                "gif",
-                "video",
-                "reel",
-                "document",
-                "short",
-                "article",
-                "story"
-              ]
-            },
-            "description": "Filter by post type"
-          },
-          {
-            "name": "sort_by",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "scheduled_at",
-                "reach",
-                "engagement",
-                "engagement_rate",
-                "click_through_rate",
-                "reach_rate",
-                "postType",
-                "likes",
-                "video_views",
-                "comments",
-                "shares",
-                "saves",
-                "link_clicks",
-                "post_clicks"
-              ]
-            },
-            "description": "Field to sort results by"
-          },
-          {
-            "name": "sort_type",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "ASC",
-                "DESC"
-              ]
-            },
-            "description": "Sort direction (ASC or DESC)"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            },
-            "example": 0,
-            "description": "Page number (0-based, 10 posts per page)"
-          },
-          {
-            "name": "member_id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Filter by workspace member who created the post"
-          },
-          {
-            "name": "account_id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Social account ID (omit for all workspace accounts)"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
+        },
+        "/locations/instagram": {
+          "get": {
+            "tags": ["LOCATIONS"],
+            "summary": "Instagram locations",
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              },
+              {
+                "name": "q",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Tirana"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
             }
           }
-        }
-      }
-    },
-    "/analytics/{account_id}/hashtag_insights": {
-      "get": {
-        "tags": [
-          "ANALYTICS"
-        ],
-        "summary": "Hashtag insights",
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          },
-          {
-            "name": "from",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "2025-07-15"
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "2025-08-11"
-          },
-          {
-            "name": "account_id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
+        },
+        "/locations/facebook": {
+          "get": {
+            "tags": ["LOCATIONS"],
+            "summary": "Facebook locations",
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              },
+              {
+                "name": "q",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Tirana"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
             }
           }
-        }
-      }
-    },
-    "/analytics/{account_id}/hashtag_performing_posts": {
-      "get": {
-        "tags": [
-          "ANALYTICS"
-        ],
-        "summary": "Hashtag performing posts",
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          },
-          {
-            "name": "hashtag",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "#smm",
-            "example": "%23smm"
-          },
-          {
-            "name": "from",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "2025-01-31"
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "2025-12-31"
-          },
-          {
-            "name": "account_id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
+        },
+        "/locations/threads": {
+          "get": {
+            "tags": ["LOCATIONS"],
+            "summary": "Threads locations",
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              },
+              {
+                "name": "q",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Tirana"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
             }
           }
-        }
-      }
-    },
-    "/analytics/{account_id}/best_times": {
-      "get": {
-        "tags": [
-          "ANALYTICS"
-        ],
-        "summary": "Best times to post",
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          },
-          {
-            "name": "from",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "2024-01-01"
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "2024-12-31"
-          },
-          {
-            "name": "account_id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
+        },
+        "/analytics/charts": {
+          "get": {
+            "tags": ["ANALYTICS"],
+            "summary": "Get charts",
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
             }
           }
-        }
-      }
-    },
-    "/analytics/members": {
-      "get": {
-        "tags": [
-          "ANALYTICS"
-        ],
-        "summary": "Members",
-        "parameters": [
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          },
-          {
-            "name": "from",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            },
-            "example": "2025-07-16",
-            "required": true,
-            "description": "Start date (YYYY-MM-DD)"
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            },
-            "example": "2025-08-12",
-            "required": true,
-            "description": "End date (YYYY-MM-DD)"
-          },
-          {
-            "name": "account_id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Restrict analytics to one social account. Omit for all workspace accounts."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
+        },
+        "/analytics/{account_id}/chart_data": {
+          "get": {
+            "tags": ["ANALYTICS"],
+            "summary": "Charts data",
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              },
+              {
+                "name": "from",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "2025-03-21"
+              },
+              {
+                "name": "to",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "2025-08-18"
+              },
+              {
+                "name": "chart_ids[]",
+                "in": "query",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "example": ["followers"]
+              },
+              {
+                "name": "account_id",
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                },
+                "required": true
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
             }
           }
-        }
-      }
-    },
-    "/competitors/{account_id}": {
-      "get": {
-        "tags": [
-          "ANALYTICS"
-        ],
-        "summary": "List Competitors",
-        "description": "Retrieves a list of competitor accounts for the workspace or for a specific social media account.",
-        "parameters": [
-          {
-            "name": "account_id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "Social account ID to scope competitors (omit for all workspace competitors)"
-          },
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
+        },
+        "/analytics/{account_id}/post_insights": {
+          "get": {
+            "tags": ["ANALYTICS"],
+            "summary": "Post insights",
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              },
+              {
+                "name": "competitors",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "enum": ["true", "false"]
+                },
+                "example": "false",
+                "description": "Include competitor analysis data"
+              },
+              {
+                "name": "competitor_id",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Specific competitor account ID to analyze"
+              },
+              {
+                "name": "from",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "example": "2025-05-13",
+                "description": "Start date (YYYY-MM-DD)"
+              },
+              {
+                "name": "to",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "example": "2025-08-10",
+                "description": "End date (YYYY-MM-DD)"
+              },
+              {
+                "name": "query",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Search posts by text content"
+              },
+              {
+                "name": "postType",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "poll",
+                    "status",
+                    "link",
+                    "carousel",
+                    "photo",
+                    "gif",
+                    "video",
+                    "reel",
+                    "document",
+                    "short",
+                    "article",
+                    "story"
+                  ]
+                },
+                "description": "Filter by post type"
+              },
+              {
+                "name": "sort_by",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "scheduled_at",
+                    "reach",
+                    "engagement",
+                    "engagement_rate",
+                    "click_through_rate",
+                    "reach_rate",
+                    "postType",
+                    "likes",
+                    "video_views",
+                    "comments",
+                    "shares",
+                    "saves",
+                    "link_clicks",
+                    "post_clicks"
+                  ]
+                },
+                "description": "Field to sort results by"
+              },
+              {
+                "name": "sort_type",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "enum": ["ASC", "DESC"]
+                },
+                "description": "Sort direction (ASC or DESC)"
+              },
+              {
+                "name": "page",
+                "in": "query",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 0,
+                "description": "Page number (0-based, 10 posts per page)"
+              },
+              {
+                "name": "member_id",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Filter by workspace member who created the post"
+              },
+              {
+                "name": "account_id",
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                },
+                "required": false,
+                "description": "Social account ID (omit for all workspace accounts)"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
             }
           }
-        }
-      }
-    },
-    "/competitors/{account_id}/analytics": {
-      "get": {
-        "tags": [
-          "ANALYTICS"
-        ],
-        "summary": "Competitors analytics",
-        "description": "Retrieves analytics data for competitor accounts, including engagement metrics, follower counts, and post performance statistics.",
-        "parameters": [
-          {
-            "name": "account_id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "ID of the social media account to retrieve competitors analytics for"
-          },
-          {
-            "name": "Publer-Workspace-Id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{workspace_id}}",
-            "required": true
-          },
-          {
-            "name": "competitor_id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Specific competitor account ID to analyze"
-          },
-          {
-            "name": "query",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Search filter for competitor account names"
-          },
-          {
-            "name": "from",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            },
-            "description": "Start date for analytics data (YYYY-MM-DD)"
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            },
-            "description": "End date for analytics data (YYYY-MM-DD)"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            },
-            "example": 0,
-            "description": "Page number for pagination (default: 0)"
-          },
-          {
-            "name": "sort_by",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "followers",
-                "reach",
-                "engagement",
-                "posts_count",
-                "videos_count",
-                "photos_count",
-                "links_count",
-                "statuses_count"
-              ]
-            },
-            "description": "Field to sort results by (default: followers)"
-          },
-          {
-            "name": "sort_type",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "asc",
-                "desc"
-              ]
-            },
-            "description": "Sort direction (default: asc)"
+        },
+        "/analytics/{account_id}/hashtag_insights": {
+          "get": {
+            "tags": ["ANALYTICS"],
+            "summary": "Hashtag insights",
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              },
+              {
+                "name": "from",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "2025-07-15"
+              },
+              {
+                "name": "to",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "2025-08-11"
+              },
+              {
+                "name": "account_id",
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                },
+                "required": true
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
+            }
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
+        },
+        "/analytics/{account_id}/hashtag_performing_posts": {
+          "get": {
+            "tags": ["ANALYTICS"],
+            "summary": "Hashtag performing posts",
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              },
+              {
+                "name": "hashtag",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "description": "#smm",
+                "example": "%23smm"
+              },
+              {
+                "name": "from",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "2025-01-31"
+              },
+              {
+                "name": "to",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "2025-12-31"
+              },
+              {
+                "name": "account_id",
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                },
+                "required": true
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
+            }
+          }
+        },
+        "/analytics/{account_id}/best_times": {
+          "get": {
+            "tags": ["ANALYTICS"],
+            "summary": "Best times to post",
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              },
+              {
+                "name": "from",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "2024-01-01"
+              },
+              {
+                "name": "to",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "2024-12-31"
+              },
+              {
+                "name": "account_id",
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                },
+                "required": true
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
+            }
+          }
+        },
+        "/analytics/members": {
+          "get": {
+            "tags": ["ANALYTICS"],
+            "summary": "Members",
+            "parameters": [
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              },
+              {
+                "name": "from",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "example": "2025-07-16",
+                "required": true,
+                "description": "Start date (YYYY-MM-DD)"
+              },
+              {
+                "name": "to",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "example": "2025-08-12",
+                "required": true,
+                "description": "End date (YYYY-MM-DD)"
+              },
+              {
+                "name": "account_id",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Restrict analytics to one social account. Omit for all workspace accounts."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
+            }
+          }
+        },
+        "/competitors/{account_id}": {
+          "get": {
+            "tags": ["ANALYTICS"],
+            "summary": "List Competitors",
+            "description": "Retrieves a list of competitor accounts for the workspace or for a specific social media account.",
+            "parameters": [
+              {
+                "name": "account_id",
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                },
+                "required": false,
+                "description": "Social account ID to scope competitors (omit for all workspace competitors)"
+              },
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
+            }
+          }
+        },
+        "/competitors/{account_id}/analytics": {
+          "get": {
+            "tags": ["ANALYTICS"],
+            "summary": "Competitors analytics",
+            "description": "Retrieves analytics data for competitor accounts, including engagement metrics, follower counts, and post performance statistics.",
+            "parameters": [
+              {
+                "name": "account_id",
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                },
+                "required": true,
+                "description": "ID of the social media account to retrieve competitors analytics for"
+              },
+              {
+                "name": "Publer-Workspace-Id",
+                "in": "header",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{{workspace_id}}",
+                "required": true
+              },
+              {
+                "name": "competitor_id",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Specific competitor account ID to analyze"
+              },
+              {
+                "name": "query",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Search filter for competitor account names"
+              },
+              {
+                "name": "from",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "description": "Start date for analytics data (YYYY-MM-DD)"
+              },
+              {
+                "name": "to",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "description": "End date for analytics data (YYYY-MM-DD)"
+              },
+              {
+                "name": "page",
+                "in": "query",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 0,
+                "description": "Page number for pagination (default: 0)"
+              },
+              {
+                "name": "sort_by",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "followers",
+                    "reach",
+                    "engagement",
+                    "posts_count",
+                    "videos_count",
+                    "photos_count",
+                    "links_count",
+                    "statuses_count"
+                  ]
+                },
+                "description": "Field to sort results by (default: followers)"
+              },
+              {
+                "name": "sort_type",
+                "in": "query",
+                "schema": {
+                  "type": "string",
+                  "enum": ["asc", "desc"]
+                },
+                "description": "Sort direction (default: asc)"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {}
+                }
+              }
             }
           }
         }
       }
     }
   }
-}
-}
 }
