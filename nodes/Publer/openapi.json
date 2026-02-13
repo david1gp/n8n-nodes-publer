@@ -1389,13 +1389,23 @@
         }
       }
     },
-    "/competitors": {
+    "/competitors/{account_id}": {
       "get": {
         "tags": [
           "ANALYTICS"
         ],
-        "summary": "Competitors",
+        "summary": "List Competitors",
+        "description": "Retrieves a list of competitor accounts for the workspace or for a specific social media account.",
         "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Social account ID to scope competitors (omit for all workspace competitors)"
+          },
           {
             "name": "Publer-Workspace-Id",
             "in": "header",
@@ -1416,20 +1426,22 @@
         }
       }
     },
-    "/competitors/{competitor_id}/analytics": {
+    "/competitors/{account_id}/analytics": {
       "get": {
         "tags": [
           "ANALYTICS"
         ],
         "summary": "Competitors analytics",
+        "description": "Retrieves analytics data for competitor accounts, including engagement metrics, follower counts, and post performance statistics.",
         "parameters": [
           {
-            "name": "competitor_id",
+            "name": "account_id",
             "in": "path",
             "schema": {
               "type": "string"
             },
-            "required": true
+            "required": true,
+            "description": "ID of the social media account to retrieve competitors analytics for"
           },
           {
             "name": "Publer-Workspace-Id",
@@ -1441,20 +1453,38 @@
             "required": true
           },
           {
-            "name": "from",
+            "name": "competitor_id",
             "in": "query",
             "schema": {
               "type": "string"
             },
-            "example": "2025-07-16"
+            "description": "Specific competitor account ID to analyze"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search filter for competitor account names"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Start date for analytics data (YYYY-MM-DD)"
           },
           {
             "name": "to",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "date"
             },
-            "example": "2025-08-12"
+            "description": "End date for analytics data (YYYY-MM-DD)"
           },
           {
             "name": "page",
@@ -1462,7 +1492,26 @@
             "schema": {
               "type": "integer"
             },
-            "example": 0
+            "example": 0,
+            "description": "Page number for pagination (default: 0)"
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["followers", "reach", "engagement", "posts_count", "videos_count", "photos_count", "links_count", "statuses_count"]
+            },
+            "description": "Field to sort results by (default: followers)"
+          },
+          {
+            "name": "sort_type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            },
+            "description": "Sort direction (default: asc)"
           }
         ],
         "responses": {
