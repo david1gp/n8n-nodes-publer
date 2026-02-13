@@ -23,7 +23,7 @@
   "scripts": {
     "build": "tsc && gulp build:icons",
     "dev": "tsc --watch",
-    "test": "jest",
+    "test": "bun test",
     "release": "bash ./ops/release.sh",
     "validate": "bunx ibm-openapi-validator ./nodes/Publer/openapi.json",
     "format": "prettier nodes credentials --write",
@@ -39,7 +39,15 @@
       "dist/credentials/PublerApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Publer/Publer.node.js"
+      "dist/nodes/Publer/Publer.node.js",
+      "dist/nodes/PublerBasic/PublerBasic.node.js",
+      "dist/nodes/PublerMedia/PublerMedia.node.js",
+      "dist/nodes/PublerPostsSchedule/PublerPostsSchedule.node.js",
+      "dist/nodes/PublerPostsPublish/PublerPostsPublish.node.js",
+      "dist/nodes/PublerPosts/PublerPosts.node.js",
+      "dist/nodes/PublerLocations/PublerLocations.node.js",
+      "dist/nodes/PublerAnalytics/PublerAnalytics.node.js",
+      "dist/nodes/PublerCompetitors/PublerCompetitors.node.js"
     ]
   },
   "devDependencies": {
