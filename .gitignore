@@ -1,4 +1,6 @@
-dist
-node_modules
-pnpm-lock.yaml
-bun.lock
+/dist
+/node_modules
+/pnpm-lock.yaml
+/bun.lock
+/data
+/.env*
