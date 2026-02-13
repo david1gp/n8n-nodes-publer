@@ -70,7 +70,7 @@
         "tags": [
           "USERS"
         ],
-        "summary": "ME",
+        "summary": "Me",
         "responses": {
           "200": {
             "description": "Successful response",
@@ -86,7 +86,7 @@
         "tags": [
           "WORKSPACES"
         ],
-        "summary": "FETCH WORKSPACES",
+        "summary": "Fetch workspaces",
         "responses": {
           "200": {
             "description": "Successful response",
@@ -102,7 +102,7 @@
         "tags": [
           "WORKSPACES"
         ],
-        "summary": "FETCH SIGNATURES",
+        "summary": "Fetch signatures",
         "parameters": [
           {
             "name": "accounts[]",
@@ -136,7 +136,7 @@
         "tags": [
           "WORKSPACES"
         ],
-        "summary": "FETCH MEDIA OPTIONS",
+        "summary": "Fetch media options",
         "parameters": [
           {
             "name": "accounts[]",
@@ -170,7 +170,7 @@
         "tags": [
           "ACCOUNTS"
         ],
-        "summary": "ACCOUNTS",
+        "summary": "Accounts",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -196,7 +196,7 @@
         "tags": [
           "MEDIA"
         ],
-        "summary": "LIST MEDIA",
+        "summary": "List media",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -238,7 +238,7 @@
         "tags": [
           "MEDIA"
         ],
-        "summary": "UPLOAD FILE",
+        "summary": "Upload file",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -287,24 +287,58 @@
         "tags": [
           "MEDIA"
         ],
-        "summary": "UPLOAD FROM URL",
+        "summary": "Upload from url",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": {
-                  "media": [
-                    {
-                      "url": "https://api.unsplash.com/photos/910B32-V0E4/download?ixid=M3wxNjI3NDR8MHwxfGFsbHw1M3x8fHx8fDJ8fDE3NDk2MzE4MzN8&client_id=F2Rc11lPwYuERzKFAPluEfH_QYb_mM7qI6_6PGT55ZI",
-                      "name": "Whirpool",
-                      "caption": "Photo by Fadhil Abhimantra on Unsplash:\n\nhttps://unsplash.com/photos/waves-crash-against-a-rocky-coastline-910B32-V0E4",
-                      "source": "unsplash"
+                "required": ["media", "type"],
+                "properties": {
+                  "media": {
+                    "type": "array",
+                    "description": "List of media URLs and metadata",
+                    "items": {
+                      "type": "object",
+                      "required": ["url", "name"],
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "description": "URL of the media file to download"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Custom name for the media file"
+                        },
+                        "caption": {
+                          "type": "string",
+                          "description": "Caption for the media"
+                        },
+                        "source": {
+                          "type": "string",
+                          "description": "Source attribution"
+                        }
+                      }
                     }
-                  ],
-                  "type": "single",
-                  "direct_upload": false,
-                  "in_library": true
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["single", "bulk", "thumbnail"],
+                    "description": "Upload type",
+                    "example": "single"
+                  },
+                  "direct_upload": {
+                    "type": "boolean",
+                    "description": "Whether to upload directly to S3 cloud, slower but returns id",
+                    "default": false,
+                    "example": false
+                  },
+                  "in_library": {
+                    "type": "boolean",
+                    "description": "Whether to save to media library",
+                    "default": false,
+                    "example": true
+                  }
                 }
               }
             }
@@ -335,7 +369,7 @@
         "tags": [
           "POSTS > CONTENT TYPES"
         ],
-        "summary": "POST WITH LOCATIONS",
+        "summary": "Post with locations",
         "requestBody": {
           "content": {
             "application/json": {
@@ -399,7 +433,7 @@
         "tags": [
           "POSTS > PUBLISHING METHODS"
         ],
-        "summary": "PUBLISH",
+        "summary": "Publish",
         "requestBody": {
           "content": {
             "application/json": {
@@ -455,7 +489,7 @@
         "tags": [
           "POSTS"
         ],
-        "summary": "GET POSTS",
+        "summary": "Get posts",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -495,7 +529,7 @@
         "tags": [
           "POSTS"
         ],
-        "summary": "DELETE POSTS",
+        "summary": "Delete posts",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -529,7 +563,7 @@
         "tags": [
           "POSTS"
         ],
-        "summary": "EXTRACT LINK METADATA",
+        "summary": "Extract link metadata",
         "requestBody": {
           "content": {
             "application/json": {
@@ -557,7 +591,7 @@
         "tags": [
           "POSTS"
         ],
-        "summary": "UPDATE POST",
+        "summary": "Update post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -598,7 +632,7 @@
         "tags": [
           "JOB STATUS"
         ],
-        "summary": "JOB STATUS",
+        "summary": "Job status",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -624,7 +658,7 @@
         "tags": [
           "LOCATIONS"
         ],
-        "summary": "INSTAGRAM LOCATIONS",
+        "summary": "Instagram locations",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -658,7 +692,7 @@
         "tags": [
           "LOCATIONS"
         ],
-        "summary": "FACEBOOK LOCATIONS",
+        "summary": "Facebook locations",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -692,7 +726,7 @@
         "tags": [
           "LOCATIONS"
         ],
-        "summary": "THREADS LOCATIONS",
+        "summary": "Threads locations",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -726,7 +760,7 @@
         "tags": [
           "ANALYTICS"
         ],
-        "summary": "GET CHARTS",
+        "summary": "Get charts",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -752,7 +786,7 @@
         "tags": [
           "ANALYTICS"
         ],
-        "summary": "CHARTS DATA",
+        "summary": "Charts data",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -810,7 +844,7 @@
         "tags": [
           "ANALYTICS"
         ],
-        "summary": "POST INSIGHTS",
+        "summary": "Post insights",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -868,7 +902,7 @@
         "tags": [
           "ANALYTICS"
         ],
-        "summary": "HASHTAG INSIGHTS",
+        "summary": "Hashtag insights",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -918,7 +952,7 @@
         "tags": [
           "ANALYTICS"
         ],
-        "summary": "HASHTAG PERFOMING POSTS",
+        "summary": "Hashtag performing posts",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -977,7 +1011,7 @@
         "tags": [
           "ANALYTICS"
         ],
-        "summary": "BEST TIMES TO POST",
+        "summary": "Best times to post",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -1027,7 +1061,7 @@
         "tags": [
           "ANALYTICS"
         ],
-        "summary": "MEMBERS",
+        "summary": "Members",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -1069,7 +1103,7 @@
         "tags": [
           "ANALYTICS"
         ],
-        "summary": "COMPETITORS",
+        "summary": "Competitors",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -1095,7 +1129,7 @@
         "tags": [
           "ANALYTICS"
         ],
-        "summary": "COMPETITORS ANALYTICS",
+        "summary": "Competitors analytics",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
