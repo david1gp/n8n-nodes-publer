@@ -20,11 +20,12 @@
 		"sourceMap": true,
 		"skipLibCheck": true,
 		"outDir": "./dist/",
+		"tsBuildInfoFile": "./build/tsconfig.tsbuildinfo"
 	},
 	"include": [
 		"credentials/**/*",
 		"nodes/**/*",
 		"nodes/**/*.json",
-		"package.json",
-	],
+		"package.json"
+	]
 }
