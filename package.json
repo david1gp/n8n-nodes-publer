@@ -25,6 +25,7 @@
     "dev": "tsc --watch",
     "test": "jest",
     "release": "bash ./ops/release.sh",
+    "getVersion": "bun run src/ops/printPackageVersion.ts",
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
     "lintfix": "eslint nodes credentials package.json --fix"

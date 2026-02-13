@@ -32,7 +32,6 @@ jobs:
       - run: bun install
       - run: bun run build
       - run: bun test
-      - run: bun run getVersion
 
       # Ensure npm 11.5.1 or later is installed
       - name: Update npm
