@@ -1,8 +1,8 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.1.1",
   "info": {
     "title": "Publer API",
-    "description": "Welcome to the **Publer API** collection!\n\nThis API enables developers, agencies, and marketing teams to automate social media workflows, integrate advanced scheduling tools, and manage multiple brands at scale—all from your own applications.\n\n---\n\n## What is the Publer API?\n\nThe Publer API is a modern, RESTful JSON interface designed for seamless social media automation. It lets you programmatically access and manage all core functions of the Publer platform, including:\n\n- **Publishing & Scheduling**  \n    Draft, schedule, auto-schedule, or instantly publish posts (including bulk and recurring content) across 13+ supported social platforms.\n    \n- **Media Management**  \n    Upload, organize, and attach media—images, videos, GIFs, PDFs, and more. Apply watermarks and manage media libraries per workspace or account.\n    \n- **Workspace & Collaboration**  \n    Manage teams, clients, and brands through isolated workspaces. Retrieve user profiles, permissions, and organize content by workspace.\n    \n- **Advanced Features**  \n    Automate post actions (auto-share, follow-up comments, auto-delete), append branded signatures, use location tags, and customize posts with platform-specific features.\n    \n\n---\n\n## Supported Social Networks\n\nPublish and manage content on:\n\n- Facebook, Instagram, Twitter/X, LinkedIn, Pinterest, YouTube, TikTok, Google Business Profile, WordPress, Telegram, Mastodon, Threads, and Bluesky.\n    \n\n---\n\n## Core Capabilities\n\n- **Content Types:**  \n    Status updates, images, videos, reels, stories, polls, PDFs, links, carousels, events, offers, and more.\n    \n- **Bulk Scheduling:**  \n    Schedule up to 500 posts in a single request for efficient multi-account planning.\n    \n- **Media Options:**  \n    Organize Facebook albums, Pinterest boards, and apply account-specific watermarks.\n    \n- **Branding & Protection:**  \n    Use signatures and watermarks to reinforce your brand and protect ...\n",
+    "description": "Welcome to the **Publer API** collection!\n\nThis API enables developers, agencies, and marketing teams to automate social media workflows, integrate advanced scheduling tools, and manage multiple brands at scale—all from your own applications.\n\n---\n\n## What is the Publer API?\n\nThe Publer API is a modern, RESTful JSON interface designed for seamless social media automation. It lets you programmatically access and manage all core functions of the Publer platform, including:\n\n- **Publishing & Scheduling**  \n    Draft, schedule, auto-schedule, or instantly publish posts (including bulk and recurring content) across 13+ supported social platforms.\n    \n- **Media Management**  \n    Upload, organize, and attach media—images, videos, GIFs, PDFs, and more. Apply watermarks and manage media libraries per workspace or account.\n    \n- **Workspace & Collaboration**  \n    Manage teams, clients, and brands through isolated workspaces. Retrieve user profiles, permissions, and organize content by workspace.\n    \n- **Advanced Features**  \n    Automate post actions (auto-share, follow-up comments, auto-delete), append branded signatures, use location tags, and customize posts with platform-specific features.\n    \n\n---\n\n## Supported Social Networks\n\nPublish and manage content on:\n\n- Facebook, Instagram, Twitter/X, LinkedIn, Pinterest, YouTube, TikTok, Google Business Profile, WordPress, Telegram, Mastodon, Threads, and Bluesky.\n    \n\n---\n\n## Core Capabilities\n\n- **Content Types:**  \n    Status updates, images, videos, reels, stories, polls, PDFs, links, carousels, events, offers, and more.\n    \n- **Bulk Scheduling:**  \n    Schedule up to 500 posts in a single request for efficient multi-account planning.\n    \n- **Media Options:**  \n    Organize Facebook albums, Pinterest boards, and apply account-specific watermarks.\n    \n- **Branding & Protection:**  \n    Use signatures and watermarks to reinforce your brand and protect ...",
     "version": "1.0.0"
   },
   "servers": [
@@ -180,14 +180,9 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "accounts": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Account"
-                      }
-                    }
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Account"
                   }
                 }
               }
@@ -718,7 +713,7 @@
             "example": "scheduled"
           },
           {
-            "name": "state[]",
+            "name": "state",
             "in": "query",
             "schema": {
               "type": "array",
@@ -726,7 +721,9 @@
                 "type": "string",
                 "enum": ["all", "scheduled", "scheduled_approved", "scheduled_pending", "scheduled_declined", "scheduled_reauth", "scheduled_locked", "published", "published_posted", "published_deleted", "published_hidden", "draft", "draft_dated", "draft_undated", "draft_private", "draft_public", "failed", "recycling", "recycling_active", "recycling_paused", "recycling_expired", "recycling_failed", "recycling_pending", "recycling_declined", "recycling_reauth", "recycling_locked", "recurring"]
               }
-            }
+            },
+            "style": "form",
+            "explode": true
           },
           {
             "name": "from",
@@ -755,7 +752,7 @@
             "example": 0
           },
           {
-            "name": "account_ids[]",
+            "name": "account_ids",
             "in": "query",
             "schema": {
               "type": "array",
@@ -763,6 +760,8 @@
                 "type": "string"
               }
             },
+            "style": "form",
+            "explode": true,
             "example": ["63c675b54e299e9cf2b667ea"]
           },
           {
@@ -1507,10 +1506,6 @@
             "type": "string",
             "description": "Account type",
             "enum": ["page", "profile", "group", "business", "channel", "location", "blog"]
-          },
-          "status": {
-            "type": "string",
-            "description": "Account status"
           }
         }
       }
