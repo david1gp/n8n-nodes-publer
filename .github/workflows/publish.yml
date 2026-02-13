@@ -8,6 +8,7 @@ on:
 permissions:
   id-token: write # Required for OIDC
   contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -25,7 +26,7 @@ jobs:
       # Setup Node.js only for npm publishing with OIDC until Bun adds support for it - https://github.com/oven-sh/bun/issues/15601
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "24"
           registry-url: "https://registry.npmjs.org"
 
       # Use Bun for everything except publishing
