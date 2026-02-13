@@ -24,6 +24,7 @@
     "build": "tsc && gulp build:icons",
     "dev": "tsc --watch",
     "test": "jest",
+    "release": "bash ./ops/release.sh",
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
     "lintfix": "eslint nodes credentials package.json --fix"
