@@ -1142,20 +1142,77 @@
             "required": true
           },
           {
-            "name": "from",
+            "name": "competitors",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false"]
+            },
+            "example": "false",
+            "description": "Include competitor analysis data"
+          },
+          {
+            "name": "competitor_id",
             "in": "query",
             "schema": {
               "type": "string"
             },
-            "example": "2025-05-13"
+            "description": "Specific competitor account ID to analyze"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-05-13",
+            "description": "Start date (YYYY-MM-DD)"
           },
           {
             "name": "to",
             "in": "query",
             "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-08-10",
+            "description": "End date (YYYY-MM-DD)"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "schema": {
               "type": "string"
             },
-            "example": "2025-08-10"
+            "description": "Search posts by text content"
+          },
+          {
+            "name": "postType",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["poll", "status", "link", "carousel", "photo", "gif", "video", "reel", "document", "short", "article", "story"]
+            },
+            "description": "Filter by post type"
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["scheduled_at", "reach", "engagement", "engagement_rate", "click_through_rate", "reach_rate", "postType", "likes", "video_views", "comments", "shares", "saves", "link_clicks", "post_clicks"]
+            },
+            "description": "Field to sort results by"
+          },
+          {
+            "name": "sort_type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["ASC", "DESC"]
+            },
+            "description": "Sort direction (ASC or DESC)"
           },
           {
             "name": "page",
@@ -1163,7 +1220,16 @@
             "schema": {
               "type": "integer"
             },
-            "example": 0
+            "example": 0,
+            "description": "Page number (0-based, 10 posts per page)"
+          },
+          {
+            "name": "member_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by workspace member who created the post"
           },
           {
             "name": "account_id",
@@ -1171,7 +1237,8 @@
             "schema": {
               "type": "string"
             },
-            "required": true
+            "required": false,
+            "description": "Social account ID (omit for all workspace accounts)"
           }
         ],
         "responses": {
