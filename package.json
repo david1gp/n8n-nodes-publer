@@ -1,0 +1,59 @@
+{
+  "name": "@adaptive-ds/n8n-nodes-publer",
+  "version": "1.0.0",
+  "description": "n8n node to connect with Publer.com social media management API",
+  "keywords": [
+    "n8n",
+    "n8n-community-node-package",
+    "publer",
+    "social-media",
+    "scheduling",
+    "automation"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/david1gp/n8n-nodes-publer",
+  "author": {
+    "name": "David Siewert",
+    "email": "david1gruppenplan@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/david1gp/n8n-nodes-publer.git"
+  },
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials package.json",
+    "lintfix": "eslint nodes credentials package.json --fix"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [],
+    "nodes": [
+      "dist/nodes/Publer/Publer.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@typescript-eslint/parser": "^8.55.0",
+    "eslint": "^10.0.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.6",
+    "gulp": "^5.0.1",
+    "n8n-workflow": "*",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.6"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "dependencies": {
+    "@devlikeapro/n8n-openapi-node": "^0.1.4"
+  }
+}

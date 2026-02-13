@@ -1,0 +1,827 @@
+openapi: 3.0.0
+info:
+  title: Publer API
+  description: >-
+    Welcome to the **Publer API** collection!
+
+
+    This API enables developers, agencies, and marketing teams to automate
+    social media workflows, integrate advanced scheduling tools, and manage
+    multiple brands at scale—all from your own applications.
+
+
+    ---
+
+
+    ## What is the Publer API?
+
+
+    The Publer API is a modern, RESTful JSON interface designed for seamless
+    social media automation. It lets you programmatically access and manage all
+    core functions of the Publer platform, including:
+
+
+    - **Publishing & Scheduling**  
+        Draft, schedule, auto-schedule, or instantly publish posts (including bulk and recurring content) across 13+ supported social platforms.
+        
+    - **Media Management**  
+        Upload, organize, and attach media—images, videos, GIFs, PDFs, and more. Apply watermarks and manage media libraries per workspace or account.
+        
+    - **Workspace & Collaboration**  
+        Manage teams, clients, and brands through isolated workspaces. Retrieve user profiles, permissions, and organize content by workspace.
+        
+    - **Advanced Features**  
+        Automate post actions (auto-share, follow-up comments, auto-delete), append branded signatures, use location tags, and customize posts with platform-specific features.
+        
+
+    ---
+
+
+    ## Supported Social Networks
+
+
+    Publish and manage content on:
+
+
+    - Facebook, Instagram, Twitter/X, LinkedIn, Pinterest, YouTube, TikTok,
+    Google Business Profile, WordPress, Telegram, Mastodon, Threads, and
+    Bluesky.
+        
+
+    ---
+
+
+    ## Core Capabilities
+
+
+    - **Content Types:**  
+        Status updates, images, videos, reels, stories, polls, PDFs, links, carousels, events, offers, and more.
+        
+    - **Bulk Scheduling:**  
+        Schedule up to 500 posts in a single request for efficient multi-account planning.
+        
+    - **Media Options:**  
+        Organize Facebook albums, Pinterest boards, and apply account-specific watermarks.
+        
+    - **Branding & Protection:**  
+        Use signatures and watermarks to reinforce your brand and protect creative assets.
+        
+
+    ---
+
+
+    ## How to Get Started
+
+
+    1. **Generate an API Key**
+        
+        - Sign in with Ambassador or Enterprise access.
+            
+        - Go to `Settings → Access & Login → API Keys`, generate a key, and copy it securely.
+            
+    2. **List Your Workspaces & Accounts**
+        
+        - Use the API to retrieve workspace and account IDs for all actions.
+            
+    3. **Upload Media (Optional)**
+        
+        - Upload images, videos, or docs to get reusable media IDs.
+            
+    4. **Create & Schedule Posts**
+        
+        - Use the Posts API to draft, schedule, or bulk publish content across your accounts.
+            
+    5. **Monitor Jobs**
+        
+        - Every action returns a job ID—track and analyze your posts programmatically.
+            
+
+    ---
+
+
+    ## Best Practices
+
+
+    - Store and manage API keys securely.
+        
+    - Use the minimum scopes required for your integrations.
+        
+    - Comply with posting limits and content guidelines for each platform.
+        
+    - Use `alt_text` for accessible images.
+        
+
+    ---
+
+
+    ## Documentation & Support
+
+
+    - For full endpoint details, examples, and best practices, refer to the
+    [Publer API Documentation](https://publer.com/docs).
+        
+
+    ---
+
+
+    **Build smarter. Automate faster. Take control of your social content with
+    the Publer API!**
+  version: 1.0.0
+servers:
+  - url: http://{{url}}
+components:
+  securitySchemes:
+    apikeyAuth:
+      type: http
+      scheme: apikey
+security:
+  - apikeyAuth: []
+tags:
+  - name: USERS
+  - name: WORKSPACES
+  - name: ACCOUNTS
+  - name: MEDIA
+  - name: POSTS
+  - name: POSTS > PUBLISHING METHODS
+  - name: POSTS > PUBLISHING METHODS > DRAFTS
+  - name: POSTS > PUBLISHING METHODS > AUTO SCHEDULE
+  - name: POSTS > CONTENT TYPES
+  - name: POSTS > CONTENT TYPES > NETWORK-SPECIFIK TYPES
+  - name: JOB STATUS
+  - name: LOCATIONS
+  - name: ANALYTICS
+paths:
+  /api/v1/users/me:
+    get:
+      tags:
+        - USERS
+      summary: ME
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/workspaces:
+    get:
+      tags:
+        - WORKSPACES
+      summary: FETCH WORKSPACES
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/workspaces/{workspace_id}/signatures:
+    get:
+      tags:
+        - WORKSPACES
+      summary: FETCH SIGNATURES
+      parameters:
+        - name: accounts[]
+          in: query
+          schema:
+            type: string
+          example: 647a0edddb2797b89044e2c1
+        - name: workspace_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/workspaces/{workspace_id}/media_options:
+    get:
+      tags:
+        - WORKSPACES
+      summary: FETCH MEDIA OPTIONS
+      parameters:
+        - name: accounts[]
+          in: query
+          schema:
+            type: string
+          example: 661ce240db2797a7148a6b49
+        - name: workspace_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/accounts:
+    get:
+      tags:
+        - ACCOUNTS
+      summary: ACCOUNTS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/media:
+    get:
+      tags:
+        - MEDIA
+      summary: LIST MEDIA
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+        - name: types[]
+          in: query
+          schema:
+            type: string
+          example: photo
+        - name: used[]
+          in: query
+          schema:
+            type: boolean
+          example: 'false'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/media/:
+    post:
+      tags:
+        - MEDIA
+      summary: UPLOAD FILE
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                direct_upload:
+                  type: boolean
+                  example: 'false'
+                in_library:
+                  type: boolean
+                  example: 'true'
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/media/from-url:
+    post:
+      tags:
+        - MEDIA
+      summary: UPLOAD FROM URL
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                media:
+                  - url: >-
+                      https://api.unsplash.com/photos/910B32-V0E4/download?ixid=M3wxNjI3NDR8MHwxfGFsbHw1M3x8fHx8fDJ8fDE3NDk2MzE4MzN8&client_id=F2Rc11lPwYuERzKFAPluEfH_QYb_mM7qI6_6PGT55ZI
+                    name: Whirpool
+                    caption: >-
+                      Photo by Fadhil Abhimantra on Unsplash:
+
+
+                      https://unsplash.com/photos/waves-crash-against-a-rocky-coastline-910B32-V0E4
+                    source: unsplash
+                type: single
+                direct_upload: false
+                in_library: true
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/posts/schedule:
+    post:
+      tags:
+        - POSTS > CONTENT TYPES
+      summary: POST WITH LOCATIONS
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                bulk:
+                  state: scheduled
+                  posts:
+                    - networks:
+                        facebook:
+                          type: status
+                          text: Facebook location
+                      accounts:
+                        - id: 647a0edddb2797b89044e2c1
+                          scheduled_at: 2025-06-14T10:21+02:00
+                          location:
+                            id: '308281375929281'
+                            name: Tirana
+                            info: Tirana, Albania ⋅ 590 follow this
+                            verified: null
+                            address: Tirana, Albania
+                            checkins: '590'
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/posts/schedule/publish:
+    post:
+      tags:
+        - POSTS > PUBLISHING METHODS
+      summary: PUBLISH
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                bulk:
+                  state: scheduled
+                  url: publish
+                  posts:
+                    - networks:
+                        facebook:
+                          type: status
+                          text: >-
+                            Just published this update via the Publer API!
+                            #RealTimePosting
+                      accounts:
+                        - id: 647a0edddb2797b89044e2c1
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/posts:
+    get:
+      tags:
+        - POSTS
+      summary: GET POSTS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+        - name: state
+          in: query
+          schema:
+            type: string
+          example: scheduled
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '0'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - POSTS
+      summary: DELETE POSTS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+        - name: post_ids[]
+          in: query
+          schema:
+            type: string
+          example: 684945796a88bf9baa9c182c
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/posts/links:
+    post:
+      tags:
+        - POSTS
+      summary: EXTRACT LINK METADATA
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                url: publer.com
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/posts/684945796a88bf9baa9c182c:
+    put:
+      tags:
+        - POSTS
+      summary: UPDATE POST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                post:
+                  text: Status Update UPDATED
+                  title: null
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/job_status/6849530cdd9d40170723cd66:
+    get:
+      tags:
+        - JOB STATUS
+      summary: JOB STATUS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/locations/instagram:
+    get:
+      tags:
+        - LOCATIONS
+      summary: INSTAGRAM LOCATIONS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+        - name: q
+          in: query
+          schema:
+            type: string
+          example: |
+            Tirana
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/locations/facebook:
+    get:
+      tags:
+        - LOCATIONS
+      summary: FACEBOOK LOCATIONS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+        - name: q
+          in: query
+          schema:
+            type: string
+          example: |
+            Tirana
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/locations/threads:
+    get:
+      tags:
+        - LOCATIONS
+      summary: THREADS LOCATIONS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+        - name: q
+          in: query
+          schema:
+            type: string
+          example: |
+            Tirana
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/analytics/charts:
+    get:
+      tags:
+        - ANALYTICS
+      summary: GET CHARTS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/analytics/{account_id}/chart_data:
+    get:
+      tags:
+        - ANALYTICS
+      summary: CHARTS DATA
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+        - name: from
+          in: query
+          schema:
+            type: string
+          example: '2025-03-21'
+        - name: to
+          in: query
+          schema:
+            type: string
+          example: '2025-08-18'
+        - name: chart_ids[]
+          in: query
+          schema:
+            type: string
+          example: followers
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/analytics/{account_id}/post_insights:
+    get:
+      tags:
+        - ANALYTICS
+      summary: POST INSIGHTS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+        - name: from
+          in: query
+          schema:
+            type: string
+          example: '2025-05-13'
+        - name: to
+          in: query
+          schema:
+            type: string
+          example: '2025-08-10'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '0'
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/analytics/{account_id}/hashtag_insights:
+    get:
+      tags:
+        - ANALYTICS
+      summary: HASHTAG INSIGHTS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+        - name: from
+          in: query
+          schema:
+            type: string
+          example: '2025-07-15'
+        - name: to
+          in: query
+          schema:
+            type: string
+          example: '2025-08-11'
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/analytics/{account_id}/hashtag_performing_posts:
+    get:
+      tags:
+        - ANALYTICS
+      summary: HASHTAG PERFOMING POSTS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+        - name: hashtag
+          in: query
+          schema:
+            type: string
+          description: '#smm'
+          example: '%23smm'
+        - name: from
+          in: query
+          schema:
+            type: string
+          example: '2025-01-31'
+        - name: to
+          in: query
+          schema:
+            type: string
+          example: '2025-12-31'
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/analytics/{account_id}best_times:
+    get:
+      tags:
+        - ANALYTICS
+      summary: BEST TIMES TO POST
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+        - name: from
+          in: query
+          schema:
+            type: string
+          example: '2024-01-01'
+        - name: to
+          in: query
+          schema:
+            type: string
+          example: '2024-12-31'
+        - name: account_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/analytics/members:
+    get:
+      tags:
+        - ANALYTICS
+      summary: MEMBERS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+        - name: from
+          in: query
+          schema:
+            type: string
+          example: '2025-07-16'
+        - name: to
+          in: query
+          schema:
+            type: string
+          example: '2025-08-12'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/competitors:
+    get:
+      tags:
+        - ANALYTICS
+      summary: COMPETITORS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/competitors/66e011b94e299eb49376c715/analytics:
+    get:
+      tags:
+        - ANALYTICS
+      summary: COMPETITORS ANALYTICS
+      parameters:
+        - name: Publer-Workspace-Id
+          in: header
+          schema:
+            type: string
+          example: '{{workspace_id}}'
+        - name: from
+          in: query
+          schema:
+            type: string
+          example: '2025-07-16'
+        - name: to
+          in: query
+          schema:
+            type: string
+          example: '2025-08-12'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '0'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+
