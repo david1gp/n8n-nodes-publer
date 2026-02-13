@@ -25,7 +25,7 @@
     "dev": "tsc --watch",
     "test": "bun test",
     "release": "bash ./ops/release.sh",
-    "validate": "bunx ibm-openapi-validator ./nodes/Publer/openapi.json",
+    "validate": "bunx ibm-openapi-validator --ruleset spectral.yml ./nodes/Publer/openapi.json ",
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
     "lintfix": "eslint nodes credentials package.json --fix"
@@ -51,6 +51,7 @@
     ]
   },
   "devDependencies": {
+    "@ibm-cloud/openapi-ruleset": "^1.33.7",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/parser": "^8.55.0",
     "eslint": "^10.0.0",
@@ -58,9 +59,7 @@
     "gulp": "^5.0.1",
     "n8n-workflow": "*",
     "prettier": "^3.8.1",
-    "typescript": "^5.9.3",
-    "jest": "^30.2.0",
-    "ts-jest": "^29.4.6"
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "n8n-workflow": "*"

@@ -1,0 +1,4 @@
+extends: '@ibm-cloud/openapi-ruleset'
+rules:
+  ibm-string-attributes: off
+  ibm-array-attributes: off
