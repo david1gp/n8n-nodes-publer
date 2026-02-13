@@ -369,39 +369,122 @@
         "tags": [
           "POSTS > CONTENT TYPES"
         ],
-        "summary": "Post with locations",
+        "summary": "Schedule post",
+        "description": "Schedule a post. Supports text, photo, video, link, carousel, story, reel, and gif content types.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": {
+                "required": ["bulk"],
+                "properties": {
                   "bulk": {
-                    "state": "scheduled",
-                    "posts": [
-                      {
-                        "networks": {
-                          "facebook": {
-                            "type": "status",
-                            "text": "Facebook location"
-                          }
-                        },
-                        "accounts": [
-                          {
-                            "id": "647a0edddb2797b89044e2c1",
-                            "scheduled_at": "2025-06-14T10:21+02:00",
-                            "location": {
-                              "id": "308281375929281",
-                              "name": "Tirana",
-                              "info": "Tirana, Albania ⋅ 590 follow this",
-                              "verified": null,
-                              "address": "Tirana, Albania",
-                              "checkins": "590"
+                    "type": "object",
+                    "required": ["state", "posts"],
+                    "properties": {
+                      "state": {
+                        "type": "string",
+                        "enum": ["scheduled", "draft"],
+                        "description": "Post state",
+                        "example": "scheduled"
+                      },
+                      "posts": {
+                        "type": "array",
+                        "description": "Posts to create",
+                        "items": {
+                          "type": "object",
+                          "required": ["networks", "accounts"],
+                          "properties": {
+                            "networks": {
+                              "type": "object",
+                              "description": "Network-specific post content",
+                              "additionalProperties": {
+                                "type": "object",
+                                "description": "Per-network post configuration",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "enum": ["status", "photo", "video", "link", "carousel", "story", "reel", "gif"],
+                                    "description": "Content type: status (text only), photo, video, link, carousel, story, reel, or gif",
+                                    "example": "status"
+                                  },
+                                  "text": {
+                                    "type": "string",
+                                    "description": "Post text content",
+                                    "example": "Hello world!"
+                                  },
+                                  "media": {
+                                    "type": "array",
+                                    "description": "Media attachments (required for photo, video, carousel, story, reel, gif types)",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "id": {
+                                          "type": "string",
+                                          "description": "Media asset ID from upload"
+                                        },
+                                        "type": {
+                                          "type": "string",
+                                          "enum": ["photo", "video", "gif"],
+                                          "description": "Media type"
+                                        },
+                                        "caption": {
+                                          "type": "string",
+                                          "description": "Media caption"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "description": "URL for link posts (required when type=link)",
+                                    "example": "https://publer.com"
+                                  }
+                                }
+                              }
+                            },
+                            "accounts": {
+                              "type": "array",
+                              "description": "Target social media accounts",
+                              "items": {
+                                "type": "object",
+                                "required": ["id"],
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "description": "Account ID",
+                                    "example": "647a0edddb2797b89044e2c1"
+                                  },
+                                  "scheduled_at": {
+                                    "type": "string",
+                                    "description": "ISO 8601 scheduled time",
+                                    "example": "2025-06-14T10:21+02:00"
+                                  },
+                                  "location": {
+                                    "type": "object",
+                                    "description": "Location for Facebook/Instagram",
+                                    "properties": {
+                                      "id": {
+                                        "type": "string",
+                                        "description": "Location ID"
+                                      },
+                                      "name": {
+                                        "type": "string",
+                                        "description": "Location name"
+                                      },
+                                      "address": {
+                                        "type": "string",
+                                        "description": "Location address"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
                             }
                           }
-                        ]
+                        }
                       }
-                    ]
+                    }
                   }
                 }
               }
@@ -433,31 +516,104 @@
         "tags": [
           "POSTS > PUBLISHING METHODS"
         ],
-        "summary": "Publish",
+        "summary": "Publish immediately",
+        "description": "Publish a post immediately. Supports text, photo, video, link, carousel, story, reel, and gif content types.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": {
+                "required": ["bulk"],
+                "properties": {
                   "bulk": {
-                    "state": "scheduled",
-                    "url": "publish",
-                    "posts": [
-                      {
-                        "networks": {
-                          "facebook": {
-                            "type": "status",
-                            "text": "Just published this update via the Publer API! #RealTimePosting"
+                    "type": "object",
+                    "required": ["state", "posts"],
+                    "properties": {
+                      "state": {
+                        "type": "string",
+                        "enum": ["published"],
+                        "description": "Must be 'published' for immediate publishing",
+                        "example": "published"
+                      },
+                      "url": {
+                        "type": "string",
+                        "description": "Must be 'publish'",
+                        "example": "publish"
+                      },
+                      "posts": {
+                        "type": "array",
+                        "description": "Posts to publish",
+                        "items": {
+                          "type": "object",
+                          "required": ["networks", "accounts"],
+                          "properties": {
+                            "networks": {
+                              "type": "object",
+                              "description": "Network-specific post content",
+                              "additionalProperties": {
+                                "type": "object",
+                                "description": "Per-network post configuration",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "enum": ["status", "photo", "video", "link", "carousel", "story", "reel", "gif"],
+                                    "description": "Content type: status (text only), photo, video, link, carousel, story, reel, or gif",
+                                    "example": "status"
+                                  },
+                                  "text": {
+                                    "type": "string",
+                                    "description": "Post text content",
+                                    "example": "Hello world!"
+                                  },
+                                  "media": {
+                                    "type": "array",
+                                    "description": "Media attachments (required for photo, video, carousel, story, reel, gif types)",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "id": {
+                                          "type": "string",
+                                          "description": "Media asset ID from upload"
+                                        },
+                                        "type": {
+                                          "type": "string",
+                                          "enum": ["photo", "video", "gif"],
+                                          "description": "Media type"
+                                        },
+                                        "caption": {
+                                          "type": "string",
+                                          "description": "Media caption"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "description": "URL for link posts (required when type=link)",
+                                    "example": "https://publer.com"
+                                  }
+                                }
+                              }
+                            },
+                            "accounts": {
+                              "type": "array",
+                              "description": "Target social media accounts",
+                              "items": {
+                                "type": "object",
+                                "required": ["id"],
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "description": "Account ID",
+                                    "example": "647a0edddb2797b89044e2c1"
+                                  }
+                                }
+                              }
+                            }
                           }
-                        },
-                        "accounts": [
-                          {
-                            "id": "647a0edddb2797b89044e2c1"
-                          }
-                        ]
+                        }
                       }
-                    ]
+                    }
                   }
                 }
               }
