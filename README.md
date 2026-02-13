@@ -4,22 +4,6 @@ Quick links
 - Publer Docs - https://publer.com/docs
 - Publer Postman - https://www.postman.com/aerospace-architect-98610700/publer/collection/dolndsh/publer-api
 
-<!-- toc -->
-
-- [Run Publer n8n node locally](#run-publer-n8n-node-locally)
-  * [NodeJS](#nodejs)
-  * [Install n8n](#install-n8n)
-  * [Start n8n](#start-n8n)
-  * [Build and link the project](#build-and-link-the-project)
-  * [Add node to n8n](#add-node-to-n8n)
-  * [Start n8n again](#start-n8n-again)
-  * [Add Publer Node to new workflow](#add-publer-node-to-new-workflow)
-- [Modify Project](#modify-project)
-  * [Test Project Locally](#test-project-locally)
-  * [Publish project](#publish-project)
-
-<!-- tocstop -->
-
 # Run Publer n8n node locally
 Before start modifying the project, we kindly recommend
 to run the Publer locally.
