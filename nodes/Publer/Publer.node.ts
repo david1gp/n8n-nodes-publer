@@ -34,7 +34,7 @@ export class Publer implements INodeType {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      baseURL: "https://app.publer.com/api/v1",
+      baseURL: "https://app.publer.com",
     },
     properties: properties,
   };
