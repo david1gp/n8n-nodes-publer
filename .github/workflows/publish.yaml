@@ -1,23 +1,41 @@
-name: Publish Package to npmjs
+name: Publish Package
+
 on:
-  release:
-    types: [ published ]
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  id-token: write # Required for OIDC
+  contents: read
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
     steps:
+      # Checkout source code
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      # Setup Bun for installation, building, and testing
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      # Setup Node.js only for npm publishing with OIDC until Bun adds support for it - https://github.com/oven-sh/bun/issues/15601
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm ci
-      - run: npm run test
-#      - run: npm run lint
-      - run: npm run build
-      - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      # Use Bun for everything except publishing
+      - run: bun install
+      - run: bun run build
+      - run: bun test
+      - run: bun run getVersion
+
+      # Ensure npm 11.5.1 or later is installed
+      - name: Update npm
+        run: npm install -g npm@latest
+      # Use npm only for publishing with OIDC support
+      - run: npm publish --access public --provenance
