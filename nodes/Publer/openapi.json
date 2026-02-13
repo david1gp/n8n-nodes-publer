@@ -136,7 +136,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "661ce240db2797a7148a6b49"
+            "example": "661ce240db2797a7148a6b49",
+            "required": true
           },
           {
             "name": "workspace_id",
@@ -216,7 +217,9 @@
                 "type": "string"
               }
             },
-            "example": ["647a0edddb2797b89044e2c1"]
+            "example": [
+              "647a0edddb2797b89044e2c1"
+            ]
           },
           {
             "name": "page",
@@ -233,10 +236,16 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": ["photo", "video", "gif"]
+                "enum": [
+                  "photo",
+                  "video",
+                  "gif"
+                ]
               }
             },
-            "example": ["photo"]
+            "example": [
+              "photo"
+            ]
           },
           {
             "name": "used[]",
@@ -247,7 +256,9 @@
                 "type": "boolean"
               }
             },
-            "example": [false]
+            "example": [
+              false
+            ]
           },
           {
             "name": "source[]",
@@ -256,7 +267,15 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": ["canva", "vista", "postnitro", "contentdrips", "openai", "favorites", "upload"]
+                "enum": [
+                  "canva",
+                  "vista",
+                  "postnitro",
+                  "contentdrips",
+                  "openai",
+                  "favorites",
+                  "upload"
+                ]
               }
             }
           },
@@ -337,14 +356,20 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["media", "type"],
+                "required": [
+                  "media",
+                  "type"
+                ],
                 "properties": {
                   "media": {
                     "type": "array",
                     "description": "List of media URLs and metadata",
                     "items": {
                       "type": "object",
-                      "required": ["url", "name"],
+                      "required": [
+                        "url",
+                        "name"
+                      ],
                       "properties": {
                         "url": {
                           "type": "string",
@@ -367,7 +392,10 @@
                   },
                   "type": {
                     "type": "string",
-                    "enum": ["single", "bulk", "thumbnail"],
+                    "enum": [
+                      "single",
+                      "bulk"
+                    ],
                     "description": "Upload type",
                     "example": "single"
                   },
@@ -421,15 +449,23 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["bulk"],
+                "required": [
+                  "bulk"
+                ],
                 "properties": {
                   "bulk": {
                     "type": "object",
-                    "required": ["state", "posts"],
+                    "required": [
+                      "state",
+                      "posts"
+                    ],
                     "properties": {
                       "state": {
                         "type": "string",
-                        "enum": ["scheduled", "draft"],
+                        "enum": [
+                          "scheduled",
+                          "draft"
+                        ],
                         "description": "Post state",
                         "example": "scheduled"
                       },
@@ -438,7 +474,10 @@
                         "description": "Posts to create",
                         "items": {
                           "type": "object",
-                          "required": ["networks", "accounts"],
+                          "required": [
+                            "networks",
+                            "accounts"
+                          ],
                           "properties": {
                             "networks": {
                               "type": "object",
@@ -449,7 +488,21 @@
                                 "properties": {
                                   "type": {
                                     "type": "string",
-                                    "enum": ["status", "photo", "video", "link", "carousel", "story", "reel", "gif", "poll", "document", "event", "offer", "shorts"],
+                                    "enum": [
+                                      "status",
+                                      "photo",
+                                      "video",
+                                      "link",
+                                      "carousel",
+                                      "story",
+                                      "reel",
+                                      "gif",
+                                      "poll",
+                                      "document",
+                                      "event",
+                                      "offer",
+                                      "shorts"
+                                    ],
                                     "description": "Content type: status (text only), photo, video, link, carousel, story, reel, or gif",
                                     "example": "status"
                                   },
@@ -470,12 +523,50 @@
                                         },
                                         "type": {
                                           "type": "string",
-                                          "enum": ["photo", "video", "gif"],
+                                          "enum": [
+                                            "image",
+                                            "photo",
+                                            "video",
+                                            "gif"
+                                          ],
                                           "description": "Media type"
                                         },
                                         "caption": {
                                           "type": "string",
                                           "description": "Media caption"
+                                        },
+                                        "alt_text": {
+                                          "type": "string",
+                                          "description": "Alt text for accessibility"
+                                        },
+                                        "thumbnails": {
+                                          "type": "array",
+                                          "description": "Thumbnail objects for video posts (contains id, small, real)",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "id": {
+                                                "type": "string",
+                                                "description": "Thumbnail ID"
+                                              },
+                                              "small": {
+                                                "type": "string",
+                                                "description": "Small thumbnail URL"
+                                              },
+                                              "real": {
+                                                "type": "string",
+                                                "description": "Full size thumbnail URL"
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "title": {
+                                          "type": "string",
+                                          "description": "Video title for video posts"
+                                        },
+                                        "default_thumbnail": {
+                                          "type": "integer",
+                                          "description": "0-based index to select default thumbnail"
                                         }
                                       }
                                     }
@@ -493,7 +584,9 @@
                               "description": "Target social media accounts",
                               "items": {
                                 "type": "object",
-                                "required": ["id"],
+                                "required": [
+                                  "id"
+                                ],
                                 "properties": {
                                   "id": {
                                     "type": "string",
@@ -569,15 +662,22 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["bulk"],
+                "required": [
+                  "bulk"
+                ],
                 "properties": {
                   "bulk": {
                     "type": "object",
-                    "required": ["state", "posts"],
+                    "required": [
+                      "state",
+                      "posts"
+                    ],
                     "properties": {
                       "state": {
                         "type": "string",
-                        "enum": ["published"],
+                        "enum": [
+                          "published"
+                        ],
                         "description": "Must be 'published' for immediate publishing",
                         "example": "published"
                       },
@@ -591,7 +691,10 @@
                         "description": "Posts to publish",
                         "items": {
                           "type": "object",
-                          "required": ["networks", "accounts"],
+                          "required": [
+                            "networks",
+                            "accounts"
+                          ],
                           "properties": {
                             "networks": {
                               "type": "object",
@@ -602,7 +705,21 @@
                                 "properties": {
                                   "type": {
                                     "type": "string",
-                                    "enum": ["status", "photo", "video", "link", "carousel", "story", "reel", "gif", "poll", "document", "event", "offer", "shorts"],
+                                    "enum": [
+                                      "status",
+                                      "photo",
+                                      "video",
+                                      "link",
+                                      "carousel",
+                                      "story",
+                                      "reel",
+                                      "gif",
+                                      "poll",
+                                      "document",
+                                      "event",
+                                      "offer",
+                                      "shorts"
+                                    ],
                                     "description": "Content type: status (text only), photo, video, link, carousel, story, reel, or gif",
                                     "example": "status"
                                   },
@@ -623,12 +740,50 @@
                                         },
                                         "type": {
                                           "type": "string",
-                                          "enum": ["photo", "video", "gif"],
+                                          "enum": [
+                                            "image",
+                                            "photo",
+                                            "video",
+                                            "gif"
+                                          ],
                                           "description": "Media type"
                                         },
                                         "caption": {
                                           "type": "string",
                                           "description": "Media caption"
+                                        },
+                                        "alt_text": {
+                                          "type": "string",
+                                          "description": "Alt text for accessibility"
+                                        },
+                                        "thumbnails": {
+                                          "type": "array",
+                                          "description": "Thumbnail objects for video posts (contains id, small, real)",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "id": {
+                                                "type": "string",
+                                                "description": "Thumbnail ID"
+                                              },
+                                              "small": {
+                                                "type": "string",
+                                                "description": "Small thumbnail URL"
+                                              },
+                                              "real": {
+                                                "type": "string",
+                                                "description": "Full size thumbnail URL"
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "title": {
+                                          "type": "string",
+                                          "description": "Video title for video posts"
+                                        },
+                                        "default_thumbnail": {
+                                          "type": "integer",
+                                          "description": "0-based index to select default thumbnail"
                                         }
                                       }
                                     }
@@ -646,7 +801,9 @@
                               "description": "Target social media accounts",
                               "items": {
                                 "type": "object",
-                                "required": ["id"],
+                                "required": [
+                                  "id"
+                                ],
                                 "properties": {
                                   "id": {
                                     "type": "string",
@@ -708,7 +865,35 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["all", "scheduled", "scheduled_approved", "scheduled_pending", "scheduled_declined", "scheduled_reauth", "scheduled_locked", "published", "published_posted", "published_deleted", "published_hidden", "draft", "draft_dated", "draft_undated", "draft_private", "draft_public", "failed", "recycling", "recycling_active", "recycling_paused", "recycling_expired", "recycling_failed", "recycling_pending", "recycling_declined", "recycling_reauth", "recycling_locked", "recurring"]
+              "enum": [
+                "all",
+                "scheduled",
+                "scheduled_approved",
+                "scheduled_pending",
+                "scheduled_declined",
+                "scheduled_reauth",
+                "scheduled_locked",
+                "published",
+                "published_posted",
+                "published_deleted",
+                "published_hidden",
+                "draft",
+                "draft_dated",
+                "draft_undated",
+                "draft_private",
+                "draft_public",
+                "failed",
+                "recycling",
+                "recycling_active",
+                "recycling_paused",
+                "recycling_expired",
+                "recycling_failed",
+                "recycling_pending",
+                "recycling_declined",
+                "recycling_reauth",
+                "recycling_locked",
+                "recurring"
+              ]
             },
             "example": "scheduled"
           },
@@ -719,7 +904,35 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": ["all", "scheduled", "scheduled_approved", "scheduled_pending", "scheduled_declined", "scheduled_reauth", "scheduled_locked", "published", "published_posted", "published_deleted", "published_hidden", "draft", "draft_dated", "draft_undated", "draft_private", "draft_public", "failed", "recycling", "recycling_active", "recycling_paused", "recycling_expired", "recycling_failed", "recycling_pending", "recycling_declined", "recycling_reauth", "recycling_locked", "recurring"]
+                "enum": [
+                  "all",
+                  "scheduled",
+                  "scheduled_approved",
+                  "scheduled_pending",
+                  "scheduled_declined",
+                  "scheduled_reauth",
+                  "scheduled_locked",
+                  "published",
+                  "published_posted",
+                  "published_deleted",
+                  "published_hidden",
+                  "draft",
+                  "draft_dated",
+                  "draft_undated",
+                  "draft_private",
+                  "draft_public",
+                  "failed",
+                  "recycling",
+                  "recycling_active",
+                  "recycling_paused",
+                  "recycling_expired",
+                  "recycling_failed",
+                  "recycling_pending",
+                  "recycling_declined",
+                  "recycling_reauth",
+                  "recycling_locked",
+                  "recurring"
+                ]
               }
             },
             "style": "form",
@@ -762,7 +975,9 @@
             },
             "style": "form",
             "explode": true,
-            "example": ["63c675b54e299e9cf2b667ea"]
+            "example": [
+              "63c675b54e299e9cf2b667ea"
+            ]
           },
           {
             "name": "query",
@@ -776,7 +991,22 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["status", "link", "photo", "gif", "video", "reel", "story", "shorts", "poll", "document", "carousel", "article", "event", "offer"]
+              "enum": [
+                "status",
+                "link",
+                "photo",
+                "gif",
+                "video",
+                "reel",
+                "story",
+                "shorts",
+                "poll",
+                "document",
+                "carousel",
+                "article",
+                "event",
+                "offer"
+              ]
             }
           },
           {
@@ -820,7 +1050,9 @@
                 "type": "string"
               }
             },
-            "example": ["684945796a88bf9baa9c182c"]
+            "example": [
+              "684945796a88bf9baa9c182c"
+            ]
           }
         ],
         "responses": {
@@ -1104,7 +1336,9 @@
                 "type": "string"
               }
             },
-            "example": ["followers"]
+            "example": [
+              "followers"
+            ]
           },
           {
             "name": "account_id",
@@ -1146,7 +1380,10 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["true", "false"]
+              "enum": [
+                "true",
+                "false"
+              ]
             },
             "example": "false",
             "description": "Include competitor analysis data"
@@ -1192,7 +1429,20 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["poll", "status", "link", "carousel", "photo", "gif", "video", "reel", "document", "short", "article", "story"]
+              "enum": [
+                "poll",
+                "status",
+                "link",
+                "carousel",
+                "photo",
+                "gif",
+                "video",
+                "reel",
+                "document",
+                "short",
+                "article",
+                "story"
+              ]
             },
             "description": "Filter by post type"
           },
@@ -1201,7 +1451,22 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["scheduled_at", "reach", "engagement", "engagement_rate", "click_through_rate", "reach_rate", "postType", "likes", "video_views", "comments", "shares", "saves", "link_clicks", "post_clicks"]
+              "enum": [
+                "scheduled_at",
+                "reach",
+                "engagement",
+                "engagement_rate",
+                "click_through_rate",
+                "reach_rate",
+                "postType",
+                "likes",
+                "video_views",
+                "comments",
+                "shares",
+                "saves",
+                "link_clicks",
+                "post_clicks"
+              ]
             },
             "description": "Field to sort results by"
           },
@@ -1210,7 +1475,10 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["ASC", "DESC"]
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
             },
             "description": "Sort direction (ASC or DESC)"
           },
@@ -1433,17 +1701,31 @@
             "name": "from",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "date"
             },
-            "example": "2025-07-16"
+            "example": "2025-07-16",
+            "required": true,
+            "description": "Start date (YYYY-MM-DD)"
           },
           {
             "name": "to",
             "in": "query",
             "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-08-12",
+            "required": true,
+            "description": "End date (YYYY-MM-DD)"
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "schema": {
               "type": "string"
             },
-            "example": "2025-08-12"
+            "description": "Restrict analytics to one social account. Omit for all workspace accounts."
           }
         ],
         "responses": {
@@ -1567,7 +1849,16 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["followers", "reach", "engagement", "posts_count", "videos_count", "photos_count", "links_count", "statuses_count"]
+              "enum": [
+                "followers",
+                "reach",
+                "engagement",
+                "posts_count",
+                "videos_count",
+                "photos_count",
+                "links_count",
+                "statuses_count"
+              ]
             },
             "description": "Field to sort results by (default: followers)"
           },
@@ -1576,7 +1867,10 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["asc", "desc"]
+              "enum": [
+                "asc",
+                "desc"
+              ]
             },
             "description": "Sort direction (default: asc)"
           }
@@ -1604,7 +1898,21 @@
           "provider": {
             "type": "string",
             "description": "The social network provider",
-            "enum": ["bluesky", "facebook", "instagram", "linkedin", "twitter", "tiktok", "youtube", "pinterest", "google", "wordpress", "telegram", "mastodon", "threads"]
+            "enum": [
+              "bluesky",
+              "facebook",
+              "instagram",
+              "linkedin",
+              "twitter",
+              "tiktok",
+              "youtube",
+              "pinterest",
+              "google",
+              "wordpress",
+              "telegram",
+              "mastodon",
+              "threads"
+            ]
           },
           "name": {
             "type": "string",
@@ -1621,7 +1929,15 @@
           "type": {
             "type": "string",
             "description": "Account type",
-            "enum": ["page", "profile", "group", "business", "channel", "location", "blog"]
+            "enum": [
+              "page",
+              "profile",
+              "group",
+              "business",
+              "channel",
+              "location",
+              "blog"
+            ]
           }
         }
       }
