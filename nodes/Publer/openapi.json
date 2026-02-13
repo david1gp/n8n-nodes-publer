@@ -2,25 +2,17 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Publer API",
-    "description": "Welcome to the **Publer API** collection!\n\nThis API enables developers, agencies, and marketing teams to automate social media workflows, integrate advanced scheduling tools, and manage multiple brands at scale—all from your own applications.\n\n---\n\n## What is the Publer API?\n\nThe Publer API is a modern, RESTful JSON interface designed for seamless social media automation. It lets you programmatically access and manage all core functions of the Publer platform, including:\n\n- **Publishing & Scheduling**  \n    Draft, schedule, auto-schedule, or instantly publish posts (including bulk and recurring content) across 13+ supported social platforms.\n    \n- **Media Management**  \n    Upload, organize, and attach media—images, videos, GIFs, PDFs, and more. Apply watermarks and manage media libraries per workspace or account.\n    \n- **Workspace & Collaboration**  \n    Manage teams, clients, and brands through isolated workspaces. Retrieve user profiles, permissions, and organize content by workspace.\n    \n- **Advanced Features**  \n    Automate post actions (auto-share, follow-up comments, auto-delete), append branded signatures, use location tags, and customize posts with platform-specific features.\n    \n\n---\n\n## Supported Social Networks\n\nPublish and manage content on:\n\n- Facebook, Instagram, Twitter/X, LinkedIn, Pinterest, YouTube, TikTok, Google Business Profile, WordPress, Telegram, Mastodon, Threads, and Bluesky.\n    \n\n---\n\n## Core Capabilities\n\n- **Content Types:**  \n    Status updates, images, videos, reels, stories, polls, PDFs, links, carousels, events, offers, and more.\n    \n- **Bulk Scheduling:**  \n    Schedule up to 500 posts in a single request for efficient multi-account planning.\n    \n- **Media Options:**  \n    Organize Facebook albums, Pinterest boards, and apply account-specific watermarks.\n    \n- **Branding & Protection:**  \n    Use signatures and watermarks to reinforce your brand and protect creative assets.\n    \n\n---\n\n## How to Get Started\n\n1. **Generate an API Key**\n    \n    - Sign in with Ambassador or Enterprise access.\n        \n    - Go to `Settings → Access & Login → API Keys`, generate a key, and copy it securely.\n        \n2. **List Your Workspaces & Accounts**\n    \n    - Use the API to retrieve workspace and account IDs for all actions.\n        \n3. **Upload Media (Optional)**\n    \n    - Upload images, videos, or docs to get reusable media IDs.\n        \n4. **Create & Schedule Posts**\n    \n    - Use the Posts API to draft, schedule, or bulk publish content across your accounts.\n        \n5. **Monitor Jobs**\n    \n    - Every action returns a job ID—track and analyze your posts programmatically.\n        \n\n---\n\n## Best Practices\n\n- Store and manage API keys securely.\n    \n- Use the minimum scopes required for your integrations.\n    \n- Comply with posting limits and content guidelines for each platform.\n    \n- Use `alt_text` for accessible images.\n    \n\n---\n\n## Documentation & Support\n\n- For full endpoint details, examples, and best practices, refer to the [Publer API Documentation](https://publer.com/docs).\n    \n\n---\n\n**Build smarter. Automate faster. Take control of your social content with the Publer API!**",
+    "description": "Welcome to the **Publer API** collection!\n\nThis API enables developers, agencies, and marketing teams to automate social media workflows, integrate advanced scheduling tools, and manage multiple brands at scale—all from your own applications.\n\n---\n\n## What is the Publer API?\n\nThe Publer API is a modern, RESTful JSON interface designed for seamless social media automation. It lets you programmatically access and manage all core functions of the Publer platform, including:\n\n- **Publishing & Scheduling**  \n    Draft, schedule, auto-schedule, or instantly publish posts (including bulk and recurring content) across 13+ supported social platforms.\n    \n- **Media Management**  \n    Upload, organize, and attach media—images, videos, GIFs, PDFs, and more. Apply watermarks and manage media libraries per workspace or account.\n    \n- **Workspace & Collaboration**  \n    Manage teams, clients, and brands through isolated workspaces. Retrieve user profiles, permissions, and organize content by workspace.\n    \n- **Advanced Features**  \n    Automate post actions (auto-share, follow-up comments, auto-delete), append branded signatures, use location tags, and customize posts with platform-specific features.\n    \n\n---\n\n## Supported Social Networks\n\nPublish and manage content on:\n\n- Facebook, Instagram, Twitter/X, LinkedIn, Pinterest, YouTube, TikTok, Google Business Profile, WordPress, Telegram, Mastodon, Threads, and Bluesky.\n    \n\n---\n\n## Core Capabilities\n\n- **Content Types:**  \n    Status updates, images, videos, reels, stories, polls, PDFs, links, carousels, events, offers, and more.\n    \n- **Bulk Scheduling:**  \n    Schedule up to 500 posts in a single request for efficient multi-account planning.\n    \n- **Media Options:**  \n    Organize Facebook albums, Pinterest boards, and apply account-specific watermarks.\n    \n- **Branding & Protection:**  \n    Use signatures and watermarks to reinforce your brand and protect ...\n",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://{{url}}"
+      "url": "https://app.publer.com/api/v1"
     }
   ],
-  "components": {
-    "securitySchemes": {
-      "apikeyAuth": {
-        "type": "http",
-        "scheme": "apikey"
-      }
-    }
-  },
   "security": [
     {
-      "apikeyAuth": []
+      "bearerAuth": []
     }
   ],
   "tags": [
@@ -65,7 +57,7 @@
     }
   ],
   "paths": {
-    "/api/v1/users/me": {
+    "/users/me": {
       "get": {
         "tags": [
           "USERS"
@@ -81,7 +73,7 @@
         }
       }
     },
-    "/api/v1/workspaces": {
+    "/workspaces": {
       "get": {
         "tags": [
           "WORKSPACES"
@@ -97,7 +89,7 @@
         }
       }
     },
-    "/api/v1/workspaces/{workspace_id}/signatures": {
+    "/workspaces/{workspace_id}/signatures": {
       "get": {
         "tags": [
           "WORKSPACES"
@@ -131,7 +123,7 @@
         }
       }
     },
-    "/api/v1/workspaces/{workspace_id}/media_options": {
+    "/workspaces/{workspace_id}/media_options": {
       "get": {
         "tags": [
           "WORKSPACES"
@@ -165,12 +157,12 @@
         }
       }
     },
-    "/api/v1/accounts": {
+    "/accounts": {
       "get": {
         "tags": [
           "ACCOUNTS"
         ],
-        "summary": "Accounts",
+        "summary": "List Accounts",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -178,20 +170,33 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           }
         ],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accounts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Account"
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
       }
     },
-    "/api/v1/media": {
+    "/media": {
       "get": {
         "tags": [
           "MEDIA"
@@ -204,23 +209,68 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
+          },
+          {
+            "name": "ids[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": ["647a0edddb2797b89044e2c1"]
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 0
           },
           {
             "name": "types[]",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["photo", "video", "gif"]
+              }
             },
-            "example": "photo"
+            "example": ["photo"]
           },
           {
             "name": "used[]",
             "in": "query",
             "schema": {
-              "type": "boolean"
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
             },
-            "example": "false"
+            "example": [false]
+          },
+          {
+            "name": "source[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["canva", "vista", "postnitro", "contentdrips", "openai", "favorites", "upload"]
+              }
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -231,9 +281,7 @@
             }
           }
         }
-      }
-    },
-    "/api/v1/media/": {
+      },
       "post": {
         "tags": [
           "MEDIA"
@@ -251,11 +299,11 @@
                   },
                   "direct_upload": {
                     "type": "boolean",
-                    "example": "false"
+                    "example": false
                   },
                   "in_library": {
                     "type": "boolean",
-                    "example": "true"
+                    "example": true
                   }
                 }
               }
@@ -269,7 +317,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           }
         ],
         "responses": {
@@ -282,7 +331,7 @@
         }
       }
     },
-    "/api/v1/media/from-url": {
+    "/media/from-url": {
       "post": {
         "tags": [
           "MEDIA"
@@ -351,7 +400,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           }
         ],
         "responses": {
@@ -364,7 +414,7 @@
         }
       }
     },
-    "/api/v1/posts/schedule": {
+    "/posts/schedule": {
       "post": {
         "tags": [
           "POSTS > CONTENT TYPES"
@@ -498,7 +548,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           }
         ],
         "responses": {
@@ -511,7 +562,7 @@
         }
       }
     },
-    "/api/v1/posts/schedule/publish": {
+    "/posts/schedule/publish": {
       "post": {
         "tags": [
           "POSTS > PUBLISHING METHODS"
@@ -627,7 +678,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           }
         ],
         "responses": {
@@ -640,12 +692,12 @@
         }
       }
     },
-    "/api/v1/posts": {
+    "/posts": {
       "get": {
         "tags": [
           "POSTS"
         ],
-        "summary": "Get posts",
+        "summary": "List Posts",
         "parameters": [
           {
             "name": "Publer-Workspace-Id",
@@ -653,15 +705,46 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           },
           {
             "name": "state",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": ["all", "scheduled", "scheduled_approved", "scheduled_pending", "scheduled_declined", "scheduled_reauth", "scheduled_locked", "published", "published_posted", "published_deleted", "published_hidden", "draft", "draft_dated", "draft_undated", "draft_private", "draft_public", "failed", "recycling", "recycling_active", "recycling_paused", "recycling_expired", "recycling_failed", "recycling_pending", "recycling_declined", "recycling_reauth", "recycling_locked", "recurring"]
             },
             "example": "scheduled"
+          },
+          {
+            "name": "state[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["all", "scheduled", "scheduled_approved", "scheduled_pending", "scheduled_declined", "scheduled_reauth", "scheduled_locked", "published", "published_posted", "published_deleted", "published_hidden", "draft", "draft_dated", "draft_undated", "draft_private", "draft_public", "failed", "recycling", "recycling_active", "recycling_paused", "recycling_expired", "recycling_failed", "recycling_pending", "recycling_declined", "recycling_reauth", "recycling_locked", "recurring"]
+              }
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-01-01"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2025-12-31"
           },
           {
             "name": "page",
@@ -669,7 +752,40 @@
             "schema": {
               "type": "integer"
             },
-            "example": "0"
+            "example": 0
+          },
+          {
+            "name": "account_ids[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": ["63c675b54e299e9cf2b667ea"]
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "postType",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["status", "link", "photo", "gif", "video", "reel", "story", "short", "poll", "document", "carousel", "article"]
+            }
+          },
+          {
+            "name": "member_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -693,15 +809,19 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           },
           {
             "name": "post_ids[]",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
-            "example": "684945796a88bf9baa9c182c"
+            "example": ["684945796a88bf9baa9c182c"]
           }
         ],
         "responses": {
@@ -714,7 +834,7 @@
         }
       }
     },
-    "/api/v1/posts/links": {
+    "/posts/links": {
       "post": {
         "tags": [
           "POSTS"
@@ -742,7 +862,7 @@
         }
       }
     },
-    "/api/v1/posts/{post_id}": {
+    "/posts/{post_id}": {
       "put": {
         "tags": [
           "POSTS"
@@ -763,7 +883,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           }
         ],
         "responses": {
@@ -776,7 +897,7 @@
         }
       }
     },
-    "/api/v1/job_status/{job_id}": {
+    "/job_status/{job_id}": {
       "get": {
         "tags": [
           "JOB STATUS"
@@ -797,7 +918,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           }
         ],
         "responses": {
@@ -810,7 +932,7 @@
         }
       }
     },
-    "/api/v1/locations/instagram": {
+    "/locations/instagram": {
       "get": {
         "tags": [
           "LOCATIONS"
@@ -823,7 +945,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           },
           {
             "name": "q",
@@ -831,7 +954,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "Tirana\n"
+            "example": "Tirana"
           }
         ],
         "responses": {
@@ -844,7 +967,7 @@
         }
       }
     },
-    "/api/v1/locations/facebook": {
+    "/locations/facebook": {
       "get": {
         "tags": [
           "LOCATIONS"
@@ -857,7 +980,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           },
           {
             "name": "q",
@@ -865,7 +989,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "Tirana\n"
+            "example": "Tirana"
           }
         ],
         "responses": {
@@ -878,7 +1002,7 @@
         }
       }
     },
-    "/api/v1/locations/threads": {
+    "/locations/threads": {
       "get": {
         "tags": [
           "LOCATIONS"
@@ -891,7 +1015,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           },
           {
             "name": "q",
@@ -899,7 +1024,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "Tirana\n"
+            "example": "Tirana"
           }
         ],
         "responses": {
@@ -912,7 +1037,7 @@
         }
       }
     },
-    "/api/v1/analytics/charts": {
+    "/analytics/charts": {
       "get": {
         "tags": [
           "ANALYTICS"
@@ -925,7 +1050,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           }
         ],
         "responses": {
@@ -938,7 +1064,7 @@
         }
       }
     },
-    "/api/v1/analytics/{account_id}/chart_data": {
+    "/analytics/{account_id}/chart_data": {
       "get": {
         "tags": [
           "ANALYTICS"
@@ -951,7 +1077,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           },
           {
             "name": "from",
@@ -973,9 +1100,12 @@
             "name": "chart_ids[]",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
-            "example": "followers"
+            "example": ["followers"]
           },
           {
             "name": "account_id",
@@ -996,7 +1126,7 @@
         }
       }
     },
-    "/api/v1/analytics/{account_id}/post_insights": {
+    "/analytics/{account_id}/post_insights": {
       "get": {
         "tags": [
           "ANALYTICS"
@@ -1009,7 +1139,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           },
           {
             "name": "from",
@@ -1033,7 +1164,7 @@
             "schema": {
               "type": "integer"
             },
-            "example": "0"
+            "example": 0
           },
           {
             "name": "account_id",
@@ -1054,7 +1185,7 @@
         }
       }
     },
-    "/api/v1/analytics/{account_id}/hashtag_insights": {
+    "/analytics/{account_id}/hashtag_insights": {
       "get": {
         "tags": [
           "ANALYTICS"
@@ -1067,7 +1198,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           },
           {
             "name": "from",
@@ -1104,7 +1236,7 @@
         }
       }
     },
-    "/api/v1/analytics/{account_id}/hashtag_performing_posts": {
+    "/analytics/{account_id}/hashtag_performing_posts": {
       "get": {
         "tags": [
           "ANALYTICS"
@@ -1117,7 +1249,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           },
           {
             "name": "hashtag",
@@ -1163,7 +1296,7 @@
         }
       }
     },
-    "/api/v1/analytics/{account_id}/best_times": {
+    "/analytics/{account_id}/best_times": {
       "get": {
         "tags": [
           "ANALYTICS"
@@ -1176,7 +1309,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           },
           {
             "name": "from",
@@ -1213,7 +1347,7 @@
         }
       }
     },
-    "/api/v1/analytics/members": {
+    "/analytics/members": {
       "get": {
         "tags": [
           "ANALYTICS"
@@ -1226,7 +1360,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           },
           {
             "name": "from",
@@ -1255,7 +1390,7 @@
         }
       }
     },
-    "/api/v1/competitors": {
+    "/competitors": {
       "get": {
         "tags": [
           "ANALYTICS"
@@ -1268,7 +1403,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           }
         ],
         "responses": {
@@ -1281,7 +1417,7 @@
         }
       }
     },
-    "/api/v1/competitors/{competitor_id}/analytics": {
+    "/competitors/{competitor_id}/analytics": {
       "get": {
         "tags": [
           "ANALYTICS"
@@ -1302,7 +1438,8 @@
             "schema": {
               "type": "string"
             },
-            "example": "{{workspace_id}}"
+            "example": "{{workspace_id}}",
+            "required": true
           },
           {
             "name": "from",
@@ -1326,7 +1463,7 @@
             "schema": {
               "type": "integer"
             },
-            "example": "0"
+            "example": 0
           }
         ],
         "responses": {
@@ -1337,6 +1474,53 @@
             }
           }
         }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the account"
+          },
+          "provider": {
+            "type": "string",
+            "description": "The social network provider",
+            "enum": ["bluesky", "facebook", "instagram", "linkedin", "twitter", "tiktok", "youtube", "pinterest", "google", "wordpress", "telegram", "mastodon", "threads"]
+          },
+          "name": {
+            "type": "string",
+            "description": "The display name of the social media account"
+          },
+          "social_id": {
+            "type": "string",
+            "description": "Unique identifier for the account on the social media platform"
+          },
+          "picture": {
+            "type": "string",
+            "description": "URL to the account's avatar/logo"
+          },
+          "type": {
+            "type": "string",
+            "description": "Account type",
+            "enum": ["page", "profile", "group", "business", "channel", "location", "blog"]
+          },
+          "status": {
+            "type": "string",
+            "description": "Account status"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "API key authentication. Format: \"Bearer-API YOUR_API_KEY\""
       }
     }
   }
