@@ -21,21 +21,6 @@ export class PublerCompetitorAnalysis implements INodeType {
     ],
     properties: [
       {
-        displayName: "Operation",
-        name: "operation",
-        type: "options",
-        noDataExpression: true,
-        options: [
-          {
-            name: "Get Competitor Analytics",
-            value: "getCompetitorAnalytics",
-            description: "Retrieve analytics data for competitor accounts",
-            action: "Get competitor analytics",
-          },
-        ],
-        default: "getCompetitorAnalytics",
-      },
-      {
         displayName: "Account ID",
         name: "accountId",
         type: "string",
@@ -43,11 +28,6 @@ export class PublerCompetitorAnalysis implements INodeType {
         required: true,
         description: "The social media account ID to analyze competitors for",
         placeholder: "647a0edddb2797b89044e2c1",
-        displayOptions: {
-          show: {
-            operation: ["getCompetitorAnalytics"],
-          },
-        },
       },
       {
         displayName: "Competitor ID",
@@ -55,11 +35,6 @@ export class PublerCompetitorAnalysis implements INodeType {
         type: "string",
         default: "",
         description: "Optional: Filter by specific competitor account ID",
-        displayOptions: {
-          show: {
-            operation: ["getCompetitorAnalytics"],
-          },
-        },
       },
       {
         displayName: "Search Query",
@@ -67,11 +42,6 @@ export class PublerCompetitorAnalysis implements INodeType {
         type: "string",
         default: "",
         description: "Optional: Search filter for competitor account names",
-        displayOptions: {
-          show: {
-            operation: ["getCompetitorAnalytics"],
-          },
-        },
       },
       {
         displayName: "From Date",
@@ -80,11 +50,6 @@ export class PublerCompetitorAnalysis implements INodeType {
         default: "",
         description: "Optional: Start date for analytics data (YYYY-MM-DD)",
         placeholder: "2024-01-01",
-        displayOptions: {
-          show: {
-            operation: ["getCompetitorAnalytics"],
-          },
-        },
       },
       {
         displayName: "To Date",
@@ -93,11 +58,6 @@ export class PublerCompetitorAnalysis implements INodeType {
         default: "",
         description: "Optional: End date for analytics data (YYYY-MM-DD)",
         placeholder: "2024-12-31",
-        displayOptions: {
-          show: {
-            operation: ["getCompetitorAnalytics"],
-          },
-        },
       },
       {
         displayName: "Page",
@@ -105,11 +65,6 @@ export class PublerCompetitorAnalysis implements INodeType {
         type: "number",
         default: 0,
         description: "Page number for pagination (default: 0)",
-        displayOptions: {
-          show: {
-            operation: ["getCompetitorAnalytics"],
-          },
-        },
       },
       {
         displayName: "Sort By",
@@ -127,11 +82,6 @@ export class PublerCompetitorAnalysis implements INodeType {
           { name: "Links Count", value: "links_count" },
           { name: "Statuses Count", value: "statuses_count" },
         ],
-        displayOptions: {
-          show: {
-            operation: ["getCompetitorAnalytics"],
-          },
-        },
       },
       {
         displayName: "Sort Direction",
@@ -143,11 +93,6 @@ export class PublerCompetitorAnalysis implements INodeType {
           { name: "Ascending", value: "asc" },
           { name: "Descending", value: "desc" },
         ],
-        displayOptions: {
-          show: {
-            operation: ["getCompetitorAnalytics"],
-          },
-        },
       },
       {
         displayName: "Workspace ID",
@@ -156,11 +101,6 @@ export class PublerCompetitorAnalysis implements INodeType {
         default: "",
         required: true,
         description: "The workspace ID that contains the account",
-        displayOptions: {
-          show: {
-            operation: ["getCompetitorAnalytics"],
-          },
-        },
       },
     ],
   }
@@ -184,7 +124,6 @@ export class PublerCompetitorAnalysis implements INodeType {
       itemCount: items.length,
     })
 
-    const operation = this.getNodeParameter("operation", 0) as string
     const workspaceId = this.getNodeParameter("workspaceId", 0) as string
 
     if (!workspaceId) {
@@ -197,72 +136,69 @@ export class PublerCompetitorAnalysis implements INodeType {
     this.logger.debug("Node parameters retrieved", {
       hasWorkspaceId: !!workspaceId,
     })
-    this.logger.info("Starting execution", { operation, itemCount: items.length })
+    this.logger.info("Starting execution", { itemCount: items.length })
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        if (operation === "getCompetitorAnalytics") {
-          const accountId = this.getNodeParameter("accountId", itemIndex) as string
-          const competitorId = this.getNodeParameter("competitorId", itemIndex, "") as string
-          const query = this.getNodeParameter("query", itemIndex, "") as string
-          const fromDate = this.getNodeParameter("from", itemIndex, "") as string
-          const toDate = this.getNodeParameter("to", itemIndex, "") as string
-          const page = this.getNodeParameter("page", itemIndex, 0) as number
-          const sortBy = this.getNodeParameter("sortBy", itemIndex, "followers") as string
-          const sortType = this.getNodeParameter("sortType", itemIndex, "asc") as string
+        const accountId = this.getNodeParameter("accountId", itemIndex) as string
+        const competitorId = this.getNodeParameter("competitorId", itemIndex, "") as string
+        const query = this.getNodeParameter("query", itemIndex, "") as string
+        const fromDate = this.getNodeParameter("from", itemIndex, "") as string
+        const toDate = this.getNodeParameter("to", itemIndex, "") as string
+        const page = this.getNodeParameter("page", itemIndex, 0) as number
+        const sortBy = this.getNodeParameter("sortBy", itemIndex, "followers") as string
+        const sortType = this.getNodeParameter("sortType", itemIndex, "asc") as string
 
-          const endpoint = `https://app.publer.com/api/v1/competitors/${accountId}/analytics`
+        const endpoint = `https://app.publer.com/api/v1/competitors/${accountId}/analytics`
 
-          const qs: Record<string, string | number> = {}
-          if (competitorId) qs.competitor_id = competitorId
-          if (query) qs.query = query
-          if (fromDate) qs.from = fromDate
-          if (toDate) qs.to = toDate
-          qs.page = page
-          if (sortBy) qs.sort_by = sortBy
-          if (sortType) qs.sort_type = sortType
+        const qs: Record<string, string | number> = {}
+        if (competitorId) qs.competitor_id = competitorId
+        if (query) qs.query = query
+        if (fromDate) qs.from = fromDate
+        if (toDate) qs.to = toDate
+        qs.page = page
+        if (sortBy) qs.sort_by = sortBy
+        if (sortType) qs.sort_type = sortType
 
-          this.logger.info("Making API request", {
-            itemIndex,
-            endpoint,
-            method: "GET",
-            accountId,
-            workspaceId: workspaceId,
-            queryParams: qs,
-          })
+        this.logger.info("Making API request", {
+          itemIndex,
+          endpoint,
+          method: "GET",
+          accountId,
+          workspaceId: workspaceId,
+          queryParams: qs,
+        })
 
-          const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
-            method: "GET",
-            url: endpoint,
-            headers: {
-              Authorization: `Bearer-API ${apiToken}`,
-              Accept: "application/json",
-              "Publer-Workspace-Id": workspaceId,
-            },
-            qs,
-            json: true,
-          })
+        const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
+          method: "GET",
+          url: endpoint,
+          headers: {
+            Authorization: `Bearer-API ${apiToken}`,
+            Accept: "application/json",
+            "Publer-Workspace-Id": workspaceId,
+          },
+          qs,
+          json: true,
+        })
 
-          this.logger.info("API request successful", {
-            itemIndex,
-            endpoint,
-            responseType: typeof response,
-          })
+        this.logger.info("API request successful", {
+          itemIndex,
+          endpoint,
+          responseType: typeof response,
+        })
 
-          this.logger.debug("Response data", {
-            itemIndex,
-            responseKeys: response ? Object.keys(response) : [],
-          })
+        this.logger.debug("Response data", {
+          itemIndex,
+          responseKeys: response ? Object.keys(response) : [],
+        })
 
-          returnData.push({
-            json: response,
-            pairedItem: { item: itemIndex },
-          })
-        }
+        returnData.push({
+          json: response,
+          pairedItem: { item: itemIndex },
+        })
       } catch (error) {
         this.logger.error("API request failed", {
           itemIndex,
-          operation,
           error: error.message,
           stack: error.stack,
         })
@@ -280,7 +216,6 @@ export class PublerCompetitorAnalysis implements INodeType {
     }
 
     this.logger.info("Execution completed", {
-      operation,
       processedItems: returnData.length,
     })
 

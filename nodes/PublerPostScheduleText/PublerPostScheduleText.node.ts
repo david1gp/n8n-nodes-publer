@@ -21,21 +21,6 @@ export class PublerPostScheduleText implements INodeType {
     ],
     properties: [
       {
-        displayName: "Operation",
-        name: "operation",
-        type: "options",
-        noDataExpression: true,
-        options: [
-          {
-            name: "Schedule Text Post",
-            value: "scheduleTextPost",
-            description: "Schedule a text-only post (status type)",
-            action: "Schedule text post",
-          },
-        ],
-        default: "scheduleTextPost",
-      },
-      {
         displayName: "Social Network",
         name: "network",
         type: "options",
@@ -117,7 +102,6 @@ export class PublerPostScheduleText implements INodeType {
       throw new Error("API Token is required")
     }
 
-    const operation = this.getNodeParameter("operation", 0) as string
     const workspaceId = this.getNodeParameter("workspaceId", 0) as string
 
     if (!workspaceId) {
@@ -126,59 +110,57 @@ export class PublerPostScheduleText implements INodeType {
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        if (operation === "scheduleTextPost") {
-          const network = this.getNodeParameter("network", itemIndex) as string
-          const postText = this.getNodeParameter("postText", itemIndex) as string
-          const accountIdsString = this.getNodeParameter("accountIds", itemIndex) as string
-          const scheduledAt = this.getNodeParameter("scheduledAt", itemIndex) as string
-          const state = this.getNodeParameter("state", itemIndex) as string
+        const network = this.getNodeParameter("network", itemIndex) as string
+        const postText = this.getNodeParameter("postText", itemIndex) as string
+        const accountIdsString = this.getNodeParameter("accountIds", itemIndex) as string
+        const scheduledAt = this.getNodeParameter("scheduledAt", itemIndex) as string
+        const state = this.getNodeParameter("state", itemIndex) as string
 
-          const accountIds = accountIdsString.split(",").map((id) => id.trim())
+        const accountIds = accountIdsString.split(",").map((id) => id.trim())
 
-          const accounts = accountIds.map((id) => ({
-            id: id,
-            scheduled_at: scheduledAt,
-          }))
+        const accounts = accountIds.map((id) => ({
+          id: id,
+          scheduled_at: scheduledAt,
+        }))
 
-          const endpoint = "https://app.publer.com/api/v1/posts/schedule"
+        const endpoint = "https://app.publer.com/api/v1/posts/schedule"
 
-          const requestBody = {
-            bulk: {
-              state: state,
-              posts: [
-                {
-                  networks: {
-                    [network]: {
-                      type: "status",
-                      text: postText,
-                    },
+        const requestBody = {
+          bulk: {
+            state: state,
+            posts: [
+              {
+                networks: {
+                  [network]: {
+                    type: "status",
+                    text: postText,
                   },
-                  accounts: accounts,
                 },
-              ],
-            },
-          }
-
-          const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
-            method: "POST",
-            url: endpoint,
-            headers: {
-              Authorization: `Bearer-API ${apiToken}`,
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            qs: {
-              workspace_id: workspaceId,
-            },
-            body: requestBody,
-            json: true,
-          })
-
-          returnData.push({
-            json: response,
-            pairedItem: { item: itemIndex },
-          })
+                accounts: accounts,
+              },
+            ],
+          },
         }
+
+        const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
+          method: "POST",
+          url: endpoint,
+          headers: {
+            Authorization: `Bearer-API ${apiToken}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          qs: {
+            workspace_id: workspaceId,
+          },
+          body: requestBody,
+          json: true,
+        })
+
+        returnData.push({
+          json: response,
+          pairedItem: { item: itemIndex },
+        })
       } catch (error) {
         if (this.continueOnFail()) {
           returnData.push({

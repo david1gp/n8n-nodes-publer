@@ -21,21 +21,6 @@ export class PublerMediaImportFromUrl implements INodeType {
     ],
     properties: [
       {
-        displayName: "Operation",
-        name: "operation",
-        type: "options",
-        noDataExpression: true,
-        options: [
-          {
-            name: "Import From URL",
-            value: "importFromUrl",
-            description: "Import media from a URL into your media library",
-            action: "Import media from URL",
-          },
-        ],
-        default: "importFromUrl",
-      },
-      {
         displayName: "Media URL",
         name: "mediaUrl",
         type: "string",
@@ -43,11 +28,6 @@ export class PublerMediaImportFromUrl implements INodeType {
         required: true,
         description: "The URL of the media file to import",
         placeholder: "https://example.com/image.jpg",
-        displayOptions: {
-          show: {
-            operation: ["importFromUrl"],
-          },
-        },
       },
       {
         displayName: "File Name",
@@ -56,11 +36,6 @@ export class PublerMediaImportFromUrl implements INodeType {
         default: "",
         description: "Optional custom file name for the imported media",
         placeholder: "my-image.jpg",
-        displayOptions: {
-          show: {
-            operation: ["importFromUrl"],
-          },
-        },
       },
       {
         displayName: "Folder ID",
@@ -68,11 +43,6 @@ export class PublerMediaImportFromUrl implements INodeType {
         type: "string",
         default: "",
         description: "Optional folder ID to store the imported media",
-        displayOptions: {
-          show: {
-            operation: ["importFromUrl"],
-          },
-        },
       },
       {
         displayName: "Workspace ID",
@@ -81,11 +51,6 @@ export class PublerMediaImportFromUrl implements INodeType {
         default: "",
         required: true,
         description: "The workspace ID to import the media into",
-        displayOptions: {
-          show: {
-            operation: ["importFromUrl"],
-          },
-        },
       },
     ],
   }
@@ -109,74 +74,70 @@ export class PublerMediaImportFromUrl implements INodeType {
       itemCount: items.length,
     })
 
-    const operation = this.getNodeParameter("operation", 0) as string
-    this.logger.info("Starting execution", { operation, itemCount: items.length })
+    this.logger.info("Starting execution", { itemCount: items.length })
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        if (operation === "importFromUrl") {
-          const mediaUrl = this.getNodeParameter("mediaUrl", itemIndex) as string
-          const fileName = this.getNodeParameter("fileName", itemIndex, "") as string
-          const folderId = this.getNodeParameter("folderId", itemIndex, "") as string
-          const workspaceId = this.getNodeParameter("workspaceId", itemIndex) as string
+        const mediaUrl = this.getNodeParameter("mediaUrl", itemIndex) as string
+        const fileName = this.getNodeParameter("fileName", itemIndex, "") as string
+        const folderId = this.getNodeParameter("folderId", itemIndex, "") as string
+        const workspaceId = this.getNodeParameter("workspaceId", itemIndex) as string
 
-          const endpoint = "https://app.publer.com/api/v1/media/from-url"
+        const endpoint = "https://app.publer.com/api/v1/media/from-url"
 
-          this.logger.info("Making API request", {
-            itemIndex,
-            endpoint,
-            method: "POST",
-            mediaUrl,
-          })
+        this.logger.info("Making API request", {
+          itemIndex,
+          endpoint,
+          method: "POST",
+          mediaUrl,
+        })
 
-          const body: Record<string, unknown> = {
-            url: mediaUrl,
-          }
-
-          if (fileName) {
-            body.file_name = fileName
-          }
-
-          if (folderId) {
-            body.folder_id = folderId
-          }
-
-          if (workspaceId) {
-            body.workspace_id = workspaceId
-          }
-
-          const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
-            method: "POST",
-            url: endpoint,
-            headers: {
-              Authorization: `Bearer-API ${apiToken}`,
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body,
-            json: true,
-          })
-
-          this.logger.info("API request successful", {
-            itemIndex,
-            endpoint,
-            responseType: typeof response,
-          })
-
-          this.logger.debug("Response data", {
-            itemIndex,
-            responseKeys: response ? Object.keys(response) : [],
-          })
-
-          returnData.push({
-            json: response,
-            pairedItem: { item: itemIndex },
-          })
+        const body: Record<string, unknown> = {
+          url: mediaUrl,
         }
+
+        if (fileName) {
+          body.file_name = fileName
+        }
+
+        if (folderId) {
+          body.folder_id = folderId
+        }
+
+        if (workspaceId) {
+          body.workspace_id = workspaceId
+        }
+
+        const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
+          method: "POST",
+          url: endpoint,
+          headers: {
+            Authorization: `Bearer-API ${apiToken}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body,
+          json: true,
+        })
+
+        this.logger.info("API request successful", {
+          itemIndex,
+          endpoint,
+          responseType: typeof response,
+        })
+
+        this.logger.debug("Response data", {
+          itemIndex,
+          responseKeys: response ? Object.keys(response) : [],
+        })
+
+        returnData.push({
+          json: response,
+          pairedItem: { item: itemIndex },
+        })
       } catch (error) {
         this.logger.error("API request failed", {
           itemIndex,
-          operation,
           error: error.message,
           stack: error.stack,
         })
@@ -194,7 +155,6 @@ export class PublerMediaImportFromUrl implements INodeType {
     }
 
     this.logger.info("Execution completed", {
-      operation,
       processedItems: returnData.length,
     })
 

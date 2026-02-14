@@ -19,23 +19,7 @@ export class PublerMe implements INodeType {
         required: true,
       },
     ],
-    properties: [
-      {
-        displayName: "Operation",
-        name: "operation",
-        type: "options",
-        noDataExpression: true,
-        options: [
-          {
-            name: "Get Current User",
-            value: "getCurrentUser",
-            description: "Get information about the currently authenticated user",
-            action: "Get current user",
-          },
-        ],
-        default: "getCurrentUser",
-      },
-    ],
+    properties: [],
   }
 
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
@@ -57,50 +41,46 @@ export class PublerMe implements INodeType {
       itemCount: items.length,
     })
 
-    const operation = this.getNodeParameter("operation", 0) as string
-    this.logger.info("Starting execution", { operation, itemCount: items.length })
+    this.logger.info("Starting execution", { itemCount: items.length })
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        if (operation === "getCurrentUser") {
-          const endpoint = "https://app.publer.com/api/v1/users/me"
+        const endpoint = "https://app.publer.com/api/v1/users/me"
 
-          this.logger.info("Making API request", {
-            itemIndex,
-            endpoint,
-            method: "GET",
-          })
+        this.logger.info("Making API request", {
+          itemIndex,
+          endpoint,
+          method: "GET",
+        })
 
-          const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
-            method: "GET",
-            url: endpoint,
-            headers: {
-              Authorization: `Bearer-API ${apiToken}`,
-              Accept: "application/json",
-            },
-            json: true,
-          })
+        const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
+          method: "GET",
+          url: endpoint,
+          headers: {
+            Authorization: `Bearer-API ${apiToken}`,
+            Accept: "application/json",
+          },
+          json: true,
+        })
 
-          this.logger.info("API request successful", {
-            itemIndex,
-            endpoint,
-            responseType: typeof response,
-          })
+        this.logger.info("API request successful", {
+          itemIndex,
+          endpoint,
+          responseType: typeof response,
+        })
 
-          this.logger.debug("Response data", {
-            itemIndex,
-            responseKeys: response ? Object.keys(response) : [],
-          })
+        this.logger.debug("Response data", {
+          itemIndex,
+          responseKeys: response ? Object.keys(response) : [],
+        })
 
-          returnData.push({
-            json: response,
-            pairedItem: { item: itemIndex },
-          })
-        }
+        returnData.push({
+          json: response,
+          pairedItem: { item: itemIndex },
+        })
       } catch (error) {
         this.logger.error("API request failed", {
           itemIndex,
-          operation,
           error: error.message,
           stack: error.stack,
         })
@@ -118,7 +98,6 @@ export class PublerMe implements INodeType {
     }
 
     this.logger.info("Execution completed", {
-      operation,
       processedItems: returnData.length,
     })
 

@@ -21,21 +21,6 @@ export class PublerPostSchedule implements INodeType {
     ],
     properties: [
       {
-        displayName: "Operation",
-        name: "operation",
-        type: "options",
-        noDataExpression: true,
-        options: [
-          {
-            name: "Schedule Post",
-            value: "schedulePost",
-            description: "Schedule a post with media or other content types",
-            action: "Schedule post",
-          },
-        ],
-        default: "schedulePost",
-      },
-      {
         displayName: "Social Network",
         name: "network",
         type: "options",
@@ -164,7 +149,6 @@ export class PublerPostSchedule implements INodeType {
       throw new Error("API Token is required")
     }
 
-    const operation = this.getNodeParameter("operation", 0) as string
     const workspaceId = this.getNodeParameter("workspaceId", 0) as string
 
     if (!workspaceId) {
@@ -173,85 +157,83 @@ export class PublerPostSchedule implements INodeType {
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        if (operation === "schedulePost") {
-          const network = this.getNodeParameter("network", itemIndex) as string
-          const contentType = this.getNodeParameter("contentType", itemIndex) as string
-          const postText = this.getNodeParameter("postText", itemIndex) as string
-          const accountIdsString = this.getNodeParameter("accountIds", itemIndex) as string
-          const scheduledAt = this.getNodeParameter("scheduledAt", itemIndex) as string
-          const state = this.getNodeParameter("state", itemIndex) as string
+        const network = this.getNodeParameter("network", itemIndex) as string
+        const contentType = this.getNodeParameter("contentType", itemIndex) as string
+        const postText = this.getNodeParameter("postText", itemIndex) as string
+        const accountIdsString = this.getNodeParameter("accountIds", itemIndex) as string
+        const scheduledAt = this.getNodeParameter("scheduledAt", itemIndex) as string
+        const state = this.getNodeParameter("state", itemIndex) as string
 
-          const accountIds = accountIdsString.split(",").map((id) => id.trim())
+        const accountIds = accountIdsString.split(",").map((id) => id.trim())
 
-          const accounts = accountIds.map((id) => ({
-            id: id,
-            scheduled_at: scheduledAt,
-          }))
+        const accounts = accountIds.map((id) => ({
+          id: id,
+          scheduled_at: scheduledAt,
+        }))
 
-          const networkContent: any = {
-            type: contentType,
-            text: postText,
-          }
-
-          // Handle media types
-          const mediaTypes = ["photo", "video", "carousel", "story", "reel", "gif"]
-          if (mediaTypes.includes(contentType)) {
-            const mediaIdsString = this.getNodeParameter("mediaIds", itemIndex) as string
-            if (!mediaIdsString) {
-              throw new Error(`Media IDs are required for ${contentType} posts`)
-            }
-            const mediaIds = mediaIdsString.split(",").map((id) => id.trim())
-            networkContent.media = mediaIds.map((id) => ({
-              id: id,
-              type: contentType === "carousel" ? "photo" : contentType,
-            }))
-          }
-
-          // Handle link posts
-          if (contentType === "link") {
-            const linkUrl = this.getNodeParameter("linkUrl", itemIndex) as string
-            if (!linkUrl) {
-              throw new Error("Link URL is required for link posts")
-            }
-            networkContent.url = linkUrl
-          }
-
-          const endpoint = "https://app.publer.com/api/v1/posts/schedule"
-
-          const requestBody = {
-            bulk: {
-              state: state,
-              posts: [
-                {
-                  networks: {
-                    [network]: networkContent,
-                  },
-                  accounts: accounts,
-                },
-              ],
-            },
-          }
-
-          const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
-            method: "POST",
-            url: endpoint,
-            headers: {
-              Authorization: `Bearer-API ${apiToken}`,
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            qs: {
-              workspace_id: workspaceId,
-            },
-            body: requestBody,
-            json: true,
-          })
-
-          returnData.push({
-            json: response,
-            pairedItem: { item: itemIndex },
-          })
+        const networkContent: any = {
+          type: contentType,
+          text: postText,
         }
+
+        // Handle media types
+        const mediaTypes = ["photo", "video", "carousel", "story", "reel", "gif"]
+        if (mediaTypes.includes(contentType)) {
+          const mediaIdsString = this.getNodeParameter("mediaIds", itemIndex) as string
+          if (!mediaIdsString) {
+            throw new Error(`Media IDs are required for ${contentType} posts`)
+          }
+          const mediaIds = mediaIdsString.split(",").map((id) => id.trim())
+          networkContent.media = mediaIds.map((id) => ({
+            id: id,
+            type: contentType === "carousel" ? "photo" : contentType,
+          }))
+        }
+
+        // Handle link posts
+        if (contentType === "link") {
+          const linkUrl = this.getNodeParameter("linkUrl", itemIndex) as string
+          if (!linkUrl) {
+            throw new Error("Link URL is required for link posts")
+          }
+          networkContent.url = linkUrl
+        }
+
+        const endpoint = "https://app.publer.com/api/v1/posts/schedule"
+
+        const requestBody = {
+          bulk: {
+            state: state,
+            posts: [
+              {
+                networks: {
+                  [network]: networkContent,
+                },
+                accounts: accounts,
+              },
+            ],
+          },
+        }
+
+        const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
+          method: "POST",
+          url: endpoint,
+          headers: {
+            Authorization: `Bearer-API ${apiToken}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          qs: {
+            workspace_id: workspaceId,
+          },
+          body: requestBody,
+          json: true,
+        })
+
+        returnData.push({
+          json: response,
+          pairedItem: { item: itemIndex },
+        })
       } catch (error) {
         if (this.continueOnFail()) {
           returnData.push({

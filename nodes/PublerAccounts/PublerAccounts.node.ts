@@ -21,27 +21,13 @@ export class PublerAccounts implements INodeType {
     ],
     properties: [
       {
-        displayName: "Operation",
-        name: "operation",
-        type: "options",
-        noDataExpression: true,
-        options: [
-          {
-            name: "List Accounts",
-            value: "listAccounts",
-            description: "Get all social media accounts in your workspace",
-            action: "List accounts",
-          },
-        ],
-        default: "listAccounts",
-      },
-      {
         displayName: "Workspace ID",
         name: "workspaceId",
         type: "string",
         default: "",
         required: true,
         description: "The workspace ID to list accounts from",
+        placeholder: "e.g. 12345",
       },
     ],
   }
@@ -65,7 +51,6 @@ export class PublerAccounts implements INodeType {
       itemCount: items.length,
     })
 
-    const operation = this.getNodeParameter("operation", 0) as string
     const workspaceId = this.getNodeParameter("workspaceId", 0) as string
 
     if (!workspaceId) {
@@ -78,53 +63,50 @@ export class PublerAccounts implements INodeType {
     this.logger.debug("Node parameters retrieved", {
       hasWorkspaceId: !!workspaceId,
     })
-    this.logger.info("Starting execution", { operation, itemCount: items.length })
+    this.logger.info("Starting execution", { itemCount: items.length })
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        if (operation === "listAccounts") {
-          const endpoint = "https://app.publer.com/api/v1/accounts"
+        const endpoint = "https://app.publer.com/api/v1/accounts"
 
-          this.logger.info("Making API request", {
-            itemIndex,
-            endpoint,
-            method: "GET",
-            workspaceId: workspaceId,
-          })
+        this.logger.info("Making API request", {
+          itemIndex,
+          endpoint,
+          method: "GET",
+          workspaceId: workspaceId,
+        })
 
-          const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
-            method: "GET",
-            url: endpoint,
-            headers: {
-              Authorization: `Bearer-API ${apiToken}`,
-              Accept: "application/json",
-            },
-            qs: {
-              workspace_id: workspaceId,
-            },
-            json: true,
-          })
+        const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
+          method: "GET",
+          url: endpoint,
+          headers: {
+            Authorization: `Bearer-API ${apiToken}`,
+            Accept: "application/json",
+          },
+          qs: {
+            workspace_id: workspaceId,
+          },
+          json: true,
+        })
 
-          this.logger.info("API request successful", {
-            itemIndex,
-            endpoint,
-            responseType: typeof response,
-          })
+        this.logger.info("API request successful", {
+          itemIndex,
+          endpoint,
+          responseType: typeof response,
+        })
 
-          this.logger.debug("Response data", {
-            itemIndex,
-            responseKeys: response ? Object.keys(response) : [],
-          })
+        this.logger.debug("Response data", {
+          itemIndex,
+          responseKeys: response ? Object.keys(response) : [],
+        })
 
-          returnData.push({
-            json: response,
-            pairedItem: { item: itemIndex },
-          })
-        }
+        returnData.push({
+          json: response,
+          pairedItem: { item: itemIndex },
+        })
       } catch (error) {
         this.logger.error("API request failed", {
           itemIndex,
-          operation,
           error: error.message,
           stack: error.stack,
         })
@@ -142,7 +124,6 @@ export class PublerAccounts implements INodeType {
     }
 
     this.logger.info("Execution completed", {
-      operation,
       processedItems: returnData.length,
     })
 
