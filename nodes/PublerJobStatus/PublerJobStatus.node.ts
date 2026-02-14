@@ -1,15 +1,15 @@
 import type { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from "n8n-workflow"
 
-export class PublerMe implements INodeType {
+export class PublerJobStatus implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "Publer Me",
-    name: "publerMe",
+    displayName: "Publer Job Status",
+    name: "publerJobStatus",
     icon: "file:logo.svg",
     group: ["input"],
     version: 1,
-    description: "Get current authenticated user information from Publer",
+    description: "Check the status of async jobs in Publer (e.g., media imports, bulk operations)",
     defaults: {
-      name: "Publer Me",
+      name: "Publer Job Status",
     },
     inputs: ["main"],
     outputs: ["main"],
@@ -27,13 +27,27 @@ export class PublerMe implements INodeType {
         noDataExpression: true,
         options: [
           {
-            name: "Get Current User",
-            value: "getCurrentUser",
-            description: "Get information about the currently authenticated user",
-            action: "Get current user",
+            name: "Get Job Status",
+            value: "getJobStatus",
+            description: "Check the status of a specific job by ID",
+            action: "Get job status",
           },
         ],
-        default: "getCurrentUser",
+        default: "getJobStatus",
+      },
+      {
+        displayName: "Job ID",
+        name: "jobId",
+        type: "string",
+        default: "",
+        required: true,
+        description: "The ID of the job to check",
+        placeholder: "12345",
+        displayOptions: {
+          show: {
+            operation: ["getJobStatus"],
+          },
+        },
       },
     ],
   }
@@ -62,13 +76,16 @@ export class PublerMe implements INodeType {
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        if (operation === "getCurrentUser") {
-          const endpoint = "https://app.publer.com/api/v1/users/me"
+        if (operation === "getJobStatus") {
+          const jobId = this.getNodeParameter("jobId", itemIndex) as string
+
+          const endpoint = `https://app.publer.com/api/v1/job_status/${jobId}`
 
           this.logger.info("Making API request", {
             itemIndex,
             endpoint,
             method: "GET",
+            jobId,
           })
 
           const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {

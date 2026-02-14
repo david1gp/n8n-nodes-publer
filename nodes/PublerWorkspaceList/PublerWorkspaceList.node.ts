@@ -1,15 +1,15 @@
 import type { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from "n8n-workflow"
 
-export class PublerMe implements INodeType {
+export class PublerWorkspaceList implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "Publer Me",
-    name: "publerMe",
+    displayName: "Publer Workspace List",
+    name: "publerWorkspaceList",
     icon: "file:logo.svg",
     group: ["input"],
     version: 1,
-    description: "Get current authenticated user information from Publer",
+    description: "List all workspaces accessible to the current user",
     defaults: {
-      name: "Publer Me",
+      name: "Publer Workspace List",
     },
     inputs: ["main"],
     outputs: ["main"],
@@ -27,13 +27,13 @@ export class PublerMe implements INodeType {
         noDataExpression: true,
         options: [
           {
-            name: "Get Current User",
-            value: "getCurrentUser",
-            description: "Get information about the currently authenticated user",
-            action: "Get current user",
+            name: "List Workspaces",
+            value: "listWorkspaces",
+            description: "Get all workspaces for the authenticated user",
+            action: "List workspaces",
           },
         ],
-        default: "getCurrentUser",
+        default: "listWorkspaces",
       },
     ],
   }
@@ -62,8 +62,8 @@ export class PublerMe implements INodeType {
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        if (operation === "getCurrentUser") {
-          const endpoint = "https://app.publer.com/api/v1/users/me"
+        if (operation === "listWorkspaces") {
+          const endpoint = "https://app.publer.com/api/v1/workspaces"
 
           this.logger.info("Making API request", {
             itemIndex,

@@ -1,15 +1,15 @@
 import type { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from "n8n-workflow"
 
-export class PublerMe implements INodeType {
+export class PublerAccounts implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "Publer Me",
-    name: "publerMe",
+    displayName: "Publer Accounts",
+    name: "publerAccounts",
     icon: "file:logo.svg",
     group: ["input"],
     version: 1,
-    description: "Get current authenticated user information from Publer",
+    description: "List social media accounts connected to your Publer workspace",
     defaults: {
-      name: "Publer Me",
+      name: "Publer Accounts",
     },
     inputs: ["main"],
     outputs: ["main"],
@@ -27,13 +27,13 @@ export class PublerMe implements INodeType {
         noDataExpression: true,
         options: [
           {
-            name: "Get Current User",
-            value: "getCurrentUser",
-            description: "Get information about the currently authenticated user",
-            action: "Get current user",
+            name: "List Accounts",
+            value: "listAccounts",
+            description: "Get all social media accounts in your workspace",
+            action: "List accounts",
           },
         ],
-        default: "getCurrentUser",
+        default: "listAccounts",
       },
     ],
   }
@@ -44,6 +44,7 @@ export class PublerMe implements INodeType {
 
     const credentials = await this.getCredentials("publerApi")
     const apiToken = credentials.apiToken as string
+    const workspaceId = credentials.workspaceId as string
 
     if (!apiToken) {
       this.logger.error("API Token is missing", {
@@ -52,8 +53,16 @@ export class PublerMe implements INodeType {
       throw new Error("API Token is required")
     }
 
+    if (!workspaceId) {
+      this.logger.error("Workspace ID is missing", {
+        credentialName: "publerApi",
+      })
+      throw new Error("Workspace ID is required for this operation")
+    }
+
     this.logger.debug("Credentials retrieved", {
       hasApiToken: !!apiToken,
+      hasWorkspaceId: !!workspaceId,
       itemCount: items.length,
     })
 
@@ -62,13 +71,14 @@ export class PublerMe implements INodeType {
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
-        if (operation === "getCurrentUser") {
-          const endpoint = "https://app.publer.com/api/v1/users/me"
+        if (operation === "listAccounts") {
+          const endpoint = "https://app.publer.com/api/v1/accounts"
 
           this.logger.info("Making API request", {
             itemIndex,
             endpoint,
             method: "GET",
+            workspaceId,
           })
 
           const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
@@ -77,6 +87,9 @@ export class PublerMe implements INodeType {
             headers: {
               Authorization: `Bearer-API ${apiToken}`,
               Accept: "application/json",
+            },
+            qs: {
+              workspace_id: workspaceId,
             },
             json: true,
           })
