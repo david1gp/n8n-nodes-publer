@@ -1,17 +1,6 @@
 {
   "name": "@adaptive-ds/n8n-nodes-publer",
   "version": "1.1.12",
-  "description": "n8n node to connect with Publer.com social media management API",
-  "keywords": [
-    "n8n",
-    "n8n-community-node-package",
-    "publer",
-    "social-media",
-    "scheduling",
-    "automation"
-  ],
-  "license": "MIT",
-  "homepage": "https://github.com/david1gp/n8n-nodes-publer",
   "author": {
     "name": "David Siewert",
     "email": "david1gruppenplan@gmail.com"
@@ -20,47 +9,7 @@
     "type": "git",
     "url": "git+https://github.com/david1gp/n8n-nodes-publer.git"
   },
-  "scripts": {
-    "build": "tsc && gulp build:icons",
-    "dev": "tsc --watch",
-    "test": "bun test",
-    "release": "bash ./ops/release.sh",
-    "validate": "bun run validate:all",
-    "validate:all": "bun run validate:analytics && bun run validate:basic && bun run validate:competitors && bun run validate:locations && bun run validate:media && bun run validate:posts && bun run validate:posts-publish && bun run validate:posts-schedule",
-    "validate:analytics": "bunx ibm-openapi-validator --ruleset spectral.yml ./nodes/PublerAnalytics/openapi.json",
-    "validate:basic": "bunx ibm-openapi-validator --ruleset spectral.yml ./nodes/PublerBasic/openapi.json",
-    "validate:competitors": "bunx ibm-openapi-validator --ruleset spectral.yml ./nodes/PublerCompetitors/openapi.json",
-    "validate:locations": "bunx ibm-openapi-validator --ruleset spectral.yml ./nodes/PublerLocations/openapi.json",
-    "validate:media": "bunx ibm-openapi-validator --ruleset spectral.yml ./nodes/PublerMedia/openapi.json",
-    "validate:posts": "bunx ibm-openapi-validator --ruleset spectral.yml ./nodes/PublerPosts/openapi.json",
-    "validate:posts-publish": "bunx ibm-openapi-validator --ruleset spectral.yml ./nodes/PublerPostsPublish/openapi.json",
-    "validate:posts-schedule": "bunx ibm-openapi-validator --ruleset spectral.yml ./nodes/PublerPostsSchedule/openapi.json",
-    "format": "prettier nodes credentials --write",
-    "lint": "eslint nodes credentials package.json",
-    "lintfix": "eslint nodes credentials package.json --fix"
-  },
-  "files": [
-    "dist"
-  ],
-  "n8n": {
-    "n8nNodesApiVersion": 1,
-    "credentials": [
-      "dist/credentials/PublerApi.credentials.js"
-    ],
-    "nodes": [
-      "dist/nodes/PublerAccounts/PublerAccounts.node.js",
-      "dist/nodes/PublerCompetitorAnalysis/PublerCompetitorAnalysis.node.js",
-      "dist/nodes/PublerCompetitorList/PublerCompetitorList.node.js",
-      "dist/nodes/PublerJobStatus/PublerJobStatus.node.js",
-      "dist/nodes/PublerMe/PublerMe.node.js",
-      "dist/nodes/PublerMediaImportFromUrl/PublerMediaImportFromUrl.node.js",
-      "dist/nodes/PublerPostScheduleText/PublerPostScheduleText.node.js",
-      "dist/nodes/PublerPostSchedule/PublerPostSchedule.node.js",
-      "dist/nodes/PublerWorkspaceList/PublerWorkspaceList.node.js"
-    ]
-  },
   "devDependencies": {
-    "@ibm-cloud/openapi-ruleset": "^1.33.7",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/parser": "^8.55.0",
     "eslint": "^10.0.0",
@@ -73,12 +22,49 @@
   "peerDependencies": {
     "n8n-workflow": "*"
   },
-  "dependencies": {
-    "@devlikeapro/n8n-openapi-node": "^0.1.4"
+  "description": "n8n node to connect with Publer.com social media management API",
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/david1gp/n8n-nodes-publer",
+  "keywords": [
+    "n8n",
+    "n8n-community-node-package",
+    "publer",
+    "social-media",
+    "scheduling",
+    "automation"
+  ],
+  "license": "MIT",
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/PublerApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/PublerAccounts/PublerAccounts.node.js",
+      "dist/nodes/PublerCompetitorAnalysis/PublerCompetitorAnalysis.node.js",
+      "dist/nodes/PublerCompetitorList/PublerCompetitorList.node.js",
+      "dist/nodes/PublerJobStatus/PublerJobStatus.node.js",
+      "dist/nodes/PublerMe/PublerMe.node.js",
+      "dist/nodes/PublerMediaImportFromUrl/PublerMediaImportFromUrl.node.js",
+      "dist/nodes/PublerPostSchedule/PublerPostSchedule.node.js",
+      "dist/nodes/PublerPostScheduleText/PublerPostScheduleText.node.js",
+      "dist/nodes/PublerWorkspaceList/PublerWorkspaceList.node.js"
+    ]
   },
   "prettier": {
     "semi": false,
     "printWidth": 120,
     "trailingComma": "all"
+  },
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "test": "bun test",
+    "release": "bash ./ops/release.sh",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials package.json",
+    "lintfix": "eslint nodes credentials package.json --fix"
   }
 }

@@ -94,7 +94,3 @@ bun link @adaptive-ds/n8n-nodes-publer
 ```bash
 n8n start
 ```
-
-## Acknowledgements
-
-- used template [**devlikeapro/n8n-openapi-node**](https://github.com/devlikeapro/n8n-openapi-node)
