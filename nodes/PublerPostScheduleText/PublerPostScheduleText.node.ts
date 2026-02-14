@@ -119,7 +119,7 @@ export class PublerPostScheduleText implements INodeType {
         const network = this.getNodeParameter("network", itemIndex) as string
         const postText = this.getNodeParameter("postText", itemIndex) as string
         const accountIds = this.getNodeParameter("accountIds", itemIndex, []) as string[]
-        const cleanAccountIds = accountIds.filter(id => id.trim() !== "")
+        const cleanAccountIds = accountIds.filter((id) => id.trim() !== "")
         const scheduledAt = this.getNodeParameter("scheduledAt", itemIndex) as string
         const state = this.getNodeParameter("state", itemIndex) as string
 

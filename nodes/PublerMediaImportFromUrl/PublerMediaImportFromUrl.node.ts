@@ -69,7 +69,8 @@ export class PublerMediaImportFromUrl implements INodeType {
         name: "directUpload",
         type: "boolean",
         default: false,
-        description: "Whether to upload directly to S3 (slower, but required if you need the final media URL immediately)",
+        description:
+          "Whether to upload directly to S3 (slower, but required if you need the final media URL immediately)",
       },
       {
         displayName: "Save to Library",

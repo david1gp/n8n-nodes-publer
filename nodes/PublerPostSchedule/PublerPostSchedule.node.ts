@@ -172,7 +172,7 @@ export class PublerPostSchedule implements INodeType {
         const contentType = this.getNodeParameter("contentType", itemIndex) as string
         const postText = this.getNodeParameter("postText", itemIndex) as string
         const accountIds = this.getNodeParameter("accountIds", itemIndex, []) as string[]
-        const cleanAccountIds = accountIds.filter(id => id.trim() !== "")
+        const cleanAccountIds = accountIds.filter((id) => id.trim() !== "")
         const scheduledAt = this.getNodeParameter("scheduledAt", itemIndex) as string
         const state = this.getNodeParameter("state", itemIndex) as string
 
@@ -190,7 +190,7 @@ export class PublerPostSchedule implements INodeType {
         const mediaTypes = ["photo", "video", "carousel", "story", "reel", "gif", "short", "document"]
         if (mediaTypes.includes(contentType)) {
           const mediaIds = this.getNodeParameter("mediaIds", itemIndex, []) as string[]
-          const cleanMediaIds = mediaIds.filter(id => id.trim() !== "")
+          const cleanMediaIds = mediaIds.filter((id) => id.trim() !== "")
           if (cleanMediaIds.length === 0) {
             throw new Error(`At least one Media ID is required for ${contentType} posts`)
           }
