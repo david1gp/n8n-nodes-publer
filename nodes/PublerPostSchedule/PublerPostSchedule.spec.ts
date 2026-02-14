@@ -1,3 +1,4 @@
+import { expect, test } from "bun:test"
 import { PublerPostSchedule } from "./PublerPostSchedule.node"
 
 test("PublerPostSchedule", () => {

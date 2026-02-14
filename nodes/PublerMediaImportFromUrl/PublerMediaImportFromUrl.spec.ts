@@ -1,3 +1,4 @@
+import { expect, test } from "bun:test"
 import { PublerMediaImportFromUrl } from "./PublerMediaImportFromUrl.node"
 
 test("PublerMediaImportFromUrl", () => {

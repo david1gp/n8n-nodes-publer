@@ -1,3 +1,4 @@
+import { expect, test } from "bun:test"
 import { PublerCompetitorList } from "./PublerCompetitorList.node"
 
 test("PublerCompetitorList", () => {

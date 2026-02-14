@@ -1,3 +1,4 @@
+import { expect, test } from "bun:test"
 import { PublerWorkspaceList } from "./PublerWorkspaceList.node"
 
 test("PublerWorkspaceList", () => {
