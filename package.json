@@ -48,6 +48,7 @@
       "dist/credentials/PublerApi.credentials.js"
     ],
     "nodes": [
+      "dist/nodes/PublerMe/PublerMe.node.js",
       "dist/nodes/PublerBasic/PublerBasic.node.js",
       "dist/nodes/PublerMedia/PublerMedia.node.js",
       "dist/nodes/PublerPostsSchedule/PublerPostsSchedule.node.js",
