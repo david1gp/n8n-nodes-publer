@@ -28,7 +28,7 @@ export class PublerApi implements ICredentialType {
     properties: {
       headers: {
         Authorization: "=Bearer-API {{$credentials.apiToken}}",
-        "Publer-Workspace-Id": "={{$credentials.workspaceId}}",
+        "Publer-Workspace-Id": "={{ $credentials.workspaceId ? $credentials.workspaceId : undefined }}",
       },
     },
   }

@@ -12,12 +12,12 @@
   ],
   "security": [
     {
-      "BearerApiAuth": []
+      "publerApi": []
     }
   ],
   "components": {
     "securitySchemes": {
-      "BearerApiAuth": {
+      "publerApi": {
         "type": "apiKey",
         "name": "Authorization",
         "in": "header",
