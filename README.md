@@ -9,7 +9,7 @@ Quick Links
 
 - code - https://github.com/david1gp/n8n-nodes-publer
 - bun - https://www.npmjs.com/package/@adaptive-ds/n8n-nodes-publer
-- publer cocs - https://publer.com/docs
+- publer docs - https://publer.com/docs
 - publer postman - https://www.postman.com/aerospace-architect-98610700/publer/collection/dolndsh/publer-api
 
 ## Getting Started
