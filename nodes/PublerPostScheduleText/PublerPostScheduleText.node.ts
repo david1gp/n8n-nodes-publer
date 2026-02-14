@@ -54,8 +54,12 @@ export class PublerPostScheduleText implements INodeType {
         name: "accountIds",
         type: "string",
         required: true,
-        default: "",
-        description: "Comma-separated list of account IDs to post to",
+        default: [],
+        typeOptions: {
+          multipleValues: true,
+        },
+        placeholder: "Add account ID…",
+        description: "List of Publer account IDs to post to (one per line or add via button)",
       },
       {
         displayName: "Scheduled At",
@@ -112,14 +116,13 @@ export class PublerPostScheduleText implements INodeType {
       try {
         const network = this.getNodeParameter("network", itemIndex) as string
         const postText = this.getNodeParameter("postText", itemIndex) as string
-        const accountIdsString = this.getNodeParameter("accountIds", itemIndex) as string
+        const accountIds = this.getNodeParameter("accountIds", itemIndex, []) as string[]
+        const cleanAccountIds = accountIds.filter(id => id.trim() !== "")
         const scheduledAt = this.getNodeParameter("scheduledAt", itemIndex) as string
         const state = this.getNodeParameter("state", itemIndex) as string
 
-        const accountIds = accountIdsString.split(",").map((id) => id.trim())
-
-        const accounts = accountIds.map((id) => ({
-          id: id,
+        const accounts = cleanAccountIds.map((id) => ({
+          id: id.trim(),
           scheduled_at: scheduledAt,
         }))
 
