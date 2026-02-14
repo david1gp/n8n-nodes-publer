@@ -104,10 +104,6 @@ export class PublerMediaImportFromUrl implements INodeType {
           body.folder_id = folderId
         }
 
-        if (workspaceId) {
-          body.workspace_id = workspaceId
-        }
-
         const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
           method: "POST",
           url: endpoint,
@@ -115,6 +111,7 @@ export class PublerMediaImportFromUrl implements INodeType {
             Authorization: `Bearer-API ${apiToken}`,
             Accept: "application/json",
             "Content-Type": "application/json",
+            "Publer-Workspace-Id": workspaceId,
           },
           body,
           json: true,

@@ -29,6 +29,14 @@ export class PublerJobStatus implements INodeType {
         description: "The ID of the job to check",
         placeholder: "12345",
       },
+      {
+        displayName: "Workspace ID",
+        name: "workspaceId",
+        type: "string",
+        default: "",
+        required: true,
+        description: "The workspace ID where the job was created",
+      },
     ],
   }
 
@@ -51,6 +59,18 @@ export class PublerJobStatus implements INodeType {
       itemCount: items.length,
     })
 
+    const workspaceId = this.getNodeParameter("workspaceId", 0) as string
+
+    if (!workspaceId) {
+      this.logger.error("Workspace ID is missing", {
+        nodeName: this.getNode().name,
+      })
+      throw new Error("Workspace ID is required for this operation")
+    }
+
+    this.logger.debug("Node parameters retrieved", {
+      hasWorkspaceId: !!workspaceId,
+    })
     this.logger.info("Starting execution", { itemCount: items.length })
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
@@ -64,6 +84,7 @@ export class PublerJobStatus implements INodeType {
           endpoint,
           method: "GET",
           jobId,
+          workspaceId: workspaceId,
         })
 
         const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {
@@ -72,6 +93,7 @@ export class PublerJobStatus implements INodeType {
           headers: {
             Authorization: `Bearer-API ${apiToken}`,
             Accept: "application/json",
+            "Publer-Workspace-Id": workspaceId,
           },
           json: true,
         })

@@ -222,9 +222,7 @@ export class PublerPostSchedule implements INodeType {
             Authorization: `Bearer-API ${apiToken}`,
             Accept: "application/json",
             "Content-Type": "application/json",
-          },
-          qs: {
-            workspace_id: workspaceId,
+            "Publer-Workspace-Id": workspaceId,
           },
           body: requestBody,
           json: true,

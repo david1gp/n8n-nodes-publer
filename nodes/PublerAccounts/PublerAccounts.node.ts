@@ -82,9 +82,7 @@ export class PublerAccounts implements INodeType {
           headers: {
             Authorization: `Bearer-API ${apiToken}`,
             Accept: "application/json",
-          },
-          qs: {
-            workspace_id: workspaceId,
+            "Publer-Workspace-Id": workspaceId,
           },
           json: true,
         })
