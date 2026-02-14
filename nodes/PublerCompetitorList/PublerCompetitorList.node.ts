@@ -49,6 +49,19 @@ export class PublerCompetitorList implements INodeType {
           },
         },
       },
+      {
+        displayName: "Workspace ID",
+        name: "workspaceId",
+        type: "string",
+        default: "",
+        required: true,
+        description: "The workspace ID that contains the account",
+        displayOptions: {
+          show: {
+            operation: ["listCompetitors"],
+          },
+        },
+      },
     ],
   }
 
@@ -58,7 +71,6 @@ export class PublerCompetitorList implements INodeType {
 
     const credentials = await this.getCredentials("publerApi")
     const apiToken = credentials.apiToken as string
-    const workspaceId = credentials.workspaceId as string
 
     if (!apiToken) {
       this.logger.error("API Token is missing", {
@@ -67,20 +79,24 @@ export class PublerCompetitorList implements INodeType {
       throw new Error("API Token is required")
     }
 
-    if (!workspaceId) {
-      this.logger.error("Workspace ID is missing", {
-        credentialName: "publerApi",
-      })
-      throw new Error("Workspace ID is required for this operation")
-    }
-
     this.logger.debug("Credentials retrieved", {
       hasApiToken: !!apiToken,
-      hasWorkspaceId: !!workspaceId,
       itemCount: items.length,
     })
 
     const operation = this.getNodeParameter("operation", 0) as string
+    const workspaceId = this.getNodeParameter("workspaceId", 0) as string
+
+    if (!workspaceId) {
+      this.logger.error("Workspace ID is missing", {
+        nodeName: this.getNode().name,
+      })
+      throw new Error("Workspace ID is required for this operation")
+    }
+
+    this.logger.debug("Node parameters retrieved", {
+      hasWorkspaceId: !!workspaceId,
+    })
     this.logger.info("Starting execution", { operation, itemCount: items.length })
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
@@ -94,7 +110,7 @@ export class PublerCompetitorList implements INodeType {
             endpoint,
             method: "GET",
             accountId,
-            workspaceId,
+            workspaceId: workspaceId,
           })
 
           const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {

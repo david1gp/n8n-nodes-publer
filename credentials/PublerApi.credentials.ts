@@ -15,20 +15,12 @@ export class PublerApi implements ICredentialType {
       default: "",
       description: "Your Publer API token",
     },
-    {
-      displayName: "Workspace ID",
-      name: "workspaceId",
-      type: "string",
-      default: "",
-      description: "Optional: Required for some API endpoints. Found in Publer URL or settings.",
-    },
   ]
   authenticate = {
     type: "generic" as const,
     properties: {
       headers: {
         Authorization: "=Bearer-API {{$credentials.apiToken}}",
-        "Publer-Workspace-Id": "={{ $credentials.workspaceId ? $credentials.workspaceId : undefined }}",
       },
     },
   }

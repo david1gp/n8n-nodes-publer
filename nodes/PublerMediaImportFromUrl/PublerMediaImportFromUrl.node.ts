@@ -74,6 +74,19 @@ export class PublerMediaImportFromUrl implements INodeType {
           },
         },
       },
+      {
+        displayName: "Workspace ID",
+        name: "workspaceId",
+        type: "string",
+        default: "",
+        required: true,
+        description: "The workspace ID to import the media into",
+        displayOptions: {
+          show: {
+            operation: ["importFromUrl"],
+          },
+        },
+      },
     ],
   }
 
@@ -83,7 +96,6 @@ export class PublerMediaImportFromUrl implements INodeType {
 
     const credentials = await this.getCredentials("publerApi")
     const apiToken = credentials.apiToken as string
-    const workspaceId = credentials.workspaceId as string
 
     if (!apiToken) {
       this.logger.error("API Token is missing", {
@@ -94,7 +106,6 @@ export class PublerMediaImportFromUrl implements INodeType {
 
     this.logger.debug("Credentials retrieved", {
       hasApiToken: !!apiToken,
-      hasWorkspaceId: !!workspaceId,
       itemCount: items.length,
     })
 
@@ -107,6 +118,7 @@ export class PublerMediaImportFromUrl implements INodeType {
           const mediaUrl = this.getNodeParameter("mediaUrl", itemIndex) as string
           const fileName = this.getNodeParameter("fileName", itemIndex, "") as string
           const folderId = this.getNodeParameter("folderId", itemIndex, "") as string
+          const workspaceId = this.getNodeParameter("workspaceId", itemIndex) as string
 
           const endpoint = "https://app.publer.com/api/v1/media/from-url"
 

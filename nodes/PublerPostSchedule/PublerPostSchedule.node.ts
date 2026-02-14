@@ -142,6 +142,14 @@ export class PublerPostSchedule implements INodeType {
         ],
         description: "The state of the post",
       },
+      {
+        displayName: "Workspace ID",
+        name: "workspaceId",
+        type: "string",
+        default: "",
+        required: true,
+        description: "The workspace ID to schedule the post in",
+      },
     ],
   }
 
@@ -151,17 +159,17 @@ export class PublerPostSchedule implements INodeType {
 
     const credentials = await this.getCredentials("publerApi")
     const apiToken = credentials.apiToken as string
-    const workspaceId = credentials.workspaceId as string
 
     if (!apiToken) {
       throw new Error("API Token is required")
     }
 
+    const operation = this.getNodeParameter("operation", 0) as string
+    const workspaceId = this.getNodeParameter("workspaceId", 0) as string
+
     if (!workspaceId) {
       throw new Error("Workspace ID is required for this operation")
     }
-
-    const operation = this.getNodeParameter("operation", 0) as string
 
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
