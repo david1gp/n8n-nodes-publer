@@ -30,19 +30,53 @@ export class PublerMediaImportFromUrl implements INodeType {
         placeholder: "https://example.com/image.jpg",
       },
       {
-        displayName: "File Name",
-        name: "fileName",
+        displayName: "Media Name",
+        name: "mediaName",
         type: "string",
         default: "",
-        description: "Optional custom file name for the imported media",
+        required: true,
+        description: "Name for the imported media file",
         placeholder: "my-image.jpg",
       },
       {
-        displayName: "Folder ID",
-        name: "folderId",
+        displayName: "Caption",
+        name: "caption",
         type: "string",
         default: "",
-        description: "Optional folder ID to store the imported media",
+        description: "Optional caption for the media",
+      },
+      {
+        displayName: "Source",
+        name: "source",
+        type: "string",
+        default: "",
+        description: "Optional source attribution for the media",
+      },
+      {
+        displayName: "Upload Type",
+        name: "uploadType",
+        type: "options",
+        default: "single",
+        options: [
+          { name: "Single", value: "single" },
+          { name: "Bulk", value: "bulk" },
+          { name: "Thumbnail", value: "thumbnail" },
+        ],
+        description: "Type of upload operation",
+      },
+      {
+        displayName: "Direct Upload",
+        name: "directUpload",
+        type: "boolean",
+        default: false,
+        description: "Whether to upload directly to S3 (slower, but required if you need the final media URL immediately)",
+      },
+      {
+        displayName: "Save to Library",
+        name: "inLibrary",
+        type: "boolean",
+        default: false,
+        description: "Whether to save the media to your library",
       },
       {
         displayName: "Workspace ID",
@@ -79,8 +113,12 @@ export class PublerMediaImportFromUrl implements INodeType {
     for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
       try {
         const mediaUrl = this.getNodeParameter("mediaUrl", itemIndex) as string
-        const fileName = this.getNodeParameter("fileName", itemIndex, "") as string
-        const folderId = this.getNodeParameter("folderId", itemIndex, "") as string
+        const mediaName = this.getNodeParameter("mediaName", itemIndex) as string
+        const caption = this.getNodeParameter("caption", itemIndex, "") as string
+        const source = this.getNodeParameter("source", itemIndex, "") as string
+        const uploadType = this.getNodeParameter("uploadType", itemIndex, "single") as string
+        const directUpload = this.getNodeParameter("directUpload", itemIndex, false) as boolean
+        const inLibrary = this.getNodeParameter("inLibrary", itemIndex, false) as boolean
         const workspaceId = this.getNodeParameter("workspaceId", itemIndex) as string
 
         const endpoint = "https://app.publer.com/api/v1/media/from-url"
@@ -92,16 +130,24 @@ export class PublerMediaImportFromUrl implements INodeType {
           mediaUrl,
         })
 
-        const body: Record<string, unknown> = {
+        const mediaItem: Record<string, string> = {
           url: mediaUrl,
+          name: mediaName,
         }
 
-        if (fileName) {
-          body.file_name = fileName
+        if (caption) {
+          mediaItem.caption = caption
         }
 
-        if (folderId) {
-          body.folder_id = folderId
+        if (source) {
+          mediaItem.source = source
+        }
+
+        const body: Record<string, unknown> = {
+          media: [mediaItem],
+          type: uploadType,
+          direct_upload: directUpload,
+          in_library: inLibrary,
         }
 
         const response = await this.helpers.requestWithAuthentication.call(this, "publerApi", {

@@ -36,6 +36,8 @@ export class PublerPostScheduleText implements INodeType {
           { name: "Mastodon", value: "mastodon" },
           { name: "Threads", value: "threads" },
           { name: "Bluesky", value: "bluesky" },
+          { name: "WordPress (Self-hosted)", value: "wordpress_basic" },
+          { name: "WordPress (Hosted)", value: "wordpress_oauth" },
         ],
       },
       {

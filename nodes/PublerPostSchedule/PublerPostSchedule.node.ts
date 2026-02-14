@@ -40,6 +40,8 @@ export class PublerPostSchedule implements INodeType {
           { name: "Mastodon", value: "mastodon" },
           { name: "Threads", value: "threads" },
           { name: "Bluesky", value: "bluesky" },
+          { name: "WordPress (Self-hosted)", value: "wordpress_basic" },
+          { name: "WordPress (Hosted)", value: "wordpress_oauth" },
         ],
       },
       {
@@ -56,11 +58,13 @@ export class PublerPostSchedule implements INodeType {
           { name: "Carousel", value: "carousel" },
           { name: "Story", value: "story" },
           { name: "Reel", value: "reel" },
+          { name: "Short (YouTube)", value: "short" },
           { name: "GIF", value: "gif" },
           { name: "Poll", value: "poll" },
           { name: "Document", value: "document" },
           { name: "Event", value: "event" },
           { name: "Offer", value: "offer" },
+          { name: "Status (Text Only)", value: "status" },
         ],
       },
       {
@@ -183,16 +187,27 @@ export class PublerPostSchedule implements INodeType {
         }
 
         // Handle media types
-        const mediaTypes = ["photo", "video", "carousel", "story", "reel", "gif"]
+        const mediaTypes = ["photo", "video", "carousel", "story", "reel", "gif", "short", "document"]
         if (mediaTypes.includes(contentType)) {
           const mediaIds = this.getNodeParameter("mediaIds", itemIndex, []) as string[]
           const cleanMediaIds = mediaIds.filter(id => id.trim() !== "")
           if (cleanMediaIds.length === 0) {
             throw new Error(`At least one Media ID is required for ${contentType} posts`)
           }
+          // Map content types to media types
+          const mediaTypeMap: Record<string, string> = {
+            photo: "image",
+            video: "video",
+            carousel: "image",
+            story: "image",
+            reel: "video",
+            short: "video",
+            gif: "gif",
+            document: "document",
+          }
           networkContent.media = cleanMediaIds.map((id) => ({
             id: id.trim(),
-            type: contentType === "carousel" ? "photo" : contentType,
+            type: mediaTypeMap[contentType] || contentType,
           }))
         }
 
