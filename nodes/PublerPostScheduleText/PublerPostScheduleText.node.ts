@@ -4,7 +4,7 @@ export class PublerPostScheduleText implements INodeType {
   description: INodeTypeDescription = {
     displayName: "Publer Post Schedule Text",
     name: "publerPostScheduleText",
-    icon: { light: 'file:public/logo.svg', dark: 'file:public/logo-dark.svg' },
+    icon: { light: 'file:../../public/logo.svg', dark: 'file:../../public/logo-dark.svg' },
     group: ["input"],
     version: 1,
     description: "Schedule a text-only post (status) to social media accounts via Publer",

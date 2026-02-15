@@ -4,7 +4,7 @@ export class PublerMediaImportFromUrl implements INodeType {
   description: INodeTypeDescription = {
     displayName: "Publer Media Import From URL",
     name: "publerMediaImportFromUrl",
-    icon: { light: 'file:public/logo.svg', dark: 'file:public/logo-dark.svg' },
+    icon: { light: 'file:../../public/logo.svg', dark: 'file:../../public/logo-dark.svg' },
     group: ["input"],
     version: 1,
     description: "Import media files from a URL into your Publer media library",

@@ -4,7 +4,7 @@ export class PublerMe implements INodeType {
   description: INodeTypeDescription = {
     displayName: "Publer Me",
     name: "publerMe",
-    icon: { light: 'file:public/logo.svg', dark: 'file:public/logo-dark.svg' },
+    icon: { light: 'file:../../public/logo.svg', dark: 'file:../../public/logo-dark.svg' },
     group: ["input"],
     version: 1,
     description: "Get current authenticated user information from Publer",

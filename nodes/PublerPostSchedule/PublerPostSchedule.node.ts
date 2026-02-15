@@ -4,7 +4,7 @@ export class PublerPostSchedule implements INodeType {
   description: INodeTypeDescription = {
     displayName: "Publer Post Schedule",
     name: "publerPostSchedule",
-    icon: { light: 'file:public/logo.svg', dark: 'file:public/logo-dark.svg' },
+    icon: { light: 'file:../../public/logo.svg', dark: 'file:../../public/logo-dark.svg' },
     group: ["input"],
     version: 1,
     description: "Schedule posts with media (photo, video, link, carousel, etc.) via Publer",

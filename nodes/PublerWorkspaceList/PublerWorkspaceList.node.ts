@@ -4,7 +4,7 @@ export class PublerWorkspaceList implements INodeType {
   description: INodeTypeDescription = {
     displayName: "Publer Workspace List",
     name: "publerWorkspaceList",
-    icon: { light: 'file:public/logo.svg', dark: 'file:public/logo-dark.svg' },
+    icon: { light: 'file:../../public/logo.svg', dark: 'file:../../public/logo-dark.svg' },
     group: ["input"],
     version: 1,
     description: "List all workspaces accessible to the current user",
