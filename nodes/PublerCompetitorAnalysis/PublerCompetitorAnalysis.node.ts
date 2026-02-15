@@ -4,7 +4,7 @@ export class PublerCompetitorAnalysis implements INodeType {
   description: INodeTypeDescription = {
     displayName: "Publer Competitor Analysis",
     name: "publerCompetitorAnalysis",
-    icon: "file:logo.svg",
+    icon: { light: 'file:public/logo.svg', dark: 'file:public/logo-dark.svg' },
     group: ["input"],
     version: 1,
     description: "Get analytics data for competitor accounts",

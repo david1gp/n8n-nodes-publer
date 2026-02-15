@@ -4,7 +4,7 @@ export class PublerJobStatus implements INodeType {
   description: INodeTypeDescription = {
     displayName: "Publer Job Status",
     name: "publerJobStatus",
-    icon: "file:logo.svg",
+    icon: { light: 'file:public/logo.svg', dark: 'file:public/logo-dark.svg' },
     group: ["input"],
     version: 1,
     description: "Check the status of async jobs in Publer (e.g., media imports, bulk operations)",

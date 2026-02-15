@@ -4,7 +4,7 @@ export class PublerAccounts implements INodeType {
   description: INodeTypeDescription = {
     displayName: "Publer Accounts",
     name: "publerAccounts",
-    icon: "file:logo.svg",
+    icon: { light: 'file:public/logo.svg', dark: 'file:public/logo-dark.svg' },
     group: ["input"],
     version: 1,
     description: "List social media accounts connected to your Publer workspace",

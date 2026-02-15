@@ -4,7 +4,7 @@ export class PublerCompetitorList implements INodeType {
   description: INodeTypeDescription = {
     displayName: "Publer Competitor List",
     name: "publerCompetitorList",
-    icon: "file:logo.svg",
+    icon: { light: 'file:public/logo.svg', dark: 'file:public/logo-dark.svg' },
     group: ["input"],
     version: 1,
     description: "List competitor accounts for a social media account",
