@@ -1,13 +1,14 @@
 {
   "name": "@adaptive-ds/n8n-nodes-publer",
   "version": "1.1.16",
-  "author": {
-    "name": "David Siewert",
-    "email": "david1gruppenplan@gmail.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/david1gp/n8n-nodes-publer.git"
+  "scripts": {
+    "build": "tsc && cp -r public dist/",
+    "dev": "tsc --watch",
+    "test": "bun test",
+    "release": "bash ./ops/release.sh",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials package.json",
+    "lintfix": "eslint nodes credentials package.json --fix"
   },
   "devDependencies": {
     "@types/bun": "^1.3.9",
@@ -18,21 +19,6 @@
   "peerDependencies": {
     "n8n-workflow": "*"
   },
-  "description": "n8n node to connect with Publer.com social media management API",
-  "files": [
-    "dist",
-    "public"
-  ],
-  "homepage": "https://github.com/david1gp/n8n-nodes-publer",
-  "keywords": [
-    "n8n",
-    "n8n-community-node-package",
-    "publer",
-    "social-media",
-    "scheduling",
-    "automation"
-  ],
-  "license": "MIT",
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
@@ -55,13 +41,27 @@
     "printWidth": 120,
     "trailingComma": "all"
   },
-  "scripts": {
-    "build": "tsc && cp -r public dist/",
-    "dev": "tsc --watch",
-    "test": "bun test",
-    "release": "bash ./ops/release.sh",
-    "format": "prettier nodes credentials --write",
-    "lint": "eslint nodes credentials package.json",
-    "lintfix": "eslint nodes credentials package.json --fix"
-  }
+  "homepage": "https://github.com/david1gp/n8n-nodes-publer",
+  "description": "n8n node to connect with Publer.com social media management API",
+  "author": {
+    "name": "David Siewert",
+    "email": "david1gruppenplan@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/david1gp/n8n-nodes-publer.git"
+  },
+  "files": [
+    "dist",
+    "public"
+  ],
+  "keywords": [
+    "n8n",
+    "n8n-community-node-package",
+    "publer",
+    "social-media",
+    "scheduling",
+    "automation"
+  ],
+  "license": "MIT"
 }
