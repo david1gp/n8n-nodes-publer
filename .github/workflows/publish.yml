@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout source code
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.ref }}
 
@@ -24,7 +24,7 @@ jobs:
           bun-version: latest
 
       # Setup Node.js only for npm publishing with OIDC until Bun adds support for it - https://github.com/oven-sh/bun/issues/15601
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
